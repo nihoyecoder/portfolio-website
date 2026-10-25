@@ -14,18 +14,21 @@ import {
 
 // Interaction tuning, in CSS pixels / seconds.
 const GRAB_RADIUS = 12; // how close to an anchor a press has to land
+const TOUCH_GRAB_RADIUS = 24; // the same for a finger
 const NEAR = 32; // how close the cursor comes before the editor appears
 const CAPTION_CLEARANCE = 9; // deepest a pulled-down edge may go (caption starts 12px below)
 const HINT_DELAY = 0.35; // time resting inside the portrait before the hint plays
+const TOUCH_HINT_DELAY = 0.8; // after the intro, on a touchscreen (no hover to wait for)
 
 // Makes the portrait's clip path editable like a vector in a design tool:
 // hover to reveal the outline and anchors, drag an anchor to reshape, double-
-// click (or press Reset) to restore.
+// click (or press Reset) to restore. On a touchscreen the anchors are dragged
+// with a finger; the outline shows while dragging.
 //
-// Only on wide screens with a mouse/trackpad, without reduced motion, and only
-// once HeroMotion has finished the intro. Everything runs on refs: a pointer
-// move just records the position and one animation frame writes the path —
-// React never re-renders while editing.
+// Only with a mouse/trackpad on wide screens or on a touchscreen, without
+// reduced motion, and only once HeroMotion has finished the intro. Everything
+// runs on refs: a pointer move just records the position and one animation
+// frame writes the path — React never re-renders while editing.
 export default function useEditableMask(refs) {
   useGSAP(() => {
     // HeroMotion zooms the photo in around its centre; SVG elements otherwise
@@ -33,12 +36,14 @@ export default function useEditableMask(refs) {
     gsap.set(refs.image.current, { transformOrigin: "50% 50%" });
 
     const mm = gsap.matchMedia();
-    mm.add(media.edit, () => createEditor(refs));
+    mm.add({ mouse: media.edit, touch: media.editTouch }, ({ conditions }) => {
+      if (conditions.mouse || conditions.touch) return createEditor(refs, { touchFirst: !conditions.mouse });
+    });
     return () => mm.revert();
   });
 }
 
-function createEditor(refs) {
+function createEditor(refs, { touchFirst }) {
   const frame = refs.frame.current;
   const overlay = refs.overlay.current;
   const mask = refs.mask.current;
@@ -90,9 +95,9 @@ function createEditor(refs) {
     return { x: m.a * x + m.c * y + m.e, y: m.b * x + m.d * y + m.f };
   };
 
-  const anchorAt = (local) => {
+  const anchorAt = (local, radius = GRAB_RADIUS) => {
     let index = -1;
-    let best = GRAB_RADIUS * unitsPerPx;
+    let best = radius * unitsPerPx;
     points.forEach((p, i) => {
       const distance = Math.hypot(p.x - local.x, p.y - local.y);
       if (distance <= best) {
@@ -237,13 +242,27 @@ function createEditor(refs) {
 
   // ---- Dragging ----------------------------------------------------------
 
+  // Buttons and links win over a nearby anchor: Reset sits just below the
+  // bottom edge, inside a finger's grab radius.
+  const onControl = (target) => target instanceof Element && Boolean(target.closest("button, a"));
+
+  // The anchor a finger at (x, y) would grab, or -1.
+  const touchedAnchor = (x, y) => {
+    if (!reachable(x, y)) return -1;
+    const local = toLocal(x, y);
+    return local ? anchorAt(local, TOUCH_GRAB_RADIUS) : -1;
+  };
+
   const onPointerDown = (event) => {
-    if (!visible || drag || event.button !== 0 || event.pointerType === "touch") return;
+    const touch = event.pointerType === "touch";
+    // A mouse first reveals the editor by hovering; a finger grabs directly.
+    if ((!visible && !touch) || drag || event.button !== 0 || onControl(event.target)) return;
     if (!reachable(event.clientX, event.clientY)) return;
     const local = toLocal(event.clientX, event.clientY);
-    const index = local ? anchorAt(local) : -1;
+    const index = local ? anchorAt(local, touch ? TOUCH_GRAB_RADIUS : GRAB_RADIUS) : -1;
     if (index < 0) return;
     event.preventDefault();
+    if (touch) setVisible(true);
 
     settleTimeline?.progress(1);
     resetTween?.kill();
@@ -257,6 +276,7 @@ function createEditor(refs) {
     drag = {
       index,
       bounds,
+      touch,
       pointerId: event.pointerId,
       // Measured in un-softened space so the anchor doesn't jump on the first move.
       dx: unsoften(p.x, bounds.minX, bounds.maxX, rest.x) - local.x,
@@ -324,6 +344,14 @@ function createEditor(refs) {
 
     settle(ended);
     updateModified();
+
+    // A lifted finger leaves no pointer behind: hide the outline again.
+    if (ended.touch) {
+      pointer = null;
+      hovered = -1;
+      setVisible(false);
+      return;
+    }
 
     // Re-read the hover state where the pointer ended up — it may be outside.
     hovered = -1;
@@ -419,10 +447,23 @@ function createEditor(refs) {
   // ---- Pointer tracking --------------------------------------------------
 
   const onPointerMove = (event) => {
-    if (event.pointerType === "touch") return;
+    // A finger only matters while it drags an anchor (no hover on touch).
+    if (event.pointerType === "touch" && !drag) return;
     if (drag && event.pointerId !== drag.pointerId) return;
     pointer = { x: event.clientX, y: event.clientY };
     schedule();
+  };
+
+  // Touch: a finger that lands on an anchor drags it instead of scrolling the
+  // page. Anywhere else the page scrolls as usual, so the portrait never traps
+  // a swipe. (Pointer events alone can't stop the scroll once it starts.)
+  const onTouchStart = (event) => {
+    if (event.touches.length !== 1 || onControl(event.target)) return;
+    const { clientX, clientY } = event.touches[0];
+    if (touchedAnchor(clientX, clientY) >= 0) event.preventDefault();
+  };
+  const onTouchMove = (event) => {
+    if (drag?.touch) event.preventDefault();
   };
 
   // Keeps the anchors' on-screen size right without waiting for a pointer move.
@@ -466,6 +507,9 @@ function createEditor(refs) {
     [html, "pointerleave", onLeave],
     [frame, "lostpointercapture", onPointerEnd],
     [reset, "click", resetShape],
+    // Not passive: they cancel the scroll for a touch that grabs an anchor.
+    [hero ?? frame, "touchstart", onTouchStart, { passive: false }],
+    [hero ?? frame, "touchmove", onTouchMove, { passive: false }],
   ];
 
   const enable = () => {
@@ -482,6 +526,8 @@ function createEditor(refs) {
     gsap.to(dots, { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out", stagger: 0.04 });
     observer.observe(frame);
     listeners.forEach(([target, type, fn, options]) => target.addEventListener(type, fn, options));
+    // No hover on a touchscreen to wait for: show "Drag to reshape" once.
+    if (touchFirst) hintTimer = gsap.delayedCall(TOUCH_HINT_DELAY, () => onScreen && playHint());
   };
 
   // Wait for the entrance animation to settle before the portrait becomes editable.

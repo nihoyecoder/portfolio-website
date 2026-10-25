@@ -84,8 +84,10 @@ export default function EditablePortrait({ src, alt }) {
         </div>
       </div>
 
-      {/* Caption-row slot, outside the drifting layer so it lines up with the caption. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 grid place-items-center font-mono text-[10px] uppercase tracking-[0.08em]">
+      {/* Caption-row slot, outside the drifting layer so it lines up with the
+          caption, and above it (the intro leaves the caption transformed, which
+          would otherwise paint over Reset and take its taps). */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 grid place-items-center font-mono text-[10px] uppercase tracking-[0.08em]">
         <span
           ref={hint}
           aria-hidden="true"
