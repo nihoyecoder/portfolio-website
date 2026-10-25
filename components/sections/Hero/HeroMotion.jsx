@@ -39,11 +39,7 @@ export default function HeroMotion({ children, ...props }) {
       // section itself never moves; only its children do. Motion only.
       mm.add(media.motion, () => {
         const layers = [...root.children].filter((el) => el.tagName !== "NOSCRIPT");
-        const sink = coverExit(root, layers);
-        onCover = (progress, resized) => {
-          if (resized) sink.invalidate();
-          sink.progress(progress);
-        };
+        onCover = coverExit(root, layers);
         onCover(cover.progress);
         return () => {
           onCover = null;

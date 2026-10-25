@@ -147,14 +147,14 @@ export default function ProcessMotion({ children, ...props }) {
         // While Contact covers the stage, its content sinks, tips back and
         // fades 1:1 with the scroll, like the hero's — from Contact's top
         // entering to it reaching the top.
-        const sink = coverExit(stage, [...stage.children]);
+        const fall = coverExit(stage, [...stage.children]);
 
         ScrollTrigger.create({
           trigger: track,
           start: () => `bottom-=${cover} bottom`,
           end: () => `bottom-=${cover} top`,
-          onUpdate: (self) => sink.progress(self.progress),
-          onRefresh: (self) => sink.invalidate().progress(self.progress),
+          onUpdate: (self) => fall(self.progress),
+          onRefresh: (self) => fall(self.progress, true),
         });
 
         // Clicking a stage scrolls to the point where its card has settled.

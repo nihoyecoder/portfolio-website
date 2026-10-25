@@ -249,14 +249,14 @@ export default function WorkMotion({ palette, children, ...props }) {
         // section's top entering the viewport to it reaching the top — after
         // the projects' range.
         const layers = [...stage.children].filter((el) => el.getAttribute("aria-hidden") !== "true");
-        const sink = coverExit(stage, layers);
+        const fall = coverExit(stage, layers);
 
         ScrollTrigger.create({
           trigger: root,
           start: () => `bottom-=${cover} bottom`,
           end: () => `bottom-=${cover} top`,
-          onUpdate: (self) => sink.progress(self.progress),
-          onRefresh: (self) => sink.invalidate().progress(self.progress),
+          onUpdate: (self) => fall(self.progress),
+          onRefresh: (self) => fall(self.progress, true),
         });
 
         // ---- Indicator clicks and keyboard focus scroll to a project ----
