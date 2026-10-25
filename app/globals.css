@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f7f5;
+  --foreground: #141412;
+  --muted: #6d6a63;
+  --line: #d9d4ca;
+  --accent: #c4546a;
+  --signal: #2f8a57;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-signal: var(--signal);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --font-sans: var(--font-primary), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-accent), ui-serif, Georgia, serif;
+  --font-mono: var(--font-code), ui-monospace, monospace;
+
+  --animate-soft-pulse: soft-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes soft-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    70%,
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
   }
 }
 
+/*
+  Tailwind's preflight already covers box-sizing, body margin and
+  block-level img/video defaults. Only add what it doesn't.
+*/
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/*
+  The system pointer stays visible above the rose dot (components/ui/CustomCursor).
+  Browsers give buttons the arrow; show the hand on them, as on links.
+*/
+@layer base {
+  :where(button:not(:disabled), [role="button"], select, summary) {
+    cursor: pointer;
+  }
 }

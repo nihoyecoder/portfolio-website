@@ -1,0 +1,24 @@
+/* Positioned by GSAP (x / y, centred with xPercent / yPercent -50); never
+   takes pointer events, so it can't block clicks, hovers or drags. */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 68px;
+  height: 68px;
+  pointer-events: none;
+  visibility: hidden;
+  will-change: transform;
+}
+
+/* Drawn at the expanded size and scaled down for the dot, so the state change
+   is a cheap scale + colour tween. The 1px border keeps the ring thin. */
+.dot {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #c4546a;
+  border-radius: 999px;
+  background-color: #c4546a;
+  will-change: transform;
+}

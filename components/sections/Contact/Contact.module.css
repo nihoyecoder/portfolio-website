@@ -1,0 +1,848 @@
+/*
+  Contact — the closing chapter, on the ink background.
+
+  Below 1024px everything stacks: intro, portrait, mode switch, panel
+  (640–1023px places the portrait beside the intro).
+
+  From 1024px: identity column (~41%) beside the interaction panel (~59%).
+  The identity column is sticky and sized to --stage-h, so it never moves
+  when the panel changes height (e.g. while Cal.com lists a day's time
+  slots). In message mode the form stretches to the same height, so the
+  submit button lines up with the mode switch.
+*/
+
+.root {
+  --gutter: 1.25rem;
+  --pad: 5rem;
+
+  --ink: var(--foreground);
+  --paper: var(--background);
+  /* Deep plum-ink section; surfaces are lighter tints of it, and the rose
+     accent is kept for highlights (e.g. the serif word). */
+  --stage: #2a1d29;
+  --surface: color-mix(in srgb, var(--stage), white 5%);
+  --surface-hover: color-mix(in srgb, var(--stage), white 7%);
+  --surface-raised: color-mix(in srgb, var(--stage), white 11%);
+  --hairline: rgb(241 238 232 / 0.1);
+  --text-muted: rgb(241 238 232 / 0.7);
+  --text-faint: rgb(241 238 232 / 0.55);
+  --danger: #ff8f70;
+
+  /* Above Process (it slides over Process's held stage) and opaque */
+  position: relative;
+  z-index: 4;
+  padding-block: var(--pad);
+  background-color: var(--stage);
+  color: var(--paper);
+  color-scheme: dark;
+}
+
+.root ::selection {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.root :focus-visible {
+  outline-color: var(--paper);
+}
+
+@media (min-width: 768px) {
+  .root {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .root {
+    --gutter: 2.5rem;
+  }
+}
+
+.container {
+  padding-inline: var(--gutter);
+}
+
+/* --------------------------------------------------------------- Layout */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+}
+
+.lede {
+  max-width: 38ch;
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.portrait {
+  margin-top: 2.5rem;
+}
+
+.portraitFrame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: var(--surface);
+}
+
+/* The portrait is a 4:5 collage on cream: shown whole (contained), with the
+   frame filled in the collage's own cream so it reads as one card. */
+.portraitFrame:has(img) {
+  background-color: #f4f2ea;
+}
+
+.portraitPlaceholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 2rem;
+    align-items: end;
+  }
+
+  .intro {
+    grid-area: 1 / 1;
+  }
+
+  .portrait {
+    grid-area: 1 / 2;
+    margin-top: 0;
+  }
+
+  .switch {
+    grid-column: 1 / -1;
+    margin-top: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .root {
+    --pad: clamp(4rem, 9svh, 8rem);
+    /* Fills one viewport; never shorter than the form needs */
+    --stage-h: clamp(37rem, 100svh - 2 * var(--pad), 56rem);
+
+    min-height: 100svh;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 41fr) minmax(0, 59fr);
+    column-gap: clamp(2.5rem, 6vw, 9rem);
+    align-items: start;
+  }
+
+  .identity {
+    position: sticky;
+    /* --pad from the top; on short screens it rises so the switch stays in view */
+    top: min(var(--pad), 100svh - var(--stage-h) - 1.5rem);
+    max-width: 38rem;
+    min-height: var(--stage-h);
+  }
+
+  /* Portrait and switch sit at the bottom of the column */
+  .portrait {
+    margin-top: auto;
+    padding-top: 2.5rem;
+  }
+
+  /* Stretches to the row, so it's always at least as tall as the identity column */
+  .panels {
+    display: grid;
+    align-self: stretch;
+    justify-self: end;
+    width: 100%;
+    /* Keeps Cal.com in its stacked layout on wide screens */
+    max-width: 46rem;
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* --------------------------------------------------------------- Panels */
+
+.panels {
+  position: relative;
+}
+
+/* The inactive panel stays mounted (and keeps its state) but takes no space */
+.panel[data-active="false"] {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+/* ---------------------------------------------------------- Mode switch */
+
+.switch {
+  display: flex;
+  gap: 0.375rem;
+  margin-top: 0.75rem;
+  padding: 0.375rem;
+  border-radius: 14px;
+  background-color: var(--surface);
+}
+
+.tab {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 2.875rem;
+  padding-inline: 0.75rem;
+  border-radius: 10px;
+  background-color: var(--surface-raised);
+  color: var(--text-muted);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  /* Width change stays under 0.5s so it counts as a response to the click */
+  transition:
+    flex-grow 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.tab:hover {
+  background-color: color-mix(in srgb, var(--stage), white 15%);
+  color: var(--paper);
+}
+
+.tab[aria-selected="true"] {
+  background-color: var(--paper);
+  color: var(--ink);
+  cursor: default;
+}
+
+.tabIcon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.labelShort {
+  display: none;
+}
+
+@media (max-width: 399px) {
+  .labelFull {
+    display: none;
+  }
+
+  .labelShort {
+    display: inline;
+  }
+}
+
+.tooltip {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .tab[aria-selected="true"] {
+    flex-grow: 3;
+  }
+
+  /* Inactive: icon only; the label stays for screen readers */
+  .tab[aria-selected="false"] .tabLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .tab[aria-selected="true"] .tabLabel {
+    animation: labelIn 0.4s 0.1s ease both;
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 0.6rem);
+    left: 50%;
+    display: block;
+    padding: 0.35rem 0.6rem;
+    border-radius: 7px;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-size: 12.5px;
+    opacity: 0;
+    translate: -50% 4px;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      translate 0.2s ease;
+  }
+
+  .tab[aria-selected="false"]:focus-visible .tooltip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .tab[aria-selected="false"]:hover .tooltip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+@keyframes labelIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ----------------------------------------------------------------- Form */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.4rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+/* Desktop: a slightly tighter rhythm so the form fits a 720px-tall screen,
+   and the message field absorbs spare height so the button meets the switch */
+@media (min-width: 1024px) {
+  .form {
+    flex: 1;
+    gap: 1.5rem;
+  }
+
+  .fields {
+    flex: 1;
+    /* --rows (set by ContactForm): field rows above the message */
+    grid-template-rows: repeat(var(--rows, 4), auto) 1fr;
+    row-gap: 1.25rem;
+  }
+
+  .field {
+    gap: 0.5rem;
+  }
+
+  .grow .textarea {
+    flex: 1 0 auto;
+    height: 6.5rem;
+    min-height: 6.5rem;
+  }
+}
+
+.label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.required {
+  color: var(--text-faint);
+}
+
+.optional {
+  margin-left: auto;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.control {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background-color: var(--surface);
+  color: var(--paper);
+  font: inherit;
+  /* 16px keeps iOS from zooming into the field */
+  font-size: 16px;
+  line-height: 1.4;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+@media (min-width: 1024px) {
+  .control {
+    min-height: 2.875rem;
+    font-size: 15px;
+  }
+}
+
+.control::placeholder {
+  color: var(--text-faint);
+  opacity: 1;
+}
+
+.control:hover {
+  border-color: rgb(241 238 232 / 0.18);
+}
+
+.control:focus,
+.control:focus-visible {
+  outline: none;
+  border-color: rgb(241 238 232 / 0.55);
+  background-color: var(--surface-hover);
+  box-shadow: 0 0 0 3px rgb(241 238 232 / 0.07);
+}
+
+.control[aria-invalid="true"] {
+  border-color: rgb(255 143 112 / 0.6);
+}
+
+.control[aria-invalid="true"]:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgb(255 143 112 / 0.12);
+}
+
+.control:-webkit-autofill,
+.control:-webkit-autofill:hover,
+.control:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--paper);
+  -webkit-box-shadow: 0 0 0 100px var(--surface) inset;
+  caret-color: var(--paper);
+}
+
+.textarea {
+  min-height: 8.75rem;
+  resize: vertical;
+}
+
+.selectWrap {
+  position: relative;
+}
+
+.select {
+  appearance: none;
+  padding-right: 2.75rem;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.select[data-empty] {
+  color: var(--text-faint);
+}
+
+.select option {
+  background-color: var(--surface);
+  color: var(--paper);
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--text-muted);
+  translate: 0 -50%;
+  pointer-events: none;
+}
+
+.selectWrap:focus-within .chevron {
+  color: var(--paper);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  color: var(--danger);
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.errorIcon {
+  flex: none;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: 0.1rem;
+}
+
+/* Honeypot: off-screen, out of the tab order and hidden from assistive tech */
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 3.25rem;
+  padding-inline: 1.25rem;
+  border-radius: 12px;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit:hover {
+  background-color: #ffffff;
+}
+
+.submit[aria-disabled="true"] {
+  cursor: progress;
+}
+
+@media (min-width: 1024px) {
+  .submit {
+    min-height: 3.125rem;
+  }
+}
+
+.submitArrow {
+  width: 1rem;
+  height: 1rem;
+  transition: translate 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .submit:hover .submitArrow {
+    translate: 4px 0;
+  }
+}
+
+.notice {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(255 143 112 / 0.28);
+  border-radius: 12px;
+  background-color: rgb(255 143 112 / 0.07);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.noticeIcon {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.1rem;
+  color: var(--danger);
+}
+
+.noticeTitle {
+  font-weight: 600;
+}
+
+.link {
+  text-decoration: underline;
+  text-decoration-color: rgb(241 238 232 / 0.4);
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.devHint {
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------- Success */
+
+.success {
+  display: flex;
+  min-height: 26rem;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: clamp(1.75rem, 4vw, 3rem);
+  border-radius: 16px;
+  background-color: var(--surface);
+  animation: rise 0.5s ease both;
+}
+
+@media (min-width: 1024px) {
+  .success {
+    flex: 1;
+  }
+}
+
+.successIcon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.4rem;
+  border-radius: 50%;
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+.successTitle {
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.successTitle:focus {
+  outline: none;
+}
+
+.successBody {
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid rgb(241 238 232 / 0.2);
+  border-radius: 10px;
+  color: var(--paper);
+  font-size: 14.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.secondary:hover {
+  border-color: rgb(241 238 232 / 0.35);
+  background-color: var(--surface-raised);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+/* -------------------------------------------------------------- Booking */
+
+.booking {
+  position: relative;
+  display: flex;
+  min-height: 36rem;
+  flex-direction: column;
+  overflow: clip;
+  border-radius: 16px;
+  background-color: var(--surface);
+}
+
+@media (min-width: 1024px) {
+  .booking {
+    flex: 1;
+  }
+}
+
+.calMount {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.calMount[data-ready] {
+  opacity: 1;
+}
+
+.bookingNote {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.bookingCover {
+  position: absolute;
+  inset: 0;
+}
+
+.bookingIcon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.25rem;
+  border-radius: 50%;
+  background-color: var(--surface-raised);
+  color: var(--paper);
+}
+
+.bookingTitle {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.bookingText {
+  max-width: 36ch;
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.bookingHint {
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+.bookingActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.code {
+  max-width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.55rem 0.8rem;
+  border-radius: 8px;
+  background-color: var(--surface-raised);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem 1.5rem;
+  pointer-events: none;
+}
+
+.bone {
+  display: block;
+  border-radius: 8px;
+  background-color: var(--surface-raised);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.boneAvatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+}
+
+.boneDays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+
+.boneDays .bone {
+  aspect-ratio: 1;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ------------------------------------------------------- Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .tab[aria-selected="true"] .tabLabel,
+  .success,
+  .bone {
+    animation: none;
+  }
+}

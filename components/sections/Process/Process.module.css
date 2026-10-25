@@ -1,0 +1,219 @@
+/*
+  Process has two layouts.
+
+  Stacked (default) — header, then the four cards in normal flow. Used below
+  1024px, with prefers-reduced-motion, and without JavaScript.
+
+  Stage — ProcessMotion sets data-mode="stage" on .root. The .track provides
+  the scroll length (--stage-scroll) and .stage stays sticky inside it, so the
+  composition holds still while one scrubbed timeline moves the cards. All
+  four cards are absolutely stacked in .cards with a fixed z-index order.
+*/
+
+.root {
+  --gutter: 1.25rem;
+  --surface: #fbfaf8;
+
+  position: relative;
+  padding-block: 4rem 6rem;
+}
+
+@media (min-width: 768px) {
+  .root {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .root {
+    --gutter: 2.5rem;
+  }
+}
+
+.container {
+  padding-inline: var(--gutter);
+}
+
+/* ------------------------------------------------------------- Stacked */
+
+.nav {
+  display: none;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.card {
+  border-radius: 18px;
+  background-color: var(--surface);
+  box-shadow:
+    0 0 0 1px rgb(20 20 18 / 0.05),
+    0 18px 40px -30px rgb(20 20 18 / 0.3);
+}
+
+.cardInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.6rem;
+}
+
+.visual {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 12px;
+  background-color: #e9e5dd;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 0.9rem 0.9rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem 0.3rem 0.4rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chipIcon {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background-color: rgb(255 255 255 / 0.14);
+}
+
+/* ---------------------------------------------------------------- Stage */
+
+@media (min-width: 1024px) {
+  .root {
+    padding-block: 3rem 0;
+  }
+
+  .content {
+    padding: 1.4rem 1.5rem 1.5rem;
+  }
+
+  /* Wide screens without the stage (reduced motion / no JS): image beside text */
+  .root:not([data-mode="stage"]) .cardInner {
+    flex-direction: row;
+  }
+
+  .root:not([data-mode="stage"]) .visual {
+    flex: none;
+    width: 56%;
+  }
+
+  .root:not([data-mode="stage"]) .content {
+    flex: 1;
+    justify-content: center;
+    padding: 2rem 2.5rem;
+  }
+}
+
+/* Cover: the track also holds the stage for --cover (one stage height), and
+   the negative margin pulls Contact up by the same amount so it slides over
+   the still stage. The page's total length doesn't change. */
+.root[data-mode="stage"] {
+  padding-bottom: 0;
+  margin-bottom: calc(-1 * var(--cover, 0px));
+}
+
+.root[data-mode="stage"] .track {
+  height: calc(100vh + var(--stage-scroll, 0px) + var(--cover, 0px));
+  height: calc(100lvh + var(--stage-scroll, 0px) + var(--cover, 0px));
+}
+
+.root[data-mode="stage"] .stage {
+  --card-h: min(72svh, 48rem);
+
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  align-content: start;
+  column-gap: clamp(2rem, 4.5vw, 5rem);
+  height: 100vh;
+  height: 100lvh;
+  padding-top: max(4.5rem, calc((100svh - var(--card-h)) / 2));
+  /* Clip cards waiting below the fold vertically; keep shadows horizontally */
+  overflow: visible clip;
+}
+
+.root[data-mode="stage"] .nav {
+  display: block;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.8svh, 1.4rem);
+}
+
+.navButton {
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.35s ease;
+}
+
+/* The highlighted stage (set by ProcessMotion as you scroll) in the accent */
+.navButton[aria-current="step"],
+.navButton[aria-current="step"] span {
+  color: var(--accent);
+}
+
+.root[data-mode="stage"] .cards {
+  position: relative;
+  display: block;
+  height: var(--card-h);
+}
+
+.root[data-mode="stage"] .card {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0%;
+  /* A soft upward shadow so each card reads as lying over the one behind */
+  box-shadow:
+    0 0 0 1px rgb(20 20 18 / 0.05),
+    0 -16px 40px -26px rgb(20 20 18 / 0.32);
+  will-change: transform;
+}
+
+.root[data-mode="stage"] .visual {
+  flex: 1 1 auto;
+  min-height: 0;
+  aspect-ratio: auto;
+}

@@ -1,0 +1,235 @@
+/*
+  Footer — light, spacious closing layer after the dark Contact section.
+  Stacked below 1024px; from 1024px the lead block sits left and the two
+  link groups right. The oversized name closes the page, clipped by the
+  bottom edge.
+*/
+
+.root {
+  --gutter: 1.25rem;
+
+  position: relative;
+  overflow: clip;
+  padding-top: clamp(5rem, 12vw, 9rem);
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@media (min-width: 768px) {
+  .root {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .root {
+    --gutter: 2.5rem;
+  }
+}
+
+.container {
+  padding-inline: var(--gutter);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+@media (min-width: 1024px) {
+  .top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 4rem;
+  }
+}
+
+/* ------------------------------------------------------------ Contact */
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-top: 2.5rem;
+  font-style: normal;
+}
+
+.contactLink {
+  color: var(--muted);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  letter-spacing: -0.03em;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition:
+    color 0.3s ease,
+    text-decoration-color 0.3s ease;
+}
+
+.contactLink:hover {
+  color: var(--foreground);
+  text-decoration-color: currentColor;
+}
+
+/* ------------------------------------------------------------ Socials */
+
+.socials {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.social {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--foreground);
+  border-radius: 50%;
+  background-color: var(--foreground);
+  color: var(--background);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    scale 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.socialIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: translate 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.social:hover,
+.social:focus-visible {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .social:hover {
+    scale: 1.06;
+  }
+
+  .social:hover .socialIcon {
+    translate: 0 -1px;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  translate: -50% 4px;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    translate 0.2s ease;
+}
+
+.social:hover .tooltip,
+.social:focus-visible .tooltip {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* ---------------------------------------------------------------- Nav */
+
+.nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 11rem));
+  column-gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    column-gap: clamp(3rem, 6vw, 6rem);
+    padding-top: 0.75rem;
+  }
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 1rem;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.navArrow {
+  color: var(--accent);
+  font-size: 0.7em;
+}
+
+/* ------------------------------------------------------------ Utility */
+
+.utility {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 2rem;
+  margin-top: clamp(4rem, 9vw, 7rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 639px) {
+  .utility {
+    flex-direction: column;
+  }
+}
+
+/* ---------------------------------------------------------- Signature */
+
+/* Giant name: spans the width, low contrast, its lower part cut by the page edge */
+.signature {
+  container-type: inline-size;
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+  padding-inline: var(--gutter);
+  user-select: none;
+  pointer-events: none;
+}
+
+.name {
+  margin-bottom: -0.16em;
+  /* A faded tint of the rose accent */
+  color: color-mix(in srgb, var(--accent) 22%, var(--background));
+  font-size: 15.4cqw;
+  font-weight: 600;
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Phones: two lines, MANOJ / RAWAT */
+@media (max-width: 639px) {
+  .name {
+    margin-bottom: -0.1em;
+    font-size: 29cqw;
+    white-space: normal;
+  }
+
+  .name span {
+    display: block;
+  }
+}

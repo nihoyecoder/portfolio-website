@@ -1,0 +1,62 @@
+/*
+  Stacking for the cover transition (HeroMotion pins the hero; Selected Work,
+  z-index 2, slides over it). The header, with the mobile menu, is fixed
+  above every section.
+*/
+.root {
+  z-index: 1;
+}
+
+/*
+  Before the entrance timeline starts, the hero is hidden so the first paint
+  never shows content that is about to jump into its start position.
+  - Only when motion is allowed (reduced motion shows everything at once).
+  - A delayed CSS fallback reveals it anyway if JS fails to run.
+  - Hero.jsx adds a <noscript> override for visitors without JS.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .root {
+    visibility: hidden;
+    animation: reveal-fallback 0s 3.5s forwards;
+  }
+}
+
+@keyframes reveal-fallback {
+  to {
+    visibility: visible;
+  }
+}
+
+/* Scroll cue: a short segment travelling down a hairline. */
+.scrollLine {
+  position: relative;
+  overflow: hidden;
+  width: 1px;
+  height: 2.5rem;
+  background: var(--line);
+}
+
+.scrollLine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: var(--foreground);
+  animation: scroll-cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scroll-cue {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollLine::after {
+    animation: none;
+    transform: translateY(75%);
+  }
+}

@@ -1,0 +1,70 @@
+/* Fixed to the top of every page. HeaderShell slides it out of view while
+   scrolling down and back while scrolling up. */
+.header {
+  --gutter: 1.25rem;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  /* At the top it lines up exactly with the hero's own padding. */
+  padding: 1.25rem var(--gutter) 0.75rem;
+  transition: padding 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Away from the top: a compact bar on the page colour. The background is a
+   pseudo-element, so its backdrop-filter doesn't confine the mobile menu's
+   fixed panel to the bar. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.header[data-scrolled] {
+  padding-block: 0.875rem;
+}
+
+.header[data-scrolled]::before {
+  opacity: 1;
+}
+
+@media (min-width: 48rem) {
+  .header {
+    --gutter: 2rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .header {
+    --gutter: 2.5rem;
+  }
+}
+
+/* With the menu open the panel covers the page; no bar behind the button. */
+.header:has([aria-expanded="true"])::before {
+  opacity: 0;
+}
+
+/*
+  Home page: the nav items wait, hidden, for the hero's entrance timeline
+  (HeroMotion), like the hero itself — with the same delayed fallback in case
+  JS never runs. Hero.jsx's <noscript> reveals them without JS.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .header[data-intro] [data-anim="nav"] {
+    visibility: hidden;
+    animation: reveal-fallback 0s 3.5s forwards;
+  }
+}
+
+@keyframes reveal-fallback {
+  to {
+    visibility: visible;
+  }
+}

@@ -1,0 +1,2141 @@
+/*
+  Case study — one editorial layout for every project.
+
+  Grid: from 1024px, 12 columns. Labels sit in columns 1–4, reading text in
+  5–11 (about 640px of measure), visuals span 5–12 ("wide") or 1–12
+  ("full"). Below 1024px everything stacks in a single column.
+
+  Project colours arrive as --p-bg / --p-fg / --p-accent (inline style).
+*/
+
+.article {
+  --gutter: 1.25rem;
+  --space: clamp(5.5rem, 12vw, 10rem);
+  --canvas: #e6e2d9;
+  --ink-soft: #35332f;
+  --radius: 18px;
+  --ease: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@media (min-width: 768px) {
+  .article {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .article {
+    --gutter: 2.5rem;
+  }
+}
+
+.container {
+  padding-inline: var(--gutter);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1.25rem, 2.2vw, 2rem);
+  }
+
+  .side {
+    grid-column: 1 / span 4;
+  }
+
+  .main {
+    grid-column: 5 / span 7;
+  }
+
+  .wide {
+    grid-column: 5 / -1;
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ------------------------------------------------------------ Type */
+
+.label {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.title {
+  max-width: 22ch;
+  font-size: clamp(2rem, 3.8vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 34rem;
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  line-height: 1.42;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  max-width: 40rem;
+  color: var(--ink-soft);
+  font-size: clamp(1.0625rem, 1.2vw, 1.1875rem);
+  line-height: 1.62;
+}
+
+.lead + .body,
+.body + .body {
+  margin-top: 1.1em;
+}
+
+/* Gaps in the copy, e.g. "[CONTENT TO ADD]" */
+.todo {
+  padding: 0 0.3em;
+  border-radius: 4px;
+  background-color: rgb(194 59 20 / 0.1);
+  color: #9a2d0c;
+  font-style: normal;
+}
+
+/* -------------------------------------------------------- Sections */
+
+.section {
+  padding-top: var(--space);
+  scroll-margin-top: 4.5rem;
+}
+
+.head {
+  row-gap: 1.1rem;
+}
+
+@media (min-width: 1024px) {
+  .head > .label {
+    padding-top: 0.85rem;
+  }
+}
+
+.headBody {
+  margin-top: 1.75rem;
+}
+
+.block {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+/* Live site link, right under the website visual */
+.siteLinkRow {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.siteLink {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  color: var(--p-accent);
+  font-size: 17px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-underline-offset 0.2s ease;
+}
+
+.siteLink:hover {
+  text-underline-offset: 6px;
+}
+
+/* --------------------------------------------------------- Overview */
+
+.hero {
+  padding-top: clamp(2rem, 5vw, 4rem);
+  scroll-margin-top: 4.5rem;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.25rem;
+}
+
+.back span {
+  transition: translate 0.5s var(--ease);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .back:hover span {
+    translate: -3px 0;
+  }
+}
+
+.heroGrid {
+  row-gap: 2rem;
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.heroTitle {
+  font-size: clamp(3rem, 5.4vw, 5.25rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+/* Reveal mask with room for descenders */
+.mask {
+  display: block;
+  overflow: hidden;
+  margin-bottom: -0.12em;
+  padding-bottom: 0.12em;
+}
+
+.mask > span {
+  display: block;
+}
+
+.heroCategory {
+  margin-top: 1.1rem;
+}
+
+.heroSummary {
+  max-width: 34rem;
+  font-size: clamp(1.25rem, 1.9vw, 1.65rem);
+  line-height: 1.38;
+  letter-spacing: -0.022em;
+}
+
+.heroSub {
+  margin-top: 1.1rem;
+}
+
+/* Three overlapping phone screens on the project stage, with a logo */
+.heroStage {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3rem) 0;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(60% 70% at 18% 0%, color-mix(in srgb, var(--p-accent) 22%, transparent), transparent 70%),
+    var(--p-bg);
+}
+
+.heroLogo {
+  display: block;
+  width: clamp(3.5rem, 7vw, 5.5rem);
+  height: auto;
+  margin-inline: auto;
+}
+
+.heroPhones {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+  /* The phones run a little off the bottom edge, as if rising out of it */
+  margin-bottom: calc(-1 * clamp(2rem, 6vw, 5.5rem));
+}
+
+.heroPhone {
+  position: relative;
+  flex: 0 0 clamp(8rem, 24vw, 19rem);
+}
+
+.heroPhone .frame {
+  border-radius: clamp(16px, 2.2vw, 32px);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.08),
+    0 40px 80px -30px rgb(0 0 0 / 0.7);
+}
+
+/* Side phones sit lower and tuck behind the centre one */
+.heroPhone[data-position="left"],
+.heroPhone[data-position="right"] {
+  z-index: 1;
+  transform: translateY(4%) scale(0.86);
+}
+
+.heroPhone[data-position="left"] {
+  margin-right: -6%;
+  transform-origin: right bottom;
+}
+
+.heroPhone[data-position="right"] {
+  margin-left: -6%;
+  transform-origin: left bottom;
+}
+
+.heroPhone[data-position="centre"] {
+  z-index: 2;
+}
+
+/* One screen rising out of the stage; it runs off the bottom edge */
+.heroShot {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+  margin-bottom: calc(-1 * clamp(1.5rem, 5vw, 4.5rem));
+}
+
+.heroShot .frame {
+  border-radius: clamp(10px, 1.2vw, 16px);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.1),
+    0 50px 100px -40px rgb(0 0 0 / 0.65);
+}
+
+/* ------------------------------------------------ Annotated screens */
+
+.annotated {
+  position: relative;
+}
+
+.annotatedShot {
+  position: relative;
+}
+
+/* A highlight box over part of a screenshot, numbered to match a note */
+.marker {
+  position: absolute;
+  border: 2px solid var(--p-accent);
+  border-radius: clamp(6px, 0.8vw, 12px);
+  background-color: color-mix(in srgb, var(--p-accent) 6%, transparent);
+  pointer-events: none;
+}
+
+.markerNumber,
+.overlayNumber {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 999px;
+  background-color: var(--p-accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  transform: translate(-45%, -45%);
+  box-shadow: 0 0 0 3px var(--background);
+}
+
+/* A secondary screen overlapping the main one (below it on small screens) */
+.overlay {
+  position: relative;
+  width: min(72%, 26rem);
+  margin: -10% 4% 0 auto;
+}
+
+.overlay .frame {
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.06),
+    0 40px 80px -30px rgb(20 14 24 / 0.45);
+}
+
+.overlayNumber {
+  top: 0.4rem;
+  left: 0.4rem;
+}
+
+@media (min-width: 1024px) {
+  .annotated[data-overlay] {
+    /* Room for the overlay that hangs below the screenshot */
+    margin-bottom: 8%;
+  }
+
+  .overlay {
+    position: absolute;
+    right: -1.5%;
+    bottom: -8%;
+    width: 30%;
+    margin: 0;
+  }
+}
+
+.markerNotes {
+  display: grid;
+  gap: 0.9rem 2rem;
+  max-width: 64rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .markerNotes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.markerNotes li {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+/* Zoomed crops under a screenshot, so small UI stays readable */
+.details {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  .details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .detail[data-wide] {
+    grid-column: 1 / -1;
+  }
+}
+
+.detail .frame {
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+/* View full size */
+.zoomButton {
+  position: absolute;
+  top: clamp(0.5rem, 1.2vw, 0.9rem);
+  right: clamp(0.5rem, 1.2vw, 0.9rem);
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 0.92);
+  color: var(--foreground);
+  box-shadow: 0 6px 18px -6px rgb(0 0 0 / 0.35);
+  cursor: zoom-in;
+  transition: transform 0.25s ease;
+}
+
+.zoomButton:hover {
+  transform: scale(1.06);
+}
+
+.lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0 clamp(0.75rem, 3vw, 2.5rem) clamp(0.75rem, 3vw, 2.5rem);
+  overflow: auto;
+  border: 0;
+  background-color: rgb(14 10 16 / 0.94);
+  color: #fff;
+  cursor: zoom-out;
+}
+
+.lightbox::backdrop {
+  background: transparent;
+}
+
+.lightboxBar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 1rem;
+  background: linear-gradient(rgb(14 10 16 / 0.94), rgb(14 10 16 / 0));
+  cursor: default;
+}
+
+.lightboxBar .label {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.lightboxClose {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background-color: rgb(255 255 255 / 0.12);
+  color: #fff;
+  cursor: pointer;
+}
+
+.lightboxImage {
+  display: block;
+  width: min(100%, 2400px);
+  height: auto;
+  margin-inline: auto;
+  border-radius: 10px;
+  cursor: default;
+}
+
+/* ------------------------------------------------ Split and flow */
+
+/* Two screens, joined by a sign between them */
+.splitPair {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 900px) {
+  .splitPair {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: clamp(1rem, 2.5vw, 2rem);
+  }
+}
+
+.splitEyebrow {
+  margin-bottom: 0.85rem;
+  color: var(--p-accent);
+}
+
+.splitJoin {
+  align-self: center;
+  justify-self: center;
+  color: var(--p-accent);
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1;
+}
+
+/* Wide screens as steps: arrows between them on desktop */
+.flow {
+  display: grid;
+  gap: 2rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .flow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .flow[data-count="4"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 2.75rem;
+  }
+
+  .flowStep:not(:last-child) .flowShot::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: -1.95rem;
+    color: var(--p-accent);
+    font-size: 1.1rem;
+    transform: translateY(-50%);
+  }
+}
+
+.flowShot {
+  position: relative;
+}
+
+.flowShot .frame {
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.flowLabel {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  margin-top: 0.85rem;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.flowLabel .label {
+  color: var(--p-accent);
+}
+
+/* ------------------------------------------------ Strategy journey */
+
+/* Four connected steps: a line across on desktop, down the side below */
+.strategy {
+  display: grid;
+  gap: 2.25rem;
+}
+
+.strategyStep {
+  position: relative;
+  padding-left: 2.25rem;
+}
+
+.strategyStep::before {
+  content: "";
+  position: absolute;
+  top: 0.9rem;
+  bottom: -2.25rem;
+  left: 0.4rem;
+  width: 1px;
+  background-color: var(--line);
+}
+
+.strategyStep:last-child::before {
+  display: none;
+}
+
+.strategyDot {
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 1.5px solid var(--p-accent);
+  border-radius: 999px;
+  background-color: var(--background);
+}
+
+.strategyStep:first-child .strategyDot {
+  background-color: var(--p-accent);
+}
+
+@media (min-width: 900px) {
+  .strategy {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 3vw, 2.75rem);
+  }
+
+  .strategyStep {
+    padding-top: 2.25rem;
+    padding-left: 0;
+  }
+
+  .strategyStep::before {
+    top: 0.42rem;
+    right: calc(-1 * clamp(1.5rem, 3vw, 2.75rem));
+    bottom: auto;
+    left: 0.85rem;
+    width: auto;
+    height: 1px;
+  }
+
+  .strategyDot {
+    top: 0;
+  }
+}
+
+.strategyNumber {
+  display: block;
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.strategyTitle {
+  margin-top: 0.5rem;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.strategyText {
+  max-width: 26ch;
+  margin-top: 0.6rem;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Two hero images side by side */
+.heroPair {
+  display: grid;
+  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+}
+
+@media (min-width: 768px) {
+  .heroPair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------------ Project showcase */
+
+/* Project facts: label / value rows with hairlines */
+.facts {
+  max-width: 40rem;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+  border-top: 1px solid var(--line);
+}
+
+.fact {
+  display: grid;
+  gap: 0.3rem 1.5rem;
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 640px) {
+  .fact {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.fact dd {
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.showcaseNote {
+  max-width: 40rem;
+  margin-top: 1.25rem;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* One story: same rhythm everywhere */
+.story {
+  margin-top: clamp(5rem, 10vw, 8rem);
+}
+
+.storyNumber {
+  color: var(--p-accent);
+}
+
+.storyTitle {
+  max-width: 22ch;
+  font-size: clamp(1.6rem, 2.6vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.storyAside > .storyTitle {
+  margin-top: 0.75rem;
+}
+
+/* One measure for every line of story text */
+.storyProblem,
+.storyList,
+.storyValue {
+  max-width: 36rem;
+}
+
+.storyProblem {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+  font-size: 16.5px;
+  line-height: 1.55;
+}
+
+.storyList {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+.storyList li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.storyList li::before {
+  content: "";
+  position: absolute;
+  top: 0.68em;
+  left: 0;
+  width: 0.45rem;
+  height: 1px;
+  background-color: var(--p-accent);
+}
+
+.storyValue {
+  margin-top: 1.5rem;
+}
+
+/* aside: text beside the screens; below 1024px the text comes first */
+.story[data-layout="aside"] {
+  row-gap: 2rem;
+}
+
+.storyMedia {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 1024px) {
+  .story[data-layout="aside"] {
+    align-items: start;
+  }
+
+  .storyAside {
+    position: sticky;
+    top: 6rem;
+    grid-row: 1;
+    grid-column: 1 / span 5;
+    padding-right: 1rem;
+  }
+
+  .storyMedia {
+    grid-row: 1;
+    grid-column: 6 / -1;
+  }
+
+  .story[data-flip] .storyAside {
+    grid-column: 8 / -1;
+    padding-right: 0;
+    padding-left: 1rem;
+  }
+
+  .story[data-flip] .storyMedia {
+    grid-column: 1 / span 7;
+  }
+}
+
+/* Wide screens: the media starts at the reading column, like the headings */
+@media (min-width: 1280px) {
+  .storyAside {
+    grid-column: 1 / span 4;
+  }
+
+  .storyMedia {
+    grid-column: 5 / -1;
+  }
+
+  .story[data-flip] .storyAside {
+    grid-column: 9 / -1;
+  }
+
+  .story[data-flip] .storyMedia {
+    grid-column: 1 / span 8;
+  }
+}
+
+/* stacked: a head like a section's, then the screens on the same grid */
+.storyHead {
+  row-gap: 0.75rem;
+}
+
+@media (min-width: 1024px) {
+  /* Lines the label up with the title's first line */
+  .storyHead > .label {
+    padding-top: 0.7rem;
+  }
+}
+
+.storyShots {
+  display: grid;
+  gap: clamp(1.5rem, 2.5vw, 2rem) clamp(1.25rem, 2.2vw, 2rem);
+  margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
+}
+
+@media (min-width: 768px) {
+  .storyShots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .storyShot[data-role="single"],
+  .storyShot[data-role="lead"] {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .storyShots {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  /* One screen starts at the reading column */
+  .storyShot[data-role="single"] {
+    grid-column: 5 / -1;
+  }
+
+  .storyShot[data-role="half"] {
+    grid-column: span 6;
+  }
+
+  /* Three: a large lead, the other two stacked beside it */
+  .storyShot[data-role="lead"] {
+    grid-column: 1 / span 8;
+    grid-row: span 2;
+  }
+
+  .storyShot[data-role="beside"] {
+    grid-column: 9 / -1;
+  }
+}
+
+
+/* Challenge: the How Might We line */
+.hmw {
+  max-width: 34ch;
+  margin-top: 0.75rem;
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Challenge: one lane per journey */
+.journey {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.lane {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+@media (min-width: 900px) {
+  .lane {
+    grid-template-columns: 13rem minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.laneHead {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.laneTag {
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.laneSteps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.laneSteps li {
+  display: flex;
+  align-items: center;
+}
+
+.laneSteps li:not(:last-child)::after {
+  content: "";
+  width: clamp(1rem, 2.4vw, 2rem);
+  height: 1px;
+  margin-inline: 0.6rem;
+  background-color: var(--p-accent);
+}
+
+/* A section on the theme's dark colours (e.g. to show a dark product UI) */
+.section[data-tone="dark"] {
+  --foreground: var(--dark-fg);
+  --muted: color-mix(in srgb, var(--dark-fg) 66%, var(--dark-bg));
+  --ink-soft: color-mix(in srgb, var(--dark-fg) 84%, var(--dark-bg));
+  --line: var(--dark-line);
+  --canvas: var(--dark-canvas);
+  margin-top: var(--space);
+  padding-bottom: var(--space);
+  background-color: var(--dark-bg);
+  color: var(--dark-fg);
+}
+
+/* Back-to-back dark sections read as one dark band */
+.section[data-tone="dark"] + .section[data-tone="dark"] {
+  margin-top: 0;
+  padding-top: calc(var(--space) * 0.5);
+}
+
+.section[data-tone="dark"] .swatchColor {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.16);
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 2rem;
+  margin-top: clamp(2.25rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  .meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.metaValue {
+  margin-top: 0.45rem;
+  font-size: 15.5px;
+  line-height: 1.5;
+}
+
+.heroVisual {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+/* ----------------------------------------------------------- Media */
+
+.figure {
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--canvas);
+}
+
+/* Once the image is there, drop the canvas fill: on a fractional pixel the
+   rounded clip anti-aliases it into a hairline under light images. Frames
+   with their own fill (tone, screens) still win on specificity. */
+.frame:has(img) {
+  background-color: transparent;
+}
+
+.frame img {
+  object-fit: cover;
+}
+
+.frame[data-tone="project"] {
+  background-color: var(--p-bg);
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: clamp(0.75rem, 1.6vw, 1.1rem);
+  /* A themed page has a dark canvas, so use its light text (--nav-fg) */
+  color: color-mix(in srgb, var(--nav-fg, rgb(20 20 18)) 60%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.placeholderFoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
+.caption {
+  max-width: 40rem;
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.columns {
+  display: grid;
+  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+}
+
+@media (min-width: 768px) {
+  .columns[data-count="2"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .columns[data-count="3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Mobile screens on a tinted canvas */
+.stage {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--p-bg);
+  color: var(--p-fg);
+}
+
+.stage .label {
+  color: color-mix(in srgb, var(--p-fg) 68%, var(--p-bg));
+}
+
+.screens {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1rem, 3vw, 3rem);
+  padding: clamp(2rem, 6vw, 5.5rem) clamp(1.25rem, 4vw, 4rem);
+}
+
+.screen {
+  flex: 0 1 clamp(9rem, 24vw, 17rem);
+  min-width: 0;
+}
+
+.screen .frame {
+  border-radius: clamp(14px, 1.8vw, 28px);
+  background-color: rgb(255 255 255 / 0.55);
+  box-shadow: 0 30px 60px -40px rgb(20 20 18 / 0.35);
+}
+
+/* Three phones: the middle one sits a little higher */
+.screens[data-count="3"] > .screen:nth-child(2) {
+  margin-top: -2.5%;
+}
+
+.screens[data-count="3"] > .screen:not(:nth-child(2)) {
+  margin-top: 5%;
+}
+
+.sequence {
+  justify-content: space-between;
+}
+
+.sequence .screen {
+  flex-basis: 22%;
+}
+
+/* Sequence with arrows: a fixed gap the arrow can centre in */
+.arrowed {
+  --seq-gap: clamp(2.5rem, 7vw, 6.5rem);
+  justify-content: center;
+  gap: var(--seq-gap);
+}
+
+.arrowed .screen {
+  flex: 0 1 clamp(9rem, 22vw, 17rem);
+}
+
+/* A connected journey reads level, so the arrows line up */
+.arrowed[data-count] > .screen:nth-child(n) {
+  margin-top: 0;
+}
+
+.shot {
+  position: relative;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--seq-gap) / 2);
+  width: min(2.5rem, calc(var(--seq-gap) - 1rem));
+  transform: translate(-50%, -50%);
+}
+
+.step {
+  margin-top: 1rem;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.step .label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Phones: scroll sideways instead of shrinking */
+@media (max-width: 767px) {
+  .screens {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-inline: 1.25rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    overscroll-behavior-x: contain;
+  }
+
+  .screen,
+  .sequence .screen {
+    flex: 0 0 62%;
+    scroll-snap-align: start;
+  }
+
+  .screens[data-count] > .screen:nth-child(n) {
+    margin-top: 0;
+  }
+}
+
+.scrollHint {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .scrollHint {
+    display: block;
+    margin-top: 0.75rem;
+  }
+}
+
+.badge {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+/* ------------------------------------------------------- Item grids */
+
+.items {
+  display: grid;
+  gap: 2.25rem 1.75rem;
+  margin-top: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+@media (min-width: 640px) {
+  .items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .items[data-columns="3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.item {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.itemNumber {
+  color: var(--p-accent);
+}
+
+.itemTitle {
+  margin-top: 0.75rem;
+  font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+}
+
+.itemText {
+  max-width: 34ch;
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* -------------------------------------------------------- Decisions */
+
+.decision {
+  padding-top: clamp(4rem, 8vw, 7rem);
+}
+
+.decisionHead {
+  row-gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.decisionNumber {
+  margin-top: 0.5rem;
+  color: var(--p-accent);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+}
+
+.decisionTitle {
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+/* e.g. "Designed · not yet released" under the number */
+.decisionStatus {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.decisionContext {
+  max-width: 46rem;
+  margin-top: 1.75rem;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.decisionContext > .label {
+  margin-bottom: 0.6rem;
+}
+
+.principles .itemText {
+  max-width: 48ch;
+}
+
+.principleWhy {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+}
+
+.principleWhy > .label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.principleQuote {
+  margin-top: 0.9rem;
+  color: var(--p-accent);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.reasons {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .reasons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+.reasons dd {
+  margin-top: 0.6rem;
+  color: var(--ink-soft);
+  font-size: 16.5px;
+  line-height: 1.55;
+}
+
+/* The decision itself carries the weight */
+.reasons > div:nth-child(2) dd {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.result {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  max-width: 40rem;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* Before → after model, e.g. five roles into three */
+.shift {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.75rem clamp(0.75rem, 4vw, 4rem);
+  align-items: center;
+  padding: clamp(1.5rem, 6vw, 5rem) clamp(1rem, 6vw, 6rem);
+  border-radius: var(--radius);
+  background-color: var(--p-bg);
+}
+
+.shiftHead {
+  margin-bottom: 0.5rem;
+}
+
+.shiftCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shiftItem {
+  padding: clamp(0.6rem, 1.2vw, 0.9rem) clamp(0.75rem, 1.5vw, 1.15rem);
+  border-radius: 10px;
+  background-color: rgb(255 255 255 / 0.6);
+  font-size: clamp(0.875rem, 1.35vw, 1.125rem);
+  line-height: 1.25;
+}
+
+.shiftCell[data-merged] {
+  padding: 0.5rem;
+  border: 1px dashed rgb(20 20 18 / 0.3);
+  border-radius: 14px;
+}
+
+.shiftCell[data-merged] .shiftItem {
+  background-color: transparent;
+  color: var(--ink-soft);
+}
+
+.shiftItem[data-new] {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.shiftArrow {
+  color: rgb(20 20 18 / 0.45);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  text-align: center;
+}
+
+.shiftItem[data-removed] {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+/* Inside the before → after panel everything takes the project's own colours
+   (--p-fg on --p-bg), so the diagram reads on light and dark project panels
+   alike. The chips above keep the page colours for diagrams on the page. */
+.shift {
+  color: var(--p-fg);
+}
+
+.shift .shiftHead {
+  color: color-mix(in srgb, var(--p-fg) 72%, transparent);
+}
+
+.shift .shiftItem {
+  border: 1px solid color-mix(in srgb, var(--p-fg) 22%, transparent);
+  background-color: color-mix(in srgb, var(--p-fg) 10%, transparent);
+  color: var(--p-fg);
+}
+
+.shift .shiftCell[data-merged] {
+  border-color: color-mix(in srgb, var(--p-fg) 45%, transparent);
+}
+
+.shift .shiftCell[data-merged] .shiftItem {
+  border-color: transparent;
+  background-color: transparent;
+  color: color-mix(in srgb, var(--p-fg) 82%, transparent);
+}
+
+.shift .shiftItem[data-new] {
+  border-color: var(--p-fg);
+  background-color: var(--p-fg);
+  color: var(--p-bg);
+  font-weight: 600;
+}
+
+.shift .shiftArrow {
+  color: color-mix(in srgb, var(--p-fg) 65%, transparent);
+}
+
+.shift .shiftItem[data-removed] {
+  color: color-mix(in srgb, var(--p-fg) 55%, transparent);
+}
+
+/* Ecosystem diagram: two providers feeding the platform, the consumer below.
+   Uses the shift chips and arrows above. */
+.ecosystem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.75rem clamp(0.5rem, 2.5vw, 1.75rem);
+  align-items: center;
+  text-align: center;
+}
+
+.ecosystemDown {
+  grid-column: 3;
+}
+
+.ecosystemBelow {
+  grid-column: 3;
+}
+
+/* ------------------------------------------------------- Experience */
+
+.chapter {
+  padding-top: clamp(4rem, 8vw, 7rem);
+}
+
+.chapterGoal {
+  max-width: 26ch;
+  font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.chapterHead {
+  row-gap: 1.1rem;
+}
+
+@media (min-width: 1024px) {
+  .chapterHead > .label {
+    padding-top: 0.6rem;
+  }
+}
+
+.annotations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .annotations {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  }
+}
+
+.annotations li {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.annotations .label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--p-accent);
+}
+
+/* Text beside the visual; the text stays in view while the visual scrolls */
+.split {
+  row-gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .splitText {
+    position: sticky;
+    top: 6rem;
+    grid-column: 1 / span 4;
+    align-self: start;
+  }
+
+  .splitText .annotations {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .splitMedia {
+    grid-column: 5 / -1;
+  }
+
+  .splitMedia .figure {
+    margin-top: 0;
+  }
+}
+
+/* Outcome: the closing statement */
+.closing {
+  max-width: 38rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+  line-height: 1.38;
+  letter-spacing: -0.02em;
+}
+
+/* ------------------------------------------------ Solution chapters */
+
+/* Problem / My solution, side by side from tablet up */
+.brief {
+  display: grid;
+  gap: 1.75rem 2rem;
+}
+
+@media (min-width: 768px) {
+  .brief:not([data-stacked]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.brief dd {
+  margin-top: 0.6rem;
+  color: var(--ink-soft);
+  font-size: 16.5px;
+  line-height: 1.58;
+}
+
+/* The solution carries the weight */
+.brief > div:nth-child(2) dd {
+  color: var(--foreground);
+}
+
+.briefWhy {
+  max-width: 40rem;
+  margin-top: 1.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--p-accent);
+  font-size: 16.5px;
+  line-height: 1.55;
+}
+
+.screenCaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* Numbered notes on what a screen improves */
+.notes {
+  display: grid;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .notes[data-wide] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+}
+
+.notes li {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+.noteNumber {
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.9;
+}
+
+.proposedTag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px dashed currentColor;
+  border-radius: 999px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  vertical-align: 0.15em;
+}
+
+.chapterLegend {
+  margin-top: 2.5rem;
+}
+
+.proposedLegend {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.proposedLegend .proposedTag {
+  margin: 0 0.6rem 0 0;
+}
+
+/* feature: two supporting screens, the second set lower */
+.supporting {
+  row-gap: clamp(3rem, 6vw, 4rem);
+  margin-top: clamp(4rem, 8vw, 6.5rem);
+}
+
+@media (min-width: 1024px) {
+  .supportItem {
+    grid-column: 1 / span 6;
+  }
+
+  .supportItem[data-offset] {
+    grid-column: 7 / span 6;
+    margin-top: clamp(5rem, 9vw, 8rem);
+  }
+}
+
+/* A line of principles, editorial rather than chips */
+.principleLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0;
+  margin-top: 1rem;
+  font-size: clamp(1.35rem, 2.3vw, 2rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+}
+
+.principleLine li:not(:last-child)::after {
+  content: "/";
+  margin-inline: 0.55em;
+  color: var(--p-accent);
+  font-weight: 400;
+}
+
+/* pair: a larger lead screen and a smaller side screen set lower */
+.pair {
+  row-gap: 2.5rem;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+@media (min-width: 1024px) {
+  .pairLead {
+    grid-column: 1 / span 7;
+  }
+
+  .pairSide {
+    grid-column: 8 / span 5;
+    margin-top: clamp(6rem, 12vw, 11rem);
+  }
+}
+
+/* split: stacked screens beside the sticky text */
+.splitStack {
+  display: grid;
+  gap: clamp(3rem, 6vw, 4.5rem);
+}
+
+.inset {
+  width: min(100%, 34rem);
+  margin-left: auto;
+}
+
+/* -------------------------------------------------- Visual language */
+
+.principle {
+  margin-top: 0.75rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  gap: 2rem 1.25rem;
+}
+
+/* The edge keeps a swatch visible when it matches the page background */
+.swatchColor {
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgb(20 20 18 / 0.12);
+}
+
+.swatchColor[data-empty] {
+  border: 1px dashed rgb(20 20 18 / 0.25);
+  box-shadow: none;
+}
+
+.swatchMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.swatchName {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+}
+
+/* The design-file variable a colour comes from */
+.swatchToken {
+  margin-top: 0.3rem;
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+}
+
+.specs {
+  border-top: 1px solid var(--line);
+}
+
+.spec {
+  display: grid;
+  gap: 0.4rem 2rem;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .spec {
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+}
+
+.specValue {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.specWhy {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 15.5px;
+  line-height: 1.55;
+}
+
+/* ---------------------------------------------------- Design system */
+
+.platforms {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.platforms li {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.chips li {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+/* --------------------------------------------------------- Outcomes */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 2.5rem 2rem;
+}
+
+.metricValue {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.metricLabel {
+  max-width: 22ch;
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.checklist {
+  border-top: 1px solid var(--line);
+}
+
+.checklist li {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.check {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--p-accent);
+  translate: 0 0.15em;
+}
+
+.list {
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.list li {
+  display: flex;
+  gap: 1rem;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* ------------------------------------------------------ Next project */
+
+/* One viewport: content centred, nothing spilling past the fold */
+.next {
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin-top: var(--space);
+  padding-block: clamp(4rem, 8vw, 6rem);
+  background: var(--n-gradient, none), var(--n-bg);
+  color: var(--n-fg);
+}
+
+.next > .container {
+  width: 100%;
+}
+
+.next .label {
+  color: inherit;
+  opacity: 0.7;
+}
+
+.nextLink {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3rem);
+}
+
+.nextMeta {
+  margin-top: 0.4rem;
+}
+
+.nextTitle {
+  margin-top: clamp(1.25rem, 3vw, 2rem);
+  font-size: clamp(3rem, 11vw, 6.5rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+}
+
+.nextSummary {
+  max-width: 34ch;
+  margin-top: 1.25rem;
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.nextCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* Below desktop the visual stays short enough to keep the block on screen */
+.nextVisual .frame {
+  aspect-ratio: 16 / 10 !important;
+  max-height: 42svh;
+  margin-inline: auto;
+  background-color: color-mix(in srgb, var(--n-fg) 8%, var(--n-bg));
+}
+
+@media (min-width: 1024px) {
+  .nextLink {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+
+  .nextTitle {
+    font-size: clamp(3.5rem, 6.4vw, 7rem);
+  }
+
+  .nextVisual .frame {
+    max-height: 72svh;
+  }
+}
+
+.nextVisual .placeholder {
+  color: color-mix(in srgb, var(--n-fg) 60%, transparent);
+}
+
+.nextVisual img {
+  transition: scale 1.2s var(--ease);
+}
+
+.nextCta span {
+  transition: translate 0.5s var(--ease);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .nextLink:hover .nextVisual img {
+    scale: 1.03;
+  }
+
+  .nextLink:hover .nextCta span {
+    translate: 4px 0;
+  }
+}
+
+.next :focus-visible {
+  outline-color: currentColor;
+}
+
+
+/* ------------------------------------------------- Section navigation */
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 40;
+    display: block;
+    border-bottom: 1px solid var(--line);
+    background-color: var(--nav-bg, rgb(241 238 232 / 0.92));
+    backdrop-filter: blur(10px);
+    translate: 0 -100%;
+    visibility: hidden;
+    transition:
+      translate 0.5s var(--ease),
+      visibility 0s linear 0.5s;
+  }
+
+  .nav[data-visible] {
+    translate: 0 0;
+    visibility: visible;
+    transition:
+      translate 0.5s var(--ease),
+      visibility 0s;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .nav,
+  .nav[data-visible] {
+    transition: none;
+  }
+}
+
+.navInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 3.25rem;
+  padding-inline: var(--gutter);
+}
+
+.navProject {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  white-space: nowrap;
+}
+
+.navProject,
+.navProject a {
+  color: var(--nav-muted, var(--muted));
+  transition: color 0.3s ease;
+}
+
+.navProject a:hover,
+.navTitle {
+  color: var(--nav-fg, var(--foreground));
+}
+
+.navList {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--nav-muted, var(--muted));
+  transition: color 0.3s ease;
+}
+
+.navLink::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.navLink:hover,
+.navLink[aria-current] {
+  color: var(--nav-fg, var(--foreground));
+}
+
+.navLink[aria-current]::before {
+  opacity: 1;
+}
+
+.navProgress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--nav-fg, var(--foreground));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+/* --------------------------------------------------------- In progress */
+
+.pending {
+  max-width: 40rem;
+}
+
+/* ------------------------------------------------------------ Intro */
+
+/* Hidden until the intro starts, so the first paint never shows content
+   about to move. Reduced motion skips this; a fallback reveals it anyway. */
+@media (prefers-reduced-motion: no-preference) {
+  .article [data-intro] {
+    visibility: hidden;
+    animation: introFallback 0s 2.5s forwards;
+  }
+}
+
+@keyframes introFallback {
+  to {
+    visibility: visible;
+  }
+}

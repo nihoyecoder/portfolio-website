@@ -1,0 +1,308 @@
+/*
+  Journey has two layouts.
+
+  Below 1024px — one column: intro, timeline (line on the left), workflow.
+  The panel uses display: contents so its two parts can sit either side of
+  the timeline.
+
+  1024px and up — cards | rail | sticky panel. The panel is native
+  position: sticky, so it releases on its own when the row (the card list)
+  ends. JourneyMotion only measures spacing (--lead / --tail) and writes one
+  number per card:
+    --e      0…1, emphasis (1 = the card on the focus line)
+    --ahead  0…1, how far an upcoming card still is from the focus line
+*/
+
+.root {
+  --gutter: 1.25rem;
+  --sticky-top: clamp(4.5rem, 13svh, 8rem);
+  --surface: #fbfaf8;
+  --dot-idle: color-mix(in srgb, var(--accent) 35%, var(--background));
+  --rail-color: color-mix(in srgb, var(--accent) 45%, var(--background));
+
+  /* Above Selected Work (z-index 2) and opaque: it slides over Work's stage */
+  position: relative;
+  z-index: 3;
+  padding-block: 6rem 7rem;
+  background-color: var(--background);
+}
+
+@media (min-width: 768px) {
+  .root {
+    --gutter: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .root {
+    --gutter: 2.5rem;
+  }
+}
+
+.container {
+  padding-inline: var(--gutter);
+  transform-origin: 50% 0%;
+}
+
+/* ------------------------------------------------------- Stacked layout */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.panel {
+  display: contents;
+}
+
+.intro {
+  order: 1;
+}
+
+.timeline {
+  order: 2;
+}
+
+.workflow {
+  order: 3;
+}
+
+.rail {
+  display: none;
+}
+
+.list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-left: 2.25rem;
+}
+
+/* Line for the stacked layout */
+.list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 9px;
+  width: 2px;
+  background-color: var(--rail-color);
+  mask-image: linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
+}
+
+.item {
+  --e: 1;
+  --ahead: 0;
+  position: relative;
+}
+
+.card {
+  border-radius: 12px;
+  padding: 1.25rem;
+  background-color: var(--surface);
+  box-shadow:
+    0 0 0 1px rgb(20 20 18 / 0.05),
+    0 10px 28px -18px rgb(20 20 18 / 0.25);
+}
+
+.period {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.3rem 0.65rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Dot: grey idle disc with an ink fill whose strength follows --e */
+.dot {
+  position: absolute;
+  top: 2.05rem;
+  left: -26px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--dot-idle);
+  box-shadow: 0 0 0 3px var(--background);
+  translate: -50% -50%;
+}
+
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--accent);
+  opacity: var(--e);
+}
+
+.root[data-mode] .dot {
+  scale: calc(0.5 + 0.5 * var(--e));
+  box-shadow:
+    0 0 0 calc(2px + 2px * var(--e)) var(--background),
+    0 4px 12px rgb(20 20 18 / calc(0.16 * var(--e)));
+}
+
+/* Workflow tools */
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.tool {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 12px;
+  background-color: var(--surface);
+  box-shadow:
+    0 0 0 1px rgb(20 20 18 / 0.05),
+    0 5px 12px -4px rgb(20 20 18 / 0.14);
+}
+
+.tool[data-placeholder] {
+  padding-inline: 0.9rem;
+}
+
+.tip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  z-index: 1;
+  border-radius: 6px;
+  padding: 0.3rem 0.55rem;
+  background-color: var(--foreground);
+  color: var(--background);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  translate: -50% 4px;
+  pointer-events: none;
+  transition:
+    opacity 0.3s cubic-bezier(0.2, 0, 0.3, 1),
+    translate 0.3s cubic-bezier(0.2, 0, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .tool:hover .tip {
+    opacity: 1;
+    translate: -50% 0;
+  }
+}
+
+/* "Design ——→ Code" caption under the tools */
+.flowLine {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.45;
+}
+
+.flowLine::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  translate: 0 -50%;
+  rotate: 45deg;
+}
+
+/* -------------------------------------------------------- Split layout */
+
+@media (min-width: 1024px) {
+  .root {
+    --rail: clamp(3.5rem, 5vw, 5rem);
+    padding-block: 8rem 9rem;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--rail) minmax(0, 1fr);
+    align-items: start;
+    gap: 0;
+  }
+
+  .panel {
+    position: sticky;
+    top: var(--sticky-top);
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    grid-row: 1;
+    grid-column: 3;
+    padding-left: clamp(1.5rem, 3.5vw, 4rem);
+  }
+
+  .timeline {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .rail {
+    position: relative;
+    display: block;
+    grid-row: 1;
+    grid-column: 2;
+    align-self: stretch;
+  }
+
+  .rail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background-color: var(--rail-color);
+    translate: -50% 0;
+    mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .list {
+    gap: 2.5rem;
+    padding: var(--lead, 1rem) 0 var(--tail, 1rem);
+  }
+
+  .list::before {
+    display: none;
+  }
+
+  .card {
+    max-width: 36rem;
+    margin-left: auto;
+    padding: 1.5rem;
+  }
+
+  .dot {
+    top: 50%;
+    right: calc(var(--rail) / -2);
+    left: auto;
+    translate: 50% -50%;
+  }
+
+  /* Emphasis: only the card on the focus line is at full strength; upcoming
+     cards also lean back slightly, a quiet echo of the reference's flip-in. */
+  .root[data-mode="active"] .card {
+    opacity: calc(0.3 + 0.7 * var(--e));
+    transform: perspective(1200px) rotateX(calc(var(--ahead) * -9deg))
+      scale(calc(0.985 + 0.015 * var(--e)));
+    transform-origin: 50% 100%;
+    will-change: transform, opacity;
+  }
+}
