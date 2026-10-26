@@ -1,6 +1,7 @@
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import HashAlign from "@/components/layout/HashAlign";
+import Preloader from "@/components/layout/Preloader";
 import Contact from "@/components/sections/Contact/Contact";
 import Hero from "@/components/sections/Hero/Hero";
 import Journey from "@/components/sections/Journey/Journey";
@@ -23,6 +24,8 @@ export default function HomePage() {
   return (
     <>
       <style>{`:root{--background:${PALETTE.background};--foreground:${PALETTE.text};--muted:color-mix(in srgb,${PALETTE.text} 72%,${PALETTE.background});--accent:${PALETTE.accent}}`}</style>
+      {/* First, so it paints over everything and sets up before the hero. */}
+      <Preloader />
       <Header intro />
       <main>
         <Hero />

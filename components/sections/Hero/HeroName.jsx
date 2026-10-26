@@ -31,6 +31,7 @@ export default function HeroName({ name }) {
         <span
           key={word}
           aria-hidden="true"
+          data-hero-word
           // lg: the first word's band carries on under the portrait.
           className={`${BAND} ${w === words.length - 1 ? "lg:hidden" : "lg:w-[42cqw]"}`}
         >
@@ -53,6 +54,7 @@ export function HeroNameTail({ name }) {
   return (
     <span
       aria-hidden="true"
+      data-hero-word
       className={`-mx-[0.03em] hidden overflow-hidden whitespace-nowrap px-[0.03em] pt-[0.06em] pb-[0.02em] text-right font-semibold leading-[0.8] tracking-[-0.055em] text-accent lg:-ml-[3cqw] lg:block lg:text-[11.8cqw] ${HOVER_BAND}`}
     >
       {[...word].map((char, i) => (

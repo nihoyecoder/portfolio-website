@@ -50,7 +50,11 @@ export default function HeroMotion({ children, ...props }) {
         // EditablePortrait waits for this flag/event before the portrait
         // becomes editable.
         root.removeAttribute("data-intro-done");
+        // While the preloader (components/layout/Preloader) is up, the intro
+        // holds its start state until the preloader hands over.
+        const waiting = document.documentElement.hasAttribute("data-preloading");
         const tl = gsap.timeline({
+          paused: waiting,
           defaults: { ease: ease.out },
           onComplete: () => {
             introDone = true;
@@ -96,7 +100,18 @@ export default function HeroMotion({ children, ...props }) {
         gsap.set(root, { visibility: "visible" });
         document.querySelector("[data-site-header]")?.removeAttribute("data-intro");
 
-        return () => root.removeAttribute("data-intro-done");
+        // The handover, with a fallback in case it never comes.
+        const start = () => {
+          fallback?.kill();
+          tl.play();
+        };
+        const fallback = waiting ? gsap.delayedCall(8, start) : null;
+        if (waiting) window.addEventListener("preloader:reveal", start, { once: true });
+
+        return () => {
+          window.removeEventListener("preloader:reveal", start);
+          root.removeAttribute("data-intro-done");
+        };
       });
 
       mm.add(media.pointer, () => {
