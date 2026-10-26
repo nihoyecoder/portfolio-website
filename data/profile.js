@@ -10,13 +10,9 @@ const [current] = experience;
 
 export const profile = {
   role: "Product Designer",
-  // Supports the role; set small under it in the hero, never competing.
-  descriptor: ["0→1 Products", "AI-Assisted Design", "Product Systems"],
   statement:
     "I design 0→1 digital products, using AI to navigate complexity, explore better directions and make informed product decisions.",
   current: { title: current.role, company: current.company },
-  // Product areas across the case studies (short: one line in the hero).
-  domains: ["Healthcare", "AI analytics", "Automation", "EV mobility", "Dental"],
 };
 
 // "Manoj Rawat — Product Designer" and its one-line summary: page titles,

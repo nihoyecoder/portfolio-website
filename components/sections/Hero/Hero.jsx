@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { Fragment } from "react";
 import { HeaderSpace } from "@/components/layout/Header";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 import LocalTime from "@/components/ui/LocalTime";
@@ -17,17 +16,6 @@ const PORTRAIT_SRC = "/images/about/manoj-hero.webp";
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
 
 // Wraps text in a clipping mask so the timeline can raise it into view.
-// "a · b · c" that wraps only between items, never inside one, and keeps
-// each dot at the end of its line.
-function DotList({ items }) {
-  return items.map((item, i) => (
-    <Fragment key={item}>
-      {i > 0 && " · "}
-      <span className="whitespace-nowrap">{item}</span>
-    </Fragment>
-  ));
-}
-
 function MaskLine({ children, className = "" }) {
   return (
     // Padding (cancelled by the margin) gives descenders like g and y room
@@ -84,17 +72,9 @@ export default function Hero() {
                 image (27px clears the caption: mt-3 + one 15px line). */}
             <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[27px]">
               <HeroNameTail name={site.name} />
-              {/* One role; the descriptor supports it without competing. */}
-              <div className="lg:mt-4 lg:pl-[3cqw]">
-                <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
-                  <MaskLine>{profile.role}</MaskLine>
-                </p>
-                <p className={`mt-2.5 ${meta}`}>
-                  <MaskLine>
-                    <DotList items={profile.descriptor} />
-                  </MaskLine>
-                </p>
-              </div>
+              <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em] lg:mt-4 lg:pl-[3cqw]">
+                <MaskLine>{profile.role}</MaskLine>
+              </p>
             </div>
 
             {/* Portrait — on desktop the tool strings hang behind it. */}
@@ -118,16 +98,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue left, product areas centred on the page. */}
-      <div className="mt-6 grid grid-cols-1 items-end gap-x-8 gap-y-6 md:mt-0 lg:-mt-16 md:grid-cols-[1fr_minmax(0,30rem)_1fr] lg:grid-cols-[1fr_minmax(0,38rem)_1fr]">
-        <div data-anim="scroll" aria-hidden="true" className={`hidden flex-col items-center gap-3 md:flex ${meta}`}>
+      {/* Scroll cue (tablet and up), centred in the left half. */}
+      <div className="hidden grid-cols-2 items-end gap-x-8 md:grid lg:-mt-16">
+        <div data-anim="scroll" aria-hidden="true" className={`flex flex-col items-center gap-3 ${meta}`}>
           <span>Scroll</span>
           <span className={styles.scrollLine} />
         </div>
-
-        <p data-anim="scroll" className={`text-center ${meta}`}>
-          <span className="opacity-70">Designing across</span> <DotList items={profile.domains} />
-        </p>
       </div>
     </HeroMotion>
   );
