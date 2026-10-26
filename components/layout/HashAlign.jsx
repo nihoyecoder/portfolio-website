@@ -5,7 +5,7 @@ import { ScrollTrigger } from "@/lib/gsap";
 
 const INPUT = ["wheel", "touchstart", "keydown", "pointerdown"];
 
-// Home page. Work, Journey and Process size themselves with JavaScript after
+// Home page. Work and Journey size themselves with JavaScript after
 // the browser has already jumped to a #section in the URL, so that jump can
 // land in the wrong place. Once ScrollTrigger has measured everything, line
 // the target up again — unless the visitor has started scrolling.

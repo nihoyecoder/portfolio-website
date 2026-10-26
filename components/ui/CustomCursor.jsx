@@ -8,6 +8,9 @@ import styles from "./CustomCursor.module.css";
 const INTERACTIVE = 'a[href], button, [role="button"], select, summary, [data-cursor="interactive"], [data-cursor="hover"]';
 // Over text entry only the I-beam shows; the dot fades out so it can't hide the caret.
 const NATIVE = 'input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, [contenteditable="true"], iframe, dialog[open]';
+// Over reading text (outside links) the dot fades out so it never covers words.
+const TEXT = "p, h1, h2, h3, h4, h5, h6, li, dt, dd, blockquote, figcaption, label, td, th, pre, code";
+const IDLE_MS = 1500; // the dot fades out when the pointer rests this long
 
 const RING = 68; // px, the expanded size the element is drawn at
 const DOT = 20; // px, the default solid dot
@@ -20,7 +23,9 @@ const TINT = "rgba(196, 84, 106, 0.14)";
 const ENABLED = "(hover: hover) and (pointer: fine) and (min-width: 1024px)";
 
 // A small rose dot that trails the system pointer (which stays visible on top)
-// and grows into a thin translucent ring over anything clickable. Visual only:
+// and grows into a thin translucent ring over anything clickable. It never
+// sits on reading text: it fades out over text, while scrolling (until the
+// pointer moves again) and when the pointer rests. Visual only:
 // it never takes pointer events, focus or React state, and only exists for a
 // fine pointer on a desktop-width screen. Mark elements with data-cursor="hover" | "default" | "drag"; a
 // future data-cursor-label="View" is copied to the cursor but not shown yet.
@@ -58,6 +63,10 @@ export default function CustomCursor() {
       let seen = false; // no dot until the pointer has moved
       let inside = true;
       let native = false;
+      let text = false; // over reading text
+      let idle = false; // the pointer hasn't moved for IDLE_MS
+      let scrolling = false; // the page scrolled since the last move
+      let idleTimer = 0;
 
       const setState = (next) => {
         if (next === state) return;
@@ -65,22 +74,22 @@ export default function CustomCursor() {
         gsap.to(dot, { ...STATES[next], duration: change, ease: "power3.out", overwrite: "auto" });
       };
 
-      const visible = () => seen && inside && !native;
+      const visible = () => seen && inside && !native && !text && !idle && !scrolling;
       const show = () =>
         gsap.to(cursor, { autoAlpha: visible() ? 1 : 0, duration: reduce ? 0 : 0.2, overwrite: "auto" });
 
       // Which state the element under the pointer asks for.
       const resolve = (el) => {
-        if (!(el instanceof Element)) return { native: false, mode: "default", hit: null };
-        if (el.closest(NATIVE)) return { native: true, mode: "default", hit: null };
+        if (!(el instanceof Element)) return { native: false, text: false, mode: "default", hit: null };
+        if (el.closest(NATIVE)) return { native: true, text: false, mode: "default", hit: null };
         const marked = el.closest("[data-cursor]");
         const hit = el.closest(INTERACTIVE);
         // The nearest explicit marker wins over a broader interactive parent.
         if (marked && (!hit || hit.contains(marked))) {
           const mode = marked.dataset.cursor;
-          if (mode === "default" || mode === "drag") return { native: false, mode, hit: null };
+          if (mode === "default" || mode === "drag") return { native: false, text: false, mode, hit: null };
         }
-        return { native: false, mode: hit ? "hover" : "default", hit };
+        return { native: false, text: !hit && Boolean(el.closest(TEXT)), mode: hit ? "hover" : "default", hit };
       };
 
       const onOver = (event) => {
@@ -89,8 +98,9 @@ export default function CustomCursor() {
         target = next.hit;
         // Kept on the cursor for a future label (data-cursor-label="View"); not shown yet.
         cursor.dataset.label = target?.dataset.cursorLabel ?? "";
-        if (next.native !== native) {
+        if (next.native !== native || next.text !== text) {
           native = next.native;
+          text = next.text;
           show();
         }
         // The portrait editor marks a grabbable anchor via <html> cursor.
@@ -105,9 +115,20 @@ export default function CustomCursor() {
         if (event.pointerType !== "mouse") return;
         let { clientX: x, clientY: y } = event;
 
+        const wasHidden = !seen || idle || scrolling;
         if (!seen) {
           seen = true;
           gsap.set(cursor, { x, y });
+        }
+        // Moving brings it back; resting fades it out again.
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          idle = true;
+          show();
+        }, IDLE_MS);
+        if (wasHidden) {
+          idle = false;
+          scrolling = false;
           show();
         }
 
@@ -134,6 +155,14 @@ export default function CustomCursor() {
       };
       const onUp = () => gsap.to(cursor, { scale: 1, duration: reduce ? 0 : 0.3, ease: "power3.out", overwrite: "auto" });
 
+      // Scrolling without moving the mouse would leave the dot sitting on
+      // whatever scrolls under it, so it fades until the next move.
+      const onScroll = () => {
+        if (scrolling || !seen) return;
+        scrolling = true;
+        show();
+      };
+
       const onLeave = () => {
         inside = false;
         show();
@@ -151,11 +180,13 @@ export default function CustomCursor() {
         [html, "mouseleave", onLeave],
         [html, "mouseenter", onEnter],
         [window, "blur", onLeave],
+        [window, "scroll", onScroll],
       ];
       listeners.forEach(([el, type, fn]) => el.addEventListener(type, fn, { passive: true }));
 
       return () => {
         listeners.forEach(([el, type, fn]) => el.removeEventListener(type, fn));
+        clearTimeout(idleTimer);
         delete cursor.dataset.label;
       };
     });

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { coverExit, gsap, media, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 // The focus line — where a card becomes the active one — as a fraction of
 // the viewport height, measured from the top.
@@ -25,9 +25,35 @@ export default function JourneyMotion({ children, ...props }) {
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
 
+      // Cover into Contact: once Journey's bottom meets the viewport's, it
+      // holds still while Contact (above it, opaque) scrolls up over it, 1:1
+      // with the scroll — like the hero under Selected Work. pinSpacing: false
+      // adds no spacer, so the page length and Contact's position don't change.
+      // Native scroll, so the hold stays for reduced motion; the fall below
+      // is motion only.
+      let onCover = null;
+      const cover = ScrollTrigger.create({
+        trigger: root,
+        start: "bottom bottom",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => onCover?.(self.progress),
+        onRefresh: (self) => onCover?.(self.progress, true),
+      });
+
+      // Over the same range Journey's content sinks, tips back and fades.
+      mm.add(media.motion, () => {
+        onCover = coverExit(root, [...root.children]);
+        onCover(cover.progress);
+        return () => {
+          onCover = null;
+        };
+      });
+
       const [list] = q("[data-journey-list]");
       const items = q("[data-journey-item]");
-      const [workflow] = q("[data-journey-workflow]");
       const count = items.length;
 
       const resetItems = () => {
@@ -58,12 +84,11 @@ export default function JourneyMotion({ children, ...props }) {
         };
       });
 
-      // ---- Split layout: active card, sticky choreography, workflow reveal ----
+      // ---- Split layout: active card and sticky choreography ----
       mm.add(DESKTOP, () => {
         root.dataset.mode = "active";
 
         const [panel] = q("[data-journey-panel]");
-        const [container] = q("[data-journey-container]");
 
         // Spacing that ties the sticky range to the timeline:
         //   lead — card 1 sits on the focus line the moment the panel sticks
@@ -81,25 +106,6 @@ export default function JourneyMotion({ children, ...props }) {
         fit();
         ScrollTrigger.addEventListener("refreshInit", fit);
 
-        // Workflow block: revealed as the last card arrives, driven by the same
-        // focus index as the cards so it scrubs and reverses with them.
-        const reveal = gsap
-          .timeline({ paused: true })
-          .fromTo(workflow, { y: 35 }, { y: 0, duration: 1, ease: "power2.out" }, 0)
-          .fromTo(
-            q("[data-journey-workflow-heading]"),
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" },
-            0,
-          )
-          .fromTo(
-            q("[data-journey-tool]"),
-            { opacity: 0, y: 18 },
-            { opacity: 1, y: 0, duration: 0.4, ease: "power3.out", stagger: 0.07 },
-            0.18,
-          )
-          .fromTo(q("[data-journey-flow]"), { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.7);
-
         trackFocus({
           list,
           items,
@@ -110,33 +116,17 @@ export default function JourneyMotion({ children, ...props }) {
               items[i].style.setProperty("--e", Math.max(0, 1 - Math.abs(d)).toFixed(3));
               items[i].style.setProperty("--ahead", gsap.utils.clamp(0, 1, d).toFixed(3));
             }
-            const progress = gsap.utils.clamp(0, 1, (at - (count - 1.8)) / 0.8);
-            reveal.progress(progress);
-            workflow.style.pointerEvents = progress > 0.6 ? "" : "none";
           },
         });
 
-        // Entry: the content settles into place as the section rises in.
-        gsap.fromTo(
-          container,
-          { opacity: 0, y: -60, scale: 0.92 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            ease: "none",
-            scrollTrigger: { trigger: root, start: "top bottom", end: "top 30%", scrub: 0.6 },
-          },
-        );
-
         revealIntro(q);
+        revealWorkflow(q);
 
         return () => {
           ScrollTrigger.removeEventListener("refreshInit", fit);
           delete root.dataset.mode;
           list.style.removeProperty("--lead");
           list.style.removeProperty("--tail");
-          workflow.style.removeProperty("pointer-events");
           resetItems();
         };
       });
@@ -158,14 +148,7 @@ export default function JourneyMotion({ children, ...props }) {
 
         revealIntro(q);
 
-        gsap
-          .timeline({
-            defaults: { ease: "power3.out" },
-            scrollTrigger: { trigger: workflow, start: "top 85%", once: true },
-          })
-          .from(q("[data-journey-workflow-heading]"), { opacity: 0, y: 20, duration: 0.6 })
-          .from(q("[data-journey-tool]"), { opacity: 0, y: 18, duration: 0.5, stagger: 0.06 }, 0.1)
-          .from(q("[data-journey-flow]"), { opacity: 0, duration: 0.4 }, 0.4);
+        revealWorkflow(q);
 
         return () => {
           delete root.dataset.mode;
@@ -231,14 +214,23 @@ function trackFocus({ list, items, focus, onChange }) {
   sync();
 }
 
-// Heading words rise out of their masks, then the intro and Resume link.
+// One-shot reveals, as the block's top passes 85% of the viewport: a short
+// fade and a small rise (no masks, so nothing is ever clipped).
+const REVEAL = { opacity: 0, y: 16, duration: 0.4, ease: "power3.out" };
+
+// The heading words, then the intro, ladder and Resume link.
 function revealIntro(q) {
   gsap
-    .timeline({ scrollTrigger: { trigger: q("[data-journey-intro]")[0], start: "top 80%", once: true } })
-    .from(q("[data-journey-word]"), { yPercent: 110, duration: 1, ease: "power4.out", stagger: 0.06 })
-    .from(
-      q("[data-journey-fade]"),
-      { opacity: 0, y: 16, duration: 0.8, ease: "power3.out", stagger: 0.08 },
-      0.3,
-    );
+    .timeline({ scrollTrigger: { trigger: q("[data-journey-intro]")[0], start: "top 85%", once: true } })
+    .from(q("[data-journey-word]"), { ...REVEAL, stagger: 0.03 })
+    .from(q("[data-journey-fade]"), { ...REVEAL, y: 12, stagger: 0.04 }, 0.1);
+}
+
+// The workflow heading, tools and design → code line.
+function revealWorkflow(q) {
+  gsap
+    .timeline({ scrollTrigger: { trigger: q("[data-journey-workflow]")[0], start: "top 85%", once: true } })
+    .from(q("[data-journey-workflow-heading]"), REVEAL)
+    .from(q("[data-journey-tool]"), { ...REVEAL, y: 12, stagger: 0.04 }, 0.05)
+    .from(q("[data-journey-flow]"), { opacity: 0, duration: 0.3 }, 0.2);
 }

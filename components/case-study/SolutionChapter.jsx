@@ -1,10 +1,11 @@
+import { FULL_SIZES } from "@/lib/case-study";
 import CaseImage from "./CaseImage";
 import { Row } from "./CaseSection";
 import { copy, Lines, pad } from "./CaseText";
 import styles from "./CaseStudy.module.css";
 
 const SIZES = {
-  full: "(min-width: 1440px) 1360px, 94vw",
+  full: FULL_SIZES,
   half: "(min-width: 1024px) 46vw, 94vw",
   pairLead: "(min-width: 1024px) 54vw, 94vw",
   pairSide: "(min-width: 1024px) 38vw, 94vw",

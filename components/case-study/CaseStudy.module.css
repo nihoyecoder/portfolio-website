@@ -10,7 +10,7 @@
 
 .article {
   --gutter: 1.25rem;
-  --space: clamp(5.5rem, 12vw, 10rem);
+  --space: clamp(4rem, 8vw, 6.5rem);
   --canvas: #e6e2d9;
   --ink-soft: #35332f;
   --radius: 18px;
@@ -131,7 +131,7 @@
 }
 
 .block {
-  margin-top: clamp(3rem, 6vw, 5rem);
+  margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
 }
 
 /* Live site link, right under the website visual */
@@ -194,11 +194,10 @@
 }
 
 /* Reveal mask with room for descenders */
+/* The title's wrapper. It used to clip a rising title; the intro is now a
+   fade with a small rise, so nothing is clipped. */
 .mask {
   display: block;
-  overflow: hidden;
-  margin-bottom: -0.12em;
-  padding-bottom: 0.12em;
 }
 
 .mask > span {
@@ -707,7 +706,7 @@
 
 /* One story: same rhythm everywhere */
 .story {
-  margin-top: clamp(5rem, 10vw, 8rem);
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
 }
 
 .storyNumber {
@@ -1003,7 +1002,6 @@
 /* "0→1 Product" under the category: outlined in the study's accent. */
 .zeroTag {
   display: inline-flex;
-  margin-top: 0.9rem;
   border: 1px solid color-mix(in srgb, var(--p-accent) 55%, transparent);
   border-radius: 999px;
   padding: 0.3rem 0.7rem;
@@ -1262,7 +1260,7 @@
 /* -------------------------------------------------------- Decisions */
 
 .decision {
-  padding-top: clamp(4rem, 8vw, 7rem);
+  padding-top: clamp(3rem, 6vw, 4.75rem);
 }
 
 .decisionHead {
@@ -2153,4 +2151,185 @@
   to {
     visibility: visible;
   }
+}
+
+/* ------------------------------------------------- Case study template */
+
+/* 0→1 tag and status badge, under the category */
+.heroTags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--foreground) 22%, transparent);
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  color: var(--foreground);
+}
+
+.statusDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--muted);
+}
+
+.statusBadge[data-tone="live"] .statusDot {
+  background-color: #2f8a57;
+}
+
+.statusBadge[data-tone="pilot"] .statusDot {
+  background-color: #c98a00;
+}
+
+/* TL;DR card under the hero */
+.tldrSection {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.tldr {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  background-color: color-mix(in srgb, var(--foreground) 3%, transparent);
+}
+
+.tldrTitle {
+  margin-bottom: 1.25rem;
+  color: var(--p-accent);
+}
+
+.tldrList {
+  display: grid;
+  gap: 1.25rem 2rem;
+}
+
+.tldrList dd {
+  margin-top: 0.35rem;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.tldrDecisions {
+  display: grid;
+  gap: 0.35rem;
+  padding-left: 1.25rem;
+  list-style: decimal;
+}
+
+.tldrDecisions li::marker {
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .tldrList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tldrWide {
+    grid-column: span 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tldrWide {
+    grid-column: span 2;
+  }
+
+  .tldrWide + .tldrWide {
+    grid-column: span 1;
+  }
+}
+
+.contribution {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.25rem;
+}
+
+.contributionText {
+  margin-top: 0.35rem;
+  max-width: 48rem;
+  color: var(--ink-soft);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Exploration under each design decision */
+.exploration {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(1.1rem, 2.5vw, 1.75rem);
+}
+
+.explorationSteps {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+  counter-reset: step;
+}
+
+.explorationSteps li {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+}
+
+.explorationText {
+  color: var(--ink-soft);
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+
+@media (min-width: 768px) {
+  .explorationSteps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* "→" between the steps */
+  .explorationSteps li + li {
+    position: relative;
+  }
+
+  .explorationSteps li + li::before {
+    content: "→";
+    position: absolute;
+    top: -0.1rem;
+    left: -1.15rem;
+    color: var(--muted);
+    font-size: 13px;
+  }
+}
+
+.explorationShots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+
+/* Validation, before the outcome */
+.validation {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 44rem;
+}
+
+.validation dd {
+  margin-top: 0.4rem;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.55;
 }

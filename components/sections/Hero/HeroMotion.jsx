@@ -105,7 +105,7 @@ export default function HeroMotion({ children, ...props }) {
           fallback?.kill();
           tl.play();
         };
-        const fallback = waiting ? gsap.delayedCall(8, start) : null;
+        const fallback = waiting ? gsap.delayedCall(4, start) : null;
         if (waiting) window.addEventListener("preloader:reveal", start, { once: true });
 
         return () => {

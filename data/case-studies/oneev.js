@@ -55,7 +55,7 @@ const oneEv = {
   // Professional context (components/case-study/CaseStudyMeta). Not marked
   // 0→1 and no launch status: neither is recorded for 1EV.
   context: {
-    company: "Meta For Data Technologies",
+    company: "MFD (Meta For Data Technologies)",
     role: "Product Designer · UX/UI Lead",
     team: "Care requirements by Komal Sankapal (Care MVP spec)",
     platforms: "Consumer mobile app",

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 import { publicFileExists } from "@/lib/assets";
 import ProjectVisual from "./ProjectVisual";
 import WorkMotion from "./WorkMotion";
@@ -96,20 +97,21 @@ function Project({ project, index }) {
 
         <h3
           id={`project-${project.id}`}
-          className={`${styles.title} mt-3 font-semibold leading-[0.86] tracking-[-0.055em] text-[16vw] md:mt-4 md:text-[min(9vw,15svh)]`}
+          style={project.titleScale ? { "--title-scale": project.titleScale } : undefined}
+          className={`${styles.title} mt-3 font-semibold leading-[0.86] tracking-[-0.055em] text-[calc(16vw*var(--title-scale,1))] md:mt-4 md:text-[calc(min(9vw,15svh)*var(--title-scale,1))]`}
         >
           <span className="sr-only">{project.title}</span>
-          {/* One masked line per word, so a two-word title stacks instead of
-              running into the visuals */}
-          {project.title.split(" ").map((word) => (
+          {/* One masked line per word (or per `titleLines` entry), so a long
+              title stacks instead of running into the visuals */}
+          {(project.titleLines ?? project.title.split(" ")).map((line) => (
             <span
-              key={word}
+              key={line}
               aria-hidden="true"
               className="-mx-[0.04em] -mb-[0.12em] block overflow-hidden whitespace-nowrap px-[0.04em] pt-[0.06em] pb-[0.16em]"
             >
-              {[...word].map((char, i) => (
+              {[...line].map((char, i) => (
                 <span key={i} data-work-char className="inline-block">
-                  {char}
+                  {char === " " ? " " : char}
                 </span>
               ))}
             </span>
@@ -117,27 +119,38 @@ function Project({ project, index }) {
         </h3>
 
         <div className="mt-4 overflow-hidden md:mt-6">
-          <p data-work-desc className="max-w-[34ch] text-[15px] leading-snug opacity-80 md:text-base">
-            {project.description}
-          </p>
+          <div data-work-desc>
+            <p className="max-w-[34ch] text-[15px] leading-snug opacity-80 md:text-base">{project.description}</p>
+            {/* Status (Live / Pilot / Concept) and one real outcome, once set. */}
+            {(project.status || project.outcome) && (
+              <p className={`mt-3 flex max-w-[44ch] flex-wrap items-center gap-x-3 gap-y-1.5 ${meta}`}>
+                {project.status && (
+                  <span className="rounded-[3px] border border-current/50 px-2.5 py-1 leading-none">
+                    {project.status}
+                  </span>
+                )}
+                {project.outcome && <span className="normal-case tracking-normal opacity-90">{project.outcome}</span>}
+              </p>
+            )}
+          </div>
         </div>
 
-        {/* Padding gives the focus ring room inside the clipping mask. Hidden
-            on desktop, where the lead visual is the link to the case study. */}
-        <div className="-m-1 mt-4 overflow-hidden p-1 md:mt-8 lg:hidden">
+        {/* Padding gives the focus ring room inside the clipping mask. The
+            lead visual is a link to the case study too. */}
+        <div className="-m-1.5 mt-5 overflow-hidden p-1.5 md:mt-7">
           <Link
             data-work-line="cta"
             href={project.href}
             prefetch={false}
-            className={`group inline-flex items-center gap-2 ${meta}`}
+            className={`group inline-flex items-center gap-2 rounded-[3px] border border-current/45 px-4 py-2.5 ${meta} transition-colors duration-300 hover:border-current hover:bg-current/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current`}
           >
             {project.cta}
             <span className="sr-only">: {project.title}</span>
             <span
               aria-hidden="true"
-              className="transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-x-1"
+              className="flex transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
             >
-              →
+              <ArrowIcon />
             </span>
           </Link>
         </div>

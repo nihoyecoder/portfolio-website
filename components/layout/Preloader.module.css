@@ -27,7 +27,7 @@
     display: block;
     /* Fallback: if the script never takes over (it sets data-run), the
        canvas clears itself. */
-    animation: preloader-fallback 0.4s ease 6s forwards;
+    animation: preloader-fallback 0.4s ease 3.5s forwards;
   }
 
   .root[data-run] {
@@ -276,7 +276,7 @@
   top: 0;
   left: 0;
   visibility: hidden;
-  background: var(--background);
+  background: var(--hero-gradient, var(--background));
   will-change: transform;
 }
 

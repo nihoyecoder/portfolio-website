@@ -10,22 +10,24 @@ import styles from "./Preloader.module.css";
 // and redlines), colours them in, then zooms the frame to fill the screen.
 // Every block is measured from the real hero, so it lands exactly on the real
 // element, and the hero's own intro (HeroMotion) takes over from there. The
-// zoom readout doubles as the progress: it waits for the fonts and the
-// portrait (capped), then hits 100% as the frame zooms to 100%.
+// zoom readout hits 100% as the frame zooms to 100%. All in about 1.2s.
 //
-// Full page loads of the home page only. Skipped for #anchor links,
-// back/forward visits, reduced motion and visitors without JavaScript.
+// The first full load of the home page per session only, and a click or any
+// key skips it. Never on /work/* (it lives on the home page). Skipped for
+// #anchor links, back/forward visits, reduced motion and no JavaScript.
 
 // Runs while the HTML is parsed, before the first paint, on full loads only
 // (on the client it's rendered as an inert text/plain block, so client-side
 // navigations never run it). Marks the load, skips the preloader where it
-// shouldn't play, and stops the browser restoring an old scroll position
+// shouldn't play (already seen this session, an #anchor, back/forward,
+// reduced motion), and stops the browser restoring an old scroll position
 // underneath it.
-const SCRIPT = `(function(){try{window.__preloader=1;var p=document.getElementById("preloader"),n=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0];if(location.hash||(n&&n.type==="back_forward")||matchMedia("(prefers-reduced-motion: reduce)").matches){p.setAttribute("data-skip","");return}if("scrollRestoration" in history)history.scrollRestoration="manual"}catch(e){}})()`;
+const SEEN = "preloader-seen"; // sessionStorage: it plays once per session
+const SCRIPT = `(function(){try{window.__preloader=1;var p=document.getElementById("preloader"),n=performance.getEntriesByType&&performance.getEntriesByType("navigation")[0],s;try{s=sessionStorage.getItem("${SEEN}")}catch(e){}if(s||location.hash||(n&&n.type==="back_forward")||matchMedia("(prefers-reduced-motion: reduce)").matches){p.setAttribute("data-skip","");return}if("scrollRestoration" in history)history.scrollRestoration="manual"}catch(e){}})()`;
 
 // By now (ms since the navigation) the CSS fallback in Preloader.module.css is
 // about to hide the overlay; hydrating any later skips the preloader.
-const LATE = 5000;
+const LATE = 3000;
 
 const STAGES = ["Wireframe", "Design", "Build"];
 
@@ -51,16 +53,16 @@ const HANDLES = [
 
 const SCROLL_KEYS = new Set([" ", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "Home", "End"]);
 
-// Timeline, in seconds from the cursor's first move.
+// Timeline, in seconds: the whole story plays in about 1.2s.
 const T = {
-  frame: 0.16, // the frame is dragged out
-  frameFor: 0.5,
-  blocks: 0.62, // small pieces pop in, top to bottom
-  blocksFor: 0.75,
-  majors: [0.8, 1.01, 1.22], // the name and the portrait are dragged out
-  majorFor: 0.19,
-  design: 1.48, // colour goes on
-  gate: 2.3, // waits here until the page is ready, then zooms in
+  frameFor: 0.22, // the frame is dragged out (from 0)
+  blocks: 0.2, // small pieces pop in, top to bottom
+  blocksFor: 0.2,
+  majors: [0.28, 0.36, 0.44], // the name and the portrait are dragged out
+  majorFor: 0.1,
+  design: 0.56, // colour goes on
+  build: 0.8, // the canvas clears and the frame zooms in
+  zoomFor: 0.26,
 };
 
 export default function Preloader() {
@@ -90,6 +92,9 @@ export default function Preloader() {
       // renders before the hero, so this runs before HeroMotion's setup.
       root.setAttribute("data-run", "");
       html.setAttribute("data-preloading", "");
+      try {
+        sessionStorage.setItem(SEEN, "1");
+      } catch {}
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
       window.scrollTo(0, 0);
 
@@ -119,10 +124,19 @@ export default function Preloader() {
       window.addEventListener("wheel", block, { passive: false });
       window.addEventListener("touchmove", block, { passive: false });
       window.addEventListener("keydown", blockKeys);
+      // A click, tap or any key skips straight to the page.
+      const skip = () => {
+        tl?.kill();
+        finish();
+      };
+      window.addEventListener("pointerdown", skip);
+      window.addEventListener("keydown", skip);
       const unlock = () => {
         window.removeEventListener("wheel", block);
         window.removeEventListener("touchmove", block);
         window.removeEventListener("keydown", blockKeys);
+        window.removeEventListener("pointerdown", skip);
+        window.removeEventListener("keydown", skip);
       };
 
       // Hand over to the hero: the overlay turns see-through (the frame has
@@ -209,7 +223,7 @@ export default function Preloader() {
         gsap.set(wire, { width: vw, height: vh, x: fx, y: fy, scale: s, transformOrigin: "0 0", autoAlpha: 1 });
         wire.style.clipPath = "inset(0% 100% 100% 0%)";
         gsap.set(outline, { x: fx, y: fy, width: 0, height: 0 });
-        gsap.set(cursor, { x: fx - 36, y: fy + 44 });
+        gsap.set(cursor, { x: fx, y: fy });
         gsap.set(handles, { scale: 0.4, autoAlpha: 0 });
         if (fills.length) gsap.set(fills, { scaleX: 0, transformOrigin: "0% 50%" });
 
@@ -229,12 +243,12 @@ export default function Preloader() {
         const zoom = { v: 0 };
         tl = gsap.timeline({ defaults: { ease: "power3.out" }, onComplete: finish });
 
-        // Progress: the readout climbs to 99% by the gate, 100% once ready.
+        // Progress: the readout reaches 100% as the frame zooms to 100%.
         tl.to(
           zoom,
           {
-            v: 99,
-            duration: T.gate,
+            v: 100,
+            duration: T.build + T.zoomFor,
             ease: "power1.inOut",
             onUpdate: () => (zoomText.textContent = `${Math.round(zoom.v)}%`),
           },
@@ -243,31 +257,30 @@ export default function Preloader() {
 
         // 1 · Wireframe. Draw the frame…
         tl.call(() => (stage("wireframe"), tool("frame")), null, 0)
-          .to(cursor, { autoAlpha: 1, duration: 0.15 }, 0)
-          .to(cursor, { x: fx, y: fy, duration: T.frame, ease: "power2.out" }, 0)
-          .set(outline, { autoAlpha: 1 }, T.frame)
-          .to(draw, { p: 1, duration: T.frameFor, ease: "power2.inOut", onUpdate: renderDraw }, T.frame)
-          .to(handles, { scale: 1, autoAlpha: 1, duration: 0.2, stagger: 0.012 }, T.frame + T.frameFor - 0.06)
-          .to(dims, { autoAlpha: 0, duration: 0.2 }, T.majors[0] + 0.1)
+          .to(cursor, { autoAlpha: 1, duration: 0.08 }, 0)
+          .set(outline, { autoAlpha: 1 }, 0)
+          .to(draw, { p: 1, duration: T.frameFor, ease: "power2.inOut", onUpdate: renderDraw }, 0)
+          .to(handles, { scale: 1, autoAlpha: 1, duration: 0.12, stagger: 0.006 }, T.frameFor - 0.04)
+          .to(dims, { autoAlpha: 0, duration: 0.1 }, T.majors[0])
           .call(() => tool("rect"), null, T.blocks);
 
         // …sketch the small pieces…
-        const step = Math.min(0.04, T.blocksFor / Math.max(1, minors.length));
+        const step = Math.min(0.012, T.blocksFor / Math.max(1, minors.length));
         minors.forEach((b, i) => {
           const text = b.kind === "text";
           tl.from(
             b.el,
-            { scaleX: 0, scaleY: text ? 1 : 0.4, transformOrigin: text ? "0% 50%" : "50% 50%", duration: 0.26 },
+            { scaleX: 0, scaleY: text ? 1 : 0.4, transformOrigin: text ? "0% 50%" : "50% 50%", duration: 0.14 },
             T.blocks + i * step,
           );
         });
 
         // …and drag out the big ones, snapping to guides as a designer would.
         majors.forEach((b, i) => {
-          const start = T.majors[Math.min(i, T.majors.length - 1)] + Math.max(0, i - 2) * 0.12;
+          const start = T.majors[Math.min(i, T.majors.length - 1)] + Math.max(0, i - 2) * 0.06;
           const from = toScreen(b.x, b.y);
           const to = toScreen(b.x + b.w, b.y + b.h);
-          tl.to(cursor, { x: from.x, y: from.y, duration: 0.12, ease: "power2.inOut" }, start - 0.12)
+          tl.to(cursor, { x: from.x, y: from.y, duration: 0.06, ease: "power2.inOut" }, start - 0.06)
             .from(b.el, { scaleX: 0, scaleY: 0, transformOrigin: "0 0", duration: T.majorFor, ease: "power2.inOut" }, start)
             .to(cursor, { x: to.x, y: to.y, duration: T.majorFor, ease: "power2.inOut" }, start);
           snap(tl, b, start, { vw, fy, fh, s, toScreen, guide, measure });
@@ -278,38 +291,29 @@ export default function Preloader() {
         tl.call(() => (stage("design"), tool("move")), null, T.design);
         if (target) {
           const point = toScreen(target.x + target.w * 0.22, target.y + target.h * 0.6);
-          tl.to(cursor, { x: point.x, y: point.y, duration: 0.2, ease: "power2.inOut" }, T.design);
+          tl.to(cursor, { x: point.x, y: point.y, duration: 0.1, ease: "power2.inOut" }, T.design);
         }
-        tl.to(swatch, { autoAlpha: 1, y: 0, duration: 0.2 }, T.design + 0.1)
-          .to(cursor, { scale: 0.86, duration: 0.07, ease: "power2.in" }, T.design + 0.24)
-          .to(cursor, { scale: 1, duration: 0.2 }, T.design + 0.31)
-          .call(() => wire.setAttribute("data-designed", ""), null, T.design + 0.28);
-        if (fills.length) tl.to(fills, { scaleX: 1, duration: 0.4, ease: "power3.inOut", stagger: 0.06 }, T.design + 0.28);
-
-        // Hold for the fonts and the portrait (capped), then build.
-        tl.addPause(T.gate, () => {
-          zoomText.textContent = "99%";
-          ready.then(() => {
-            if (cancelled) return;
-            zoomText.textContent = "100%";
-            tl.play();
-          });
-        });
+        tl.to(swatch, { autoAlpha: 1, y: 0, duration: 0.1 }, T.design + 0.04)
+          .to(cursor, { scale: 0.86, duration: 0.05, ease: "power2.in" }, T.design + 0.08)
+          .to(cursor, { scale: 1, duration: 0.1 }, T.design + 0.13)
+          .call(() => wire.setAttribute("data-designed", ""), null, T.design + 0.1);
+        if (fills.length) tl.to(fills, { scaleX: 1, duration: 0.18, ease: "power3.inOut", stagger: 0.03 }, T.design + 0.1);
 
         // 3 · Build. The canvas clears and the frame zooms to fill the
         // screen, landing every block on its real element; the hero takes over.
-        tl.call(() => stage("build"), null, T.gate)
-          .to([...chrome, outline, cursor], { autoAlpha: 0, duration: 0.24, ease: "power2.out" }, T.gate + 0.02)
-          .to(wire, { x: 0, y: 0, scale: 1, duration: 0.66, ease: "expo.inOut" }, T.gate + 0.06)
-          .call(reveal, null, T.gate + 0.72);
-        if (headerEls.length) tl.to(headerEls, { autoAlpha: 0, duration: 0.12, ease: "none" }, T.gate + 0.72);
-        if (bodyEls.length) tl.to(bodyEls, { autoAlpha: 0, duration: 0.42, ease: "power2.out", stagger: 0.005 }, T.gate + 0.74);
+        const landed = T.build + T.zoomFor;
+        tl.call(() => stage("build"), null, T.build)
+          .to([...chrome, outline, cursor], { autoAlpha: 0, duration: 0.12, ease: "power2.out" }, T.build)
+          .to(wire, { x: 0, y: 0, scale: 1, duration: T.zoomFor, ease: "expo.inOut" }, T.build)
+          .call(reveal, null, landed);
+        if (headerEls.length) tl.to(headerEls, { autoAlpha: 0, duration: 0.08, ease: "none" }, landed);
+        if (bodyEls.length) tl.to(bodyEls, { autoAlpha: 0, duration: 0.14, ease: "power2.out" }, landed);
       });
 
       const fonts = document.fonts?.ready ?? Promise.resolve();
-      const ready = Promise.race([Promise.all([fonts, portraitReady()]), wait(2600)]);
-      // Start once the fonts are in (so the measurements are final), or soon anyway.
-      Promise.race([fonts, wait(700)]).then(() => {
+      // Start once the fonts are in (so the measurements are final), or soon
+      // anyway; the hero's own intro shows the portrait arriving.
+      Promise.race([fonts, wait(300)]).then(() => {
         try {
           build();
         } catch (error) {
@@ -436,14 +440,6 @@ const CROSS =
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// The portrait is the hero's heaviest asset; wait for it to decode.
-function portraitReady() {
-  const href = document.querySelector('[data-hero] image[data-anim="portrait-img"]')?.getAttribute("href");
-  if (!href) return Promise.resolve();
-  const probe = new Image();
-  probe.src = href;
-  return probe.decode().catch(() => {});
-}
 
 // While a big block is dragged out: a smart guide through the edge it lines
 // up on (or its centre) and, against the page margin, a redline with the gap.
@@ -452,7 +448,7 @@ function snap(tl, b, start, { vw, fy, fh, s, toScreen, guide, measure }) {
   const right = !left && b.x + b.w > vw * 0.8;
   const edge = left ? b.x : right ? b.x + b.w : b.x + b.w / 2;
   const mid = toScreen(edge, b.y + b.h / 2);
-  const end = start + T.majorFor + 0.16;
+  const end = start + T.majorFor + 0.06;
 
   tl.set(guide, { x: mid.x, y: fy, height: fh, autoAlpha: 1 }, start).set(guide, { autoAlpha: 0 }, end);
   if (!left && !right) return;

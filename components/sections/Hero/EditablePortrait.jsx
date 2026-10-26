@@ -91,7 +91,7 @@ export default function EditablePortrait({ src, alt }) {
         <span
           ref={hint}
           aria-hidden="true"
-          className="invisible col-start-1 row-start-1 inline-flex items-center gap-2 text-accent opacity-0"
+          className="invisible col-start-1 row-start-1 inline-flex items-center gap-2 text-accent-strong opacity-0"
         >
           <span className="size-[7px] rounded-full border border-accent bg-background" />
           Drag to reshape
@@ -100,7 +100,7 @@ export default function EditablePortrait({ src, alt }) {
           ref={reset}
           type="button"
           aria-label="Reset portrait shape"
-          className="pointer-events-auto invisible col-start-1 row-start-1 -my-1 inline-flex items-center gap-1.5 px-2 py-1 uppercase text-muted opacity-0 transition-colors hover:text-accent focus-visible:text-accent"
+          className="pointer-events-auto invisible col-start-1 row-start-1 -my-1 inline-flex items-center gap-1.5 px-2 py-1 uppercase text-muted opacity-0 transition-colors hover:text-accent-strong focus-visible:text-accent"
         >
           <ResetIcon />
           Reset

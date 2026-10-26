@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { Fragment } from "react";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 import { contactIntro } from "@/data/contact";
+import { profileLinks } from "@/lib/config/contact";
 import { publicFileExists } from "@/lib/assets";
 import { site } from "@/lib/site";
 import styles from "./Contact.module.css";
@@ -24,8 +26,7 @@ export default function ContactIdentity() {
           {words.map((word, i) => (
             <Fragment key={i}>
               {i > 0 && " "}
-              {/* Mask with room for descenders */}
-              <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.14em] align-top">
+              <span className="inline-block align-top">
                 <span
                   data-contact-word
                   className={
@@ -43,6 +44,20 @@ export default function ContactIdentity() {
         <p data-contact-fade className={styles.lede}>
           {contactIntro.intro}
         </p>
+        {/* LinkedIn and the résumé, for anyone not ready to write yet. */}
+        {profileLinks.length > 0 && (
+          <ul data-contact-fade className={styles.profiles}>
+            {profileLinks.map((link) => (
+              <li key={link.label}>
+                <a href={link.href} target="_blank" rel="noopener noreferrer" className={styles.profileLink}>
+                  {link.label}
+                  <ArrowIcon />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className={styles.portrait}>

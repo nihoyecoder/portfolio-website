@@ -28,7 +28,7 @@
   --text-faint: rgb(241 238 232 / 0.55);
   --danger: #ff8f70;
 
-  /* Above Process (it slides over Process's held stage) and opaque */
+  /* Above the sections before it, and opaque */
   position: relative;
   z-index: 4;
   padding-block: var(--pad);
@@ -81,6 +81,30 @@
   color: var(--text-muted);
   font-size: 17px;
   line-height: 1.6;
+}
+
+/* LinkedIn / Resume under the intro. */
+.profiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.profileLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-block: 0.25rem;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: rgb(241 238 232 / 0.4);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.3s ease;
+}
+
+.profileLink:hover {
+  text-decoration-color: currentColor;
 }
 
 .portrait {

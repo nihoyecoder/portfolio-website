@@ -26,7 +26,6 @@ export const footerNav = [
       { label: "Work", href: "/#work" },
       // No About page yet; the journey section is the "about me".
       { label: "About", href: "/#journey" },
-      { label: "Process", href: "/#process" },
     ],
   },
   {

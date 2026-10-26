@@ -5,6 +5,7 @@
 */
 .root {
   z-index: 1;
+  background: var(--hero-gradient);
 }
 
 /*

@@ -1,12 +1,15 @@
 // Copy for the Journey section's sticky narrative and workflow block.
+import { profile } from "@/data/profile";
 import { contactDetails } from "@/lib/config/contact";
+
+const { company } = profile.current;
 
 export const journey = {
   heading: "My design journey so far.",
   // Set in the serif accent, like "shape" and "touch" in later sections.
   accentWord: "journey",
   intro: [
-    "I'm a Product Designer, currently leading UX/UI at Meta For Data Technologies. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.",
+    `I'm a Product Designer, currently leading UX/UI at ${company}. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.`,
     "My work sits close to product and engineering — turning early requirements and ambiguous problems into flows, systems, prototypes and production-ready interfaces.",
   ],
   // Accessible name of the one-line career progression (levels from

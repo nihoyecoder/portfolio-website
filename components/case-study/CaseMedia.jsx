@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { publicFileExists } from "@/lib/assets";
+import { FULL_SIZES } from "@/lib/case-study";
 import BeforeAfter from "./BeforeAfter";
 import CaseImage from "./CaseImage";
 import { copy, pad } from "./CaseText";
@@ -7,7 +8,7 @@ import Lightbox from "./Lightbox";
 import styles from "./CaseStudy.module.css";
 
 const SIZES = {
-  full: "(min-width: 1440px) 1360px, 94vw",
+  full: FULL_SIZES,
   wide: "(min-width: 1024px) 62vw, 94vw",
   2: "(min-width: 768px) 46vw, 94vw",
   3: "(min-width: 768px) 30vw, 94vw",

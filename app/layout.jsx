@@ -1,9 +1,13 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { seo } from "@/data/profile";
 import { fontVariables } from "@/lib/fonts";
 import CustomCursor from "@/components/ui/CustomCursor";
 import "./globals.css";
 
 export const metadata = {
+  // Absolute URLs for link-preview images (opengraph-image / twitter-image).
+  metadataBase: new URL(seo.url),
   title: {
     default: seo.title,
     template: "%s — Manoj Rawat",
@@ -16,7 +20,7 @@ export const metadata = {
     siteName: "Manoj Rawat",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: seo.title,
     description: seo.description,
   },
@@ -32,6 +36,9 @@ export default function RootLayout({ children }) {
       <body>
         {children}
         <CustomCursor />
+        {/* Vercel Web Analytics and Speed Insights (report on Vercel deploys only). */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

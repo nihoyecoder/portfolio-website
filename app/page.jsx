@@ -5,7 +5,6 @@ import Preloader from "@/components/layout/Preloader";
 import Contact from "@/components/sections/Contact/Contact";
 import Hero from "@/components/sections/Hero/Hero";
 import Journey from "@/components/sections/Journey/Journey";
-import Process from "@/components/sections/Process/Process";
 import Work from "@/components/sections/Work/Work";
 
 // Homepage palette (header, sections, footer). Selected Work keeps its own
@@ -31,7 +30,6 @@ export default function HomePage() {
         <Hero />
         <Work />
         <Journey />
-        <Process />
         <Contact />
       </main>
       <Footer />

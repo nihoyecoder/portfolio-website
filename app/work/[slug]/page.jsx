@@ -24,9 +24,10 @@ export async function generateMetadata({ params }) {
   return {
     title,
     description,
-    // Replaces the home page's link preview (it isn't merged).
+    // Replaces the home page's link preview (it isn't merged); the image
+    // comes from opengraph-image.jsx / twitter-image.jsx beside this page.
     openGraph: { title: `${title} — Manoj Rawat`, description, type: "article", siteName: "Manoj Rawat" },
-    twitter: { card: "summary", title: `${title} — Manoj Rawat`, description },
+    twitter: { card: "summary_large_image", title: `${title} — Manoj Rawat`, description },
   };
 }
 

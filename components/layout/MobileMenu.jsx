@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useId, useState } from "react";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
-export default function MobileMenu({ links, contact }) {
+export default function MobileMenu({ links, external = [], contact }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
@@ -57,6 +58,27 @@ export default function MobileMenu({ links, contact }) {
             );
           })}
         </ul>
+
+        {/* Résumé and LinkedIn, in a new tab. */}
+        {external.length > 0 && (
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-2xl font-medium tracking-[-0.03em]">
+            {external.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={close}
+                  className="inline-flex items-center gap-2 py-1"
+                >
+                  {link.label}
+                  <ArrowIcon className="text-[0.8em]" />
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );

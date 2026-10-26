@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import CaseMedia from "./CaseMedia";
+import Exploration from "./Exploration";
 import { Row } from "./CaseSection";
 import { copy, Lines, pad } from "./CaseText";
 import styles from "./CaseStudy.module.css";
@@ -13,7 +14,8 @@ const stepsOf = (items) =>
   items.reduce((text, item, i) => (i === 0 ? item : `${text}${/[?!.]$/.test(items[i - 1]) ? " Then" : ", then"} ${item}`), "");
 
 // The core of every case study: what was wrong, what I decided, why — then
-// the evidence (a before → after model and/or screens) and what it changed.
+// the evidence (a before → after model and/or screens), how it was explored
+// and what it changed.
 // `labels` ({ problem, decision, why, impact }) renames the column labels.
 export default function DesignDecision({ decision, number }) {
   const id = `decision-${number}`;
@@ -70,6 +72,9 @@ export default function DesignDecision({ decision, number }) {
       {[].concat(decision.media ?? []).map((media, i) => (
         <CaseMedia key={i} media={media} />
       ))}
+
+      {/* Options explored → what I chose → why, once `exploration` is written. */}
+      {decision.exploration && <Exploration decision={decision} />}
 
       {result && (
         <Row className={styles.block}>

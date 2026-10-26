@@ -12,11 +12,17 @@ export default function ExperienceCard({ item }) {
           <p className="max-w-[45%] pt-1 text-right text-sm leading-snug text-muted">{item.company}</p>
         </div>
         {item.promotedFrom && (
-          <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.08em] text-accent">
+          <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.08em] text-accent-strong">
             <span aria-hidden="true">↑</span> Promoted from {item.promotedFrom}
           </p>
         )}
         <p className="mt-3 max-w-[48ch] text-[15px] leading-relaxed text-muted">{item.description}</p>
+        {item.scope && (
+          <p className="mt-3 max-w-[48ch] text-[15px] leading-relaxed">
+            <span className="mr-2 font-mono text-[10.5px] uppercase tracking-[0.08em] text-muted">Scope</span>
+            {item.scope}
+          </p>
+        )}
         <p className={`${styles.period} mt-6`}>{item.period}</p>
       </article>
       <span aria-hidden="true" className={styles.dot} />

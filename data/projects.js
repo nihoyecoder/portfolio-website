@@ -6,7 +6,9 @@
 // same proportions is rendered instead — no code changes needed either way.
 //
 // `tag` is the Selected Work eyebrow: what kind of product, whether it was
-// 0→1 (built from scratch, not a redesign) and what Manoj did.
+// 0→1 (built from scratch, not a redesign) and what Manoj did. Optional:
+// `status` (Live / Pilot / Concept) and `outcome` (one real result) show
+// under the description and in the case study when set.
 //
 // Colours: `background` and `foreground` drive the Selected Work stage while
 // the project is in focus; `accent` colours its title and indicator.
@@ -119,7 +121,10 @@ export const projects = [
   {
     id: "other-works",
     number: "04",
-    title: "Other Works",
+    title: "ViewDent & Meta-flow.ai",
+    // Two lines on the Selected Work card, set smaller to fit the column.
+    titleLines: ["ViewDent &", "Meta-flow.ai"],
+    titleScale: 0.6,
     subtitle: "ViewDent · Meta-flow.ai",
     tag: "Dental & Enterprise Automation · Product UX",
     description:

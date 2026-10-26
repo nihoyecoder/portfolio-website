@@ -6,7 +6,17 @@
   --muted: #6d6a63;
   --line: #d9d4ca;
   --accent: #c4546a;
+  /* The accent darkened for WCAG AA: white text on it (5.5:1) and small
+     accent text on light backgrounds (4.7:1). */
+  --accent-strong: #b04459;
   --signal: #2f8a57;
+  /* The hero background: a soft rose glow top right (behind RAWAT) and a
+     faint warm one bottom left, over the page colour. The preloader's frame
+     uses it too, so the hand-over is seamless. */
+  --hero-gradient:
+    radial-gradient(70% 60% at 88% 18%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
+    radial-gradient(60% 55% at 6% 96%, color-mix(in srgb, #e8a77f 20%, transparent), transparent 70%),
+    var(--background);
 }
 
 @theme inline {
@@ -15,6 +25,7 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
   --color-signal: var(--signal);
 
   --font-sans: var(--font-primary), ui-sans-serif, system-ui, sans-serif;

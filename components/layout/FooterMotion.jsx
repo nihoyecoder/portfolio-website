@@ -3,8 +3,8 @@
 import { useRef } from "react";
 import { gsap, media, useGSAP } from "@/lib/gsap";
 
-// A calm entrance: content rises in with a small stagger, then the giant
-// name lifts into place. Nothing moves with reduced motion.
+// A calm, one-shot entrance (at 85%): content and then the giant name fade
+// up a little. Nothing moves with reduced motion.
 export default function FooterMotion({ children, ...props }) {
   const ref = useRef(null);
 
@@ -15,17 +15,17 @@ export default function FooterMotion({ children, ...props }) {
         const q = gsap.utils.selector(ref);
         gsap.from(q("[data-footer-rise]"), {
           opacity: 0,
-          y: 20,
-          duration: 0.9,
+          y: 16,
+          duration: 0.4,
           ease: "power3.out",
-          stagger: 0.06,
+          stagger: 0.04,
           clearProps: "opacity,transform",
-          scrollTrigger: { trigger: ref.current, start: "top 75%", once: true },
+          scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
         });
         gsap.from(q("[data-footer-name]"), {
           opacity: 0,
-          yPercent: 18,
-          duration: 1.4,
+          y: 24,
+          duration: 0.4,
           ease: "power3.out",
           clearProps: "opacity,transform",
           scrollTrigger: { trigger: q("[data-footer-name]")[0], start: "top bottom", once: true },

@@ -13,6 +13,8 @@ import NextProject from "./NextProject";
 import OutcomeBlock from "./OutcomeBlock";
 import ProjectShowcase from "./ProjectShowcase";
 import SolutionChapter from "./SolutionChapter";
+import TLDR from "./TLDR";
+import Validation from "./Validation";
 import VisualLanguage from "./VisualLanguage";
 import styles from "./CaseStudy.module.css";
 import ArrowIcon from "@/components/ui/ArrowIcon";
@@ -38,6 +40,7 @@ const SECTIONS = [
   { key: "showcase", id: "showcase", group: "showcase", label: "Final product", title: "The finished experience", Content: Showcase },
   { key: "website", id: "website", group: "website", label: "Website", title: "The website", Content: Website },
   { key: "tradeoffs", id: "tradeoffs", group: "outcome", label: "Trade-offs", title: (d) => d.title ?? "What made this hard", Content: Tradeoffs },
+  { key: "validation", id: "validation", group: "outcome", label: "Validation", title: (d) => d.title ?? "How it was validated", Content: Validation },
   { key: "outcomes", id: "outcomes", group: "outcome", label: "Outcomes", title: "Outcomes", Content: OutcomeBlock },
   { key: "reflection", id: "reflection", group: "outcome", label: "Reflection", title: "What I learned", Content: Reflection },
 ];
@@ -132,6 +135,9 @@ export default function CaseStudy({ project, study, next }) {
       {navItems.length > 1 && <CaseNav title={project.title} items={navItems} />}
 
       <CaseHero project={project} study={study} />
+
+      {/* The study in one card, for a quick read. */}
+      {!inProgress && study.context && <TLDR project={project} study={study} />}
 
       {sections.map(({ key, id, group, label, eyebrow, title, Content, chapter }, i) => {
         const data = chapter ?? study[key];

@@ -52,7 +52,7 @@ const datalyon = {
   // two designers together, so no individual ownership list is claimed.
   context: {
     zeroToOne: true,
-    company: "Meta For Data Technologies",
+    company: "MFD (Meta For Data Technologies)",
     role: "UX/UI Designer",
     team: "Two UX/UI designers, co-designing the full journey",
     status: "Designed · not yet validated with users",
@@ -342,14 +342,22 @@ const datalyon = {
     note: "The resulting design connects data preparation, visualization and AI-assisted exploration in one experience. Each stage is intended to reduce uncertainty while giving people the flexibility to investigate and act on their data.",
   },
 
+  // ------------------------------------------------------------ Validation
+  // Honest status: designed, not yet tested with users. The next step moved
+  // here from the reflection.
+  validation: {
+    status: "Not yet validated with users.",
+    body: "Datalyon was designed from scratch. The reasoning in this case study is design rationale — it hasn't yet been tested with users.",
+    nextLabel: "Next validation step",
+    next: "Evaluate whether first-time users can connect a dataset, understand its quality, generate a dashboard and confidently interpret an insight — without assistance.",
+  },
+
   // ------------------------------------------------------------ Reflection
   reflection: {
     body: [
       "Working collaboratively on Datalyon reinforced an important lesson: simplifying a complex product isn't about removing powerful capabilities, but about making them easier to discover, understand and use.",
       "We focused on progressive disclosure, meaningful feedback, and an experience where AI supports people without taking away their control.",
     ],
-    nextLabel: "Next validation step",
-    next: "Evaluate whether first-time users can connect a dataset, understand its quality, generate a dashboard and confidently interpret an insight — without assistance.",
   },
 };
 

@@ -7,6 +7,9 @@ import WorkflowTools from "./WorkflowTools";
 import styles from "./Journey.module.css";
 import ArrowIcon from "@/components/ui/ArrowIcon";
 
+// Roles oldest → current for the one-line ladder (training sits apart).
+const ladder = experience.filter((item) => !item.training).reverse();
+
 // Career timeline on the left, a sticky narrative on the right that ends in
 // the workflow tools. Layout lives in Journey.module.css; all motion lives in
 // JourneyMotion.
@@ -41,8 +44,7 @@ function JourneyIntro() {
         {words.map((word, i) => (
           <Fragment key={i}>
             {i > 0 && " "}
-            {/* Mask with room for descenders (j, y) */}
-            <span className="-mb-[0.14em] inline-block overflow-hidden pb-[0.14em] align-top">
+            <span className="inline-block align-top">
               <span
                 data-journey-word
                 className={
@@ -74,14 +76,14 @@ function JourneyIntro() {
         aria-label={journey.progressionLabel}
         className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.08em] text-muted"
       >
-        {[...experience].reverse().map((item, i) => (
+        {ladder.map((item, i) => (
           <li key={item.role} className="flex items-center gap-2">
             {i > 0 && (
               <span aria-hidden="true" className="text-accent">
                 →
               </span>
             )}
-            <span title={item.role} className={i === experience.length - 1 ? "text-foreground" : undefined}>
+            <span title={item.role} className={i === ladder.length - 1 ? "text-foreground" : undefined}>
               {item.level ?? item.role}
             </span>
           </li>
@@ -93,7 +95,7 @@ function JourneyIntro() {
           href={journey.resume.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-3 rounded-[3px] border border-accent bg-accent px-5 py-3.5 text-sm text-white transition-colors duration-500 hover:bg-transparent hover:text-accent"
+          className="group inline-flex items-center gap-3 rounded-[3px] border border-accent-strong bg-accent-strong px-5 py-3.5 text-sm text-white transition-colors duration-500 hover:bg-transparent hover:text-accent-strong"
         >
           {journey.resume.label}
           <span

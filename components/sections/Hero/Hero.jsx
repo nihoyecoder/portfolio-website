@@ -48,11 +48,6 @@ export default function Hero() {
       <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8">
         <div className={`mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 md:mb-5 ${meta}`}>
           <AvailabilityBadge data-anim="meta">{site.availability}</AvailabilityBadge>
-          {/* The current job, visible before any scrolling. */}
-          <p data-anim="meta">
-            <span className="opacity-70">Currently</span> {profile.current.title} at{" "}
-            <span className="whitespace-nowrap">{profile.current.company}</span>
-          </p>
           <p data-anim="meta">
             {site.location} <span aria-hidden="true">·</span>{" "}
             <LocalTime timeZone={site.timeZone} label={site.timeZoneLabel} />
@@ -68,13 +63,22 @@ export default function Hero() {
           <HeroName name={site.name} />
 
           <div className="mt-6 grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8 lg:mt-0 lg:grid-cols-[1fr_25cqw_1fr] lg:gap-x-0">
-            {/* Role — lg: RAWAT + role sit beside the portrait, ending flush with the
-                image (27px clears the caption: mt-3 + one 15px line). */}
+            {/* Role and current job — lg: RAWAT, the role and the job sit beside
+                the portrait, ending flush with the image (27px clears the
+                caption: mt-3 + one 15px line), so the job line lifts RAWAT. */}
             <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[27px]">
               <HeroNameTail name={site.name} />
-              <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em] lg:mt-4 lg:pl-[3cqw]">
-                <MaskLine>{profile.role}</MaskLine>
-              </p>
+              <div className="lg:mt-4 lg:pl-[3cqw]">
+                <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
+                  <MaskLine>{profile.role}</MaskLine>
+                </p>
+                <p className={`mt-2.5 ${meta}`}>
+                  <MaskLine>
+                    <span className="opacity-70">Currently</span> {profile.current.title} at{" "}
+                    <span className="whitespace-nowrap">{profile.current.company}</span>
+                  </MaskLine>
+                </p>
+              </div>
             </div>
 
             {/* Portrait — on desktop the tool strings hang behind it. */}

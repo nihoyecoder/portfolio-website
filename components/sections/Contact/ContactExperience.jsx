@@ -28,7 +28,8 @@ export default function ContactExperience({ identity, cal, email }) {
     requestAnimationFrame(() => document.getElementById(tabId("message"))?.focus());
   }, []);
 
-  // Entrance: heading words rise, portrait opens, switch and panel follow.
+  // Entrance (one-shot, at 85%): heading words, the intro, then the portrait,
+  // switch and panel — short fades and small rises, no masks.
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
@@ -37,21 +38,15 @@ export default function ContactExperience({ identity, cal, email }) {
         gsap
           .timeline({
             defaults: { ease: "power3.out" },
-            scrollTrigger: { trigger: rootRef.current, start: "top 78%", once: true },
+            scrollTrigger: { trigger: rootRef.current, start: "top 85%", once: true },
           })
-          .from(q("[data-contact-word]"), { yPercent: 110, duration: 1, ease: "power4.out", stagger: 0.06 })
-          .from(q("[data-contact-fade]"), { opacity: 0, y: 16, duration: 0.8 }, 0.3)
-          .fromTo(
-            q("[data-contact-clip]"),
-            { clipPath: "inset(12% 8% 12% 8% round 12px)" },
-            { clipPath: "inset(0% 0% 0% 0% round 12px)", duration: 1.3, ease: "power4.out", clearProps: "clipPath" },
-            0.15,
-          )
-          .from(q("[data-contact-clip] > *"), { scale: 1.1, duration: 1.6, clearProps: "transform" }, 0.15)
+          .from(q("[data-contact-word]"), { opacity: 0, y: 16, duration: 0.4, stagger: 0.03 })
+          .from(q("[data-contact-fade]"), { opacity: 0, y: 12, duration: 0.4, stagger: 0.04 }, 0.1)
+          .from(q("[data-contact-clip]"), { opacity: 0, y: 16, duration: 0.4, clearProps: "opacity,transform" }, 0.15)
           .from(
             q("[data-contact-rise]"),
-            { opacity: 0, y: 24, duration: 0.9, stagger: 0.1, clearProps: "opacity,transform" },
-            0.4,
+            { opacity: 0, y: 16, duration: 0.4, stagger: 0.05, clearProps: "opacity,transform" },
+            0.2,
           );
       });
       return () => mm.revert();

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { visualSize } from "@/data/projects";
+import { FULL_SIZES } from "@/lib/case-study";
 import ArrowIcon from "@/components/ui/ArrowIcon";
 import CaseImage from "./CaseImage";
 import CaseStudyMeta, { ZeroToOneTag } from "./CaseStudyMeta";
+import StatusBadge from "./StatusBadge";
 import { copy } from "./CaseText";
 import styles from "./CaseStudy.module.css";
 
@@ -41,7 +43,12 @@ export default function CaseHero({ project, study }) {
             <p data-intro className={`${styles.label} ${styles.heroCategory}`}>
               {study.category ?? project.subtitle}
             </p>
-            {study.context?.zeroToOne && <ZeroToOneTag />}
+            {study.context && (
+              <div className={styles.heroTags}>
+                {study.context.zeroToOne && <ZeroToOneTag />}
+                <StatusBadge status={project.status} />
+              </div>
+            )}
           </div>
 
           <div className={styles.main}>
@@ -81,7 +88,7 @@ export default function CaseHero({ project, study }) {
               </div>
             </div>
           ) : (
-            <CaseImage image={hero} tone="project" preload sizes="(min-width: 1440px) 1360px, 94vw" />
+            <CaseImage image={hero} tone="project" preload sizes={FULL_SIZES} />
           )}
         </div>
       </div>
