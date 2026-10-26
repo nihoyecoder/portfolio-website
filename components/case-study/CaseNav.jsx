@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 import styles from "./CaseStudy.module.css";
 
 const DESKTOP = "(min-width: 1024px)";
@@ -93,7 +94,7 @@ export default function CaseNav({ title, items }) {
       <div className={styles.navInner}>
         <p className={`${styles.label} ${styles.navProject}`}>
           <Link href="/#work">
-            <span aria-hidden="true">←</span> Work
+            <ArrowIcon direction="left" className="align-[-0.06em]" /> Work
           </Link>
           <span aria-hidden="true">/</span>
           <span className={styles.navTitle}>{title}</span>

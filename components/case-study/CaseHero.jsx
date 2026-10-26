@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { visualSize } from "@/data/projects";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 import CaseImage from "./CaseImage";
 import { copy } from "./CaseText";
 import styles from "./CaseStudy.module.css";
@@ -21,7 +22,10 @@ export default function CaseHero({ project, study }) {
 
       <div className={styles.container}>
         <Link href="/#work" data-intro className={`${styles.back} ${styles.label}`}>
-          <span aria-hidden="true">←</span> Back to work
+          <span aria-hidden="true" className="flex">
+            <ArrowIcon direction="left" />
+          </span>
+          Back to work
         </Link>
 
         <div data-case-hero-intro className={`${styles.grid} ${styles.heroGrid}`}>

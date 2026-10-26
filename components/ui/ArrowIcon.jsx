@@ -3,9 +3,11 @@
 // at text size, so they follow hover colours like a glyph would.
 //   up-right  links that take you elsewhere (other pages, new tabs)
 //   down      downloads
+//   left      back links (case studies → work)
 const PATHS = {
   "up-right": "M7 5H19V17M19 5 5 19",
   down: "M12 3V20M4 12l8 8 8-8",
+  left: "M21 12H4M12 4l-8 8 8 8",
 };
 
 export default function ArrowIcon({ direction = "up-right", className = "" }) {
