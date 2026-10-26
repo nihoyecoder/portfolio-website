@@ -37,6 +37,27 @@ export default function JourneyMotion({ children, ...props }) {
         }
       };
 
+      // ---- Split layout on short screens: keep the whole panel in view ----
+      // If the sticky panel is taller than the room below its usual offset,
+      // it sticks higher so its end (the workflow tools) stays on screen.
+      // Layout only, so it applies with reduced motion too; registered before
+      // the choreography so `fit` below reads the adjusted offset.
+      mm.add("(min-width: 1024px)", () => {
+        const [panel] = q("[data-journey-panel]");
+        const keepInView = () => {
+          panel.style.removeProperty("top");
+          const top = parseFloat(getComputedStyle(panel).top) || 0;
+          const room = window.innerHeight - panel.offsetHeight - 16;
+          if (room < top) panel.style.top = `${Math.max(0, room)}px`;
+        };
+        keepInView();
+        ScrollTrigger.addEventListener("refreshInit", keepInView);
+        return () => {
+          ScrollTrigger.removeEventListener("refreshInit", keepInView);
+          panel.style.removeProperty("top");
+        };
+      });
+
       // ---- Split layout: active card, sticky choreography, workflow reveal ----
       mm.add(DESKTOP, () => {
         root.dataset.mode = "active";

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { visualSize } from "@/data/projects";
 import ArrowIcon from "@/components/ui/ArrowIcon";
 import CaseImage from "./CaseImage";
+import CaseStudyMeta, { ZeroToOneTag } from "./CaseStudyMeta";
 import { copy } from "./CaseText";
 import styles from "./CaseStudy.module.css";
 
@@ -40,6 +41,7 @@ export default function CaseHero({ project, study }) {
             <p data-intro className={`${styles.label} ${styles.heroCategory}`}>
               {study.category ?? project.subtitle}
             </p>
+            {study.context?.zeroToOne && <ZeroToOneTag />}
           </div>
 
           <div className={styles.main}>
@@ -52,24 +54,7 @@ export default function CaseHero({ project, study }) {
               </p>
             )}
 
-            {study.meta?.length > 0 && (
-              <dl className={styles.meta}>
-                {study.meta.map(({ label, value }) => (
-                  <div key={label} data-intro>
-                    <dt className={styles.label}>{label}</dt>
-                    <dd className={styles.metaValue}>
-                      {Array.isArray(value)
-                        ? value.map((line) => (
-                            <span key={line} className="block">
-                              {copy(line)}
-                            </span>
-                          ))
-                        : copy(value)}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+            <CaseStudyMeta context={study.context} meta={study.meta} />
           </div>
         </div>
 

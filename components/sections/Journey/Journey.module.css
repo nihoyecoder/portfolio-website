@@ -243,7 +243,8 @@
     top: var(--sticky-top);
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    /* Tighter on short screens, so the whole panel stays in view. */
+    gap: clamp(2rem, 6svh, 4rem);
     grid-row: 1;
     grid-column: 3;
     padding-left: clamp(1.5rem, 3.5vw, 4rem);

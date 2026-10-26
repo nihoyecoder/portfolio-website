@@ -26,7 +26,7 @@ export const processSteps = [
     icon: "search",
     heading: "Understand the problem before solutions.",
     description:
-      "I begin by understanding users, business goals, existing patterns, constraints, and the context behind the problem before deciding what should be designed.",
+      "I start with the requirements, business goals, user problems, existing workflows and constraints. AI helps me synthesise information, explore competitors and sharpen my questions — it doesn't replace understanding real users.",
     image: "/images/process/research.webp",
   },
   {
@@ -37,7 +37,7 @@ export const processSteps = [
     icon: "pen",
     heading: "Turn complexity into clear experiences.",
     description:
-      "Insights become flows, information architecture, wireframes, interaction patterns, and polished interfaces designed around real product needs.",
+      "I structure flows, define interaction logic and compare alternatives until complex products feel simple to use. AI widens the exploration; the judgement, the trade-offs and the final design decisions stay mine.",
     image: "/images/process/design.webp",
   },
   {
@@ -46,9 +46,9 @@ export const processSteps = [
     title: "Build",
     chip: "Build",
     icon: "code",
-    heading: "Bring the experience into the product.",
+    heading: "Close the gap between design and code.",
     description:
-      "I translate design intent into responsive interfaces, working with components, React, Next.js and motion so the final experience behaves as carefully as it was designed.",
+      "I turn design intent into working prototypes and interfaces with React, Next.js and GSAP, using AI-assisted development — so I understand how products get built and can design for it.",
     image: "/images/process/build.webp",
   },
   {
@@ -59,7 +59,7 @@ export const processSteps = [
     icon: "handoff",
     heading: "Ship with clarity and consistency.",
     description:
-      "Design systems, specifications, states, assets and implementation details are organized so engineering can ship accurately and the product can continue to scale.",
+      "Components, states, edge cases, responsive behaviour and interaction intent are documented for engineering — then I stay close through design QA, so what ships matches what was designed.",
     image: "/images/process/handoff.webp",
   },
 ];

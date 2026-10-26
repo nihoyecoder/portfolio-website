@@ -1,0 +1,28 @@
+// Professional positioning: who Manoj is, in one place. The hero and the
+// page metadata read from here.
+//
+// The role is the positioning (Product Designer); the current title and
+// company come from the newest entry in data/experience.js, so the two
+// can't drift apart.
+import { experience } from "@/data/experience";
+
+const [current] = experience;
+
+export const profile = {
+  role: "Product Designer",
+  // Supports the role; set small under it in the hero, never competing.
+  descriptor: ["0→1 Products", "AI-Assisted Design", "Product Systems"],
+  statement:
+    "I design 0→1 digital products, using AI to navigate complexity, explore better directions and make informed product decisions.",
+  current: { title: current.role, company: current.company },
+  // Product areas across the case studies (short: one line in the hero).
+  domains: ["Healthcare", "AI analytics", "Automation", "EV mobility", "Dental"],
+};
+
+// "Manoj Rawat — Product Designer" and its one-line summary: page titles,
+// search previews and link cards.
+export const seo = {
+  title: "Manoj Rawat — Product Designer",
+  description:
+    "Manoj Rawat is a Product Designer focused on 0→1 digital products, complex UX systems and AI-assisted product design.",
+};

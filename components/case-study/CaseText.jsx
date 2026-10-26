@@ -45,14 +45,15 @@ export function Lines({ text }) {
 }
 
 // A short run of items shown inline ("a · b · c") but announced as a list.
-// Spans with list roles, so it can sit inside lists and paragraphs.
+// Spans with list roles, so it can sit inside lists and paragraphs. The dot
+// stays at the end of a line when it wraps.
 export function InlineList({ items, className = "" }) {
   return (
     <span role="list" className={className}>
       {items.map((item, i) => (
         <span key={item} role="listitem">
           {copy(item)}
-          {i < items.length - 1 && <span aria-hidden="true"> · </span>}
+          {i < items.length - 1 && <span aria-hidden="true">{" · "}</span>}
         </span>
       ))}
     </span>

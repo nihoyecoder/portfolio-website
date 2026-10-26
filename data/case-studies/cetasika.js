@@ -34,22 +34,23 @@ const cetasika = {
   summary:
     "Designing a connected healthcare and wellness experience across Consumer App, Provider CMS and Web — helping patients discover care while enabling doctors and wellness centres to manage the services behind it.",
 
-  meta: [
-    { label: "Year", value: "2025–2026" },
-    { label: "Role", value: "UI/UX Lead" },
-    { label: "Platforms", value: "Consumer App · CMS · Website" },
-    {
-      label: "My contribution",
-      value: [
-        "Product Strategy",
-        "UX Architecture",
-        "UX/UI Design",
-        "Design System",
-        "Prototyping",
-        "Frontend Collaboration",
-      ],
-    },
-  ],
+  // Professional context (components/case-study/CaseStudyMeta). Only facts
+  // from this file; the company isn't recorded here yet, so it's left out.
+  context: {
+    zeroToOne: true,
+    role: "Product Designer · UX/UI Lead",
+    team: "Worked with frontend engineering",
+    timeline: "2025–2026",
+    platforms: "Consumer App · Provider CMS · Website",
+    ownership: [
+      "Product Strategy",
+      "UX Architecture",
+      "UX/UI Design",
+      "Design System",
+      "Prototyping",
+      "Frontend Collaboration",
+    ],
+  },
 
   // IMAGE: one composition of the Consumer App, CMS and Website together.
   hero: image(`${dir}/hero/overview.webp`, {

@@ -52,21 +52,21 @@ const oneEv = {
   summary: "Making electric mobility simpler.",
   subheadline:
     "Designing intuitive charging, vehicle care and assistance experiences within one connected EV ecosystem.",
-  meta: [
-    { label: "Role", value: "Product Designer / UI/UX Lead" },
-    { label: "Company", value: "Meta For Data" },
-    { label: "Platform", value: "Consumer mobile app" },
-    {
-      label: "Responsibilities",
-      value: [
-        "UX strategy & user flows",
-        "Information architecture",
-        "Interaction & visual design",
-        "Design system & prototyping",
-        "Developer handoff",
-      ],
-    },
-  ],
+  // Professional context (components/case-study/CaseStudyMeta). Not marked
+  // 0→1 and no launch status: neither is recorded for 1EV.
+  context: {
+    company: "Meta For Data Technologies",
+    role: "Product Designer · UX/UI Lead",
+    team: "Care requirements by Komal Sankapal (Care MVP spec)",
+    platforms: "Consumer mobile app",
+    ownership: [
+      "UX strategy & user flows",
+      "Information architecture",
+      "Interaction & visual design",
+      "Design system & prototyping",
+      "Developer handoff",
+    ],
+  },
   // IMAGE: one composition of three phones (exported at 3840px for HD).
   hero: image(`${dir}/hero/charging-trio.webp`, {
     size: "wide",

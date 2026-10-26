@@ -1,8 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
+import { Fragment } from "react";
 import { HeaderSpace } from "@/components/layout/Header";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 import LocalTime from "@/components/ui/LocalTime";
+import { profile } from "@/data/profile";
 import { site } from "@/lib/site";
 import HeroMotion from "./HeroMotion";
 import HeroName, { HeroNameTail } from "./HeroName";
@@ -15,6 +17,17 @@ const PORTRAIT_SRC = "/images/about/manoj-hero.webp";
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
 
 // Wraps text in a clipping mask so the timeline can raise it into view.
+// "a · b · c" that wraps only between items, never inside one, and keeps
+// each dot at the end of its line.
+function DotList({ items }) {
+  return items.map((item, i) => (
+    <Fragment key={item}>
+      {i > 0 && " · "}
+      <span className="whitespace-nowrap">{item}</span>
+    </Fragment>
+  ));
+}
+
 function MaskLine({ children, className = "" }) {
   return (
     <span className="block overflow-hidden">
@@ -45,6 +58,11 @@ export default function Hero() {
       <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8">
         <div className={`mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 md:mb-5 ${meta}`}>
           <AvailabilityBadge data-anim="meta">{site.availability}</AvailabilityBadge>
+          {/* The current job, visible before any scrolling. */}
+          <p data-anim="meta">
+            <span className="opacity-70">Currently</span> {profile.current.title} at{" "}
+            <span className="whitespace-nowrap">{profile.current.company}</span>
+          </p>
           <p data-anim="meta">
             {site.location} <span aria-hidden="true">·</span>{" "}
             <LocalTime timeZone={site.timeZone} label={site.timeZoneLabel} />
@@ -64,13 +82,17 @@ export default function Hero() {
                 image (27px clears the caption: mt-3 + one 15px line). */}
             <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[27px]">
               <HeroNameTail name={site.name} />
-              <p className="text-[clamp(1.5rem,2.1vw,2rem)] leading-[1.05] tracking-[-0.035em] lg:mt-4 lg:pl-[3cqw]">
-                <MaskLine>{site.role.primary}</MaskLine>
-                <MaskLine>
-                  <span className="font-serif text-accent">&amp;</span>{" "}
-                  <span className="font-serif text-[1.08em] tracking-[-0.01em]">{site.role.secondary}</span>
-                </MaskLine>
-              </p>
+              {/* One role; the descriptor supports it without competing. */}
+              <div className="lg:mt-4 lg:pl-[3cqw]">
+                <p className="text-[clamp(1.5rem,2.1vw,2rem)] leading-[1.05] tracking-[-0.035em]">
+                  <MaskLine>{profile.role}</MaskLine>
+                </p>
+                <p className={`mt-2.5 ${meta}`}>
+                  <MaskLine>
+                    <DotList items={profile.descriptor} />
+                  </MaskLine>
+                </p>
+              </div>
             </div>
 
             {/* Portrait — on desktop the tool strings hang behind it. */}
@@ -88,7 +110,7 @@ export default function Hero() {
               data-anim="copy"
               className="max-w-[46ch] text-balance text-[clamp(1.125rem,1.5vw,1.375rem)] leading-snug text-muted lg:max-w-[min(46ch,calc(100%+20cqw-3rem))] md:col-start-1 md:row-start-3 md:self-end lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start lg:pt-6 lg:pr-[3cqw] lg:-mr-[20cqw] lg:relative lg:z-20"
             >
-              {site.statement}
+              {profile.statement}
             </p>
           </div>
         </div>
@@ -101,7 +123,7 @@ export default function Hero() {
         </div>
 
         <p data-anim="scroll" className={`md:text-right ${meta}`}>
-          Designed &amp; built with {site.stack}
+          <span className="opacity-70">Designing across</span> <DotList items={profile.domains} />
         </p>
       </div>
     </HeroMotion>

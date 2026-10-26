@@ -16,9 +16,17 @@ export async function generateMetadata({ params }) {
   const caseStudy = getCaseStudy(slug);
   if (!caseStudy) return {};
   const { project, study } = caseStudy;
+  const title = `${project.title} case study`;
+  // What kind of product and what Manoj did, then what it is.
+  const description = [project.tag, study.subheadline ?? study.summary ?? project.description]
+    .filter(Boolean)
+    .join(" — ");
   return {
-    title: `${project.title} case study`,
-    description: study.summary ?? project.description,
+    title,
+    description,
+    // Replaces the home page's link preview (it isn't merged).
+    openGraph: { title: `${title} — Manoj Rawat`, description, type: "article", siteName: "Manoj Rawat" },
+    twitter: { card: "summary", title: `${title} — Manoj Rawat`, description },
   };
 }
 

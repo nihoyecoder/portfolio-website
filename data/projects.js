@@ -5,6 +5,9 @@
 // two are supporting views. Until a file exists, a neutral placeholder of the
 // same proportions is rendered instead — no code changes needed either way.
 //
+// `tag` is the Selected Work eyebrow: what kind of product, whether it was
+// 0→1 (built from scratch, not a redesign) and what Manoj did.
+//
 // Colours: `background` and `foreground` drive the Selected Work stage while
 // the project is in focus; `accent` colours its title and indicator.
 
@@ -16,6 +19,7 @@ export const projects = [
     number: "01",
     title: "Cetasika",
     subtitle: "Healthcare & Wellness Ecosystem",
+    tag: "0→1 Healthcare Ecosystem · Product Design",
     description:
       "Designing a connected healthcare and wellness experience across consumer applications, CMS and web.",
     href: "/work/cetasika",
@@ -49,6 +53,7 @@ export const projects = [
     number: "02",
     title: "Datalyon",
     subtitle: "AI-Powered Data Analytics",
+    tag: "0→1 AI Analytics Product · Product Design",
     description:
       "Designing an AI-powered analytics experience that takes people from raw data to real insights.",
     href: "/work/datalyon",
@@ -82,6 +87,7 @@ export const projects = [
     number: "03",
     title: "1EV",
     subtitle: "EV Charging Platform",
+    tag: "EV Mobility Platform · End-to-End UX",
     description:
       "Designing an end-to-end EV charging experience covering discovery, booking, payments and live charging.",
     href: "/work/1ev",
@@ -115,6 +121,7 @@ export const projects = [
     number: "04",
     title: "Other Works",
     subtitle: "ViewDent · Meta-flow.ai",
+    tag: "Dental & Enterprise Automation · Product UX",
     description:
       "Two shorter showcases: guided AI smile visualization in dental care, and enterprise workflow automation.",
     href: "/work/other-works",

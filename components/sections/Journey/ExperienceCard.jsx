@@ -11,6 +11,11 @@ export default function ExperienceCard({ item }) {
           </h3>
           <p className="max-w-[45%] pt-1 text-right text-sm leading-snug text-muted">{item.company}</p>
         </div>
+        {item.promotedFrom && (
+          <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.08em] text-accent">
+            <span aria-hidden="true">↑</span> Promoted from {item.promotedFrom}
+          </p>
+        )}
         <p className="mt-3 max-w-[48ch] text-[15px] leading-relaxed text-muted">{item.description}</p>
         <p className={`${styles.period} mt-6`}>{item.period}</p>
       </article>

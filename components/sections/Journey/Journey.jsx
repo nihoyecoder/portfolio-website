@@ -58,11 +58,37 @@ function JourneyIntro() {
         ))}
       </h2>
 
-      <p data-journey-fade className="mt-6 max-w-[40ch] text-[17px] leading-relaxed text-muted">
-        {journey.intro}
-      </p>
+      {journey.intro.map((text, i) => (
+        <p
+          key={i}
+          data-journey-fade
+          className={`${i > 0 ? "mt-3" : "mt-6"} max-w-[54ch] text-base leading-relaxed text-muted`}
+        >
+          {text}
+        </p>
+      ))}
 
-      <div data-journey-fade className="mt-8">
+      {/* Career progression, oldest → current; the cards tell each step. */}
+      <ol
+        data-journey-fade
+        aria-label={journey.progressionLabel}
+        className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.08em] text-muted"
+      >
+        {[...experience].reverse().map((item, i) => (
+          <li key={item.role} className="flex items-center gap-2">
+            {i > 0 && (
+              <span aria-hidden="true" className="text-accent">
+                →
+              </span>
+            )}
+            <span title={item.role} className={i === experience.length - 1 ? "text-foreground" : undefined}>
+              {item.level ?? item.role}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      <div data-journey-fade className="mt-6">
         <a
           href={journey.resume.href}
           target="_blank"

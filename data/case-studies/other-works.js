@@ -4,7 +4,7 @@
 // through the real screens (see components/case-study/ProjectShowcase).
 //
 // Honesty: no research, metrics or launch claims. ViewDent was collaborative
-// work with a fellow UI/UX designer — keep that explicit. Meta-flow.ai copy
+// work with a fellow UX/UI designer — keep that explicit. Meta-flow.ai copy
 // follows the project's UX documentation and describes the designed screens.
 //
 // Images: the supplied mockups. ViewDent screens are 2400 × 1350 (16:9);
@@ -69,7 +69,7 @@ const otherWorks = {
       title: "Making dental experiences more intuitive.",
       category: "Dental healthcare · Mobile app · UX/UI design",
       role: "UX guidance, interaction design, design reviews & collaboration",
-      team: "With a fellow UI/UX designer",
+      team: "With a fellow UX/UI designer",
       contribution: ["UX guidance", "Interaction design", "Design reviews", "UI collaboration"],
       description: [
         "ViewDent is a digital dental healthcare ecosystem that simplifies dental services and patient experiences through management tools, education and AI-powered smile visualization.",
@@ -167,7 +167,7 @@ const otherWorks = {
       label: "Meta-flow.ai",
       title: "Making enterprise automation easier to start and track.",
       category: "Enterprise SaaS · Workflow automation · Web app",
-      role: "Product Designer / UI/UX Lead",
+      role: "Product Designer / UX/UI Lead",
       contribution: ["Requirements to UX", "Information architecture", "Interaction design", "UI design"],
       description:
         "Meta-flow.ai is a no-code / low-code platform for building, running and monitoring business automations. I translated technical requirements into interfaces that show people where to start, how to begin a workflow and what has run.",

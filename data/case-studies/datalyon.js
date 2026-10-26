@@ -1,7 +1,7 @@
 // Datalyon — from raw data to real insights.
 //
-// A 0-to-1 product (not a redesign) designed by a team of two UI/UX
-// designers at Meta For Data, so the copy says "we". Nothing here claims
+// A 0-to-1 product (not a redesign) designed by a team of two UX/UI
+// designers at Meta For Data Technologies, so the copy says "we". Nothing here claims
 // research, testing or metrics: the reasoning is design rationale, and the
 // reflection ends on what still needs validating.
 //
@@ -48,12 +48,15 @@ const datalyon = {
   summary: "From raw data to real insights.",
   subheadline:
     "Designing an AI-powered analytics experience that simplifies the journey from data connection to decision-making.",
-  meta: [
-    { label: "Company", value: "Meta For Data" },
-    { label: "Role", value: "UI/UX Designer" },
-    { label: "Team", value: "Team of 2 designers" },
-    { label: "Project", value: "0-to-1 product" },
-  ],
+  // Professional context (components/case-study/CaseStudyMeta). Designed by
+  // two designers together, so no individual ownership list is claimed.
+  context: {
+    zeroToOne: true,
+    company: "Meta For Data Technologies",
+    role: "UX/UI Designer",
+    team: "Two UX/UI designers, co-designing the full journey",
+    status: "Designed · not yet validated with users",
+  },
   heroStage: true,
   hero: shot(
     "hero/ai-assistant.webp",

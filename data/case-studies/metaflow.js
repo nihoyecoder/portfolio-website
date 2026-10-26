@@ -40,7 +40,7 @@ const metaflow = {
   subheadline:
     "Making complex workflow creation, integrations and automation management intuitive for everyone.",
   meta: [
-    { label: "Role", value: "Product Designer / UI/UX Lead" },
+    { label: "Role", value: "Product Designer / UX/UI Lead" },
     { label: "Industry", value: "Enterprise SaaS" },
     { label: "Focus", value: ["Workflow Automation", "UX/UI", "Product Design"] },
     { label: "Platform", value: "Web Application" },

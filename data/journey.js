@@ -3,10 +3,15 @@ import { contactDetails } from "@/lib/config/contact";
 
 export const journey = {
   heading: "My design journey so far.",
-  // Set in the serif accent, echoing "AI-Augmented Developer" in the hero.
+  // Set in the serif accent, like "shape" and "touch" in later sections.
   accentWord: "journey",
-  intro:
-    "I started in UX/UI and gradually moved deeper into product thinking, design systems and frontend development — designing complex digital products while increasingly building the experiences behind them.",
+  intro: [
+    "I'm a Product Designer, currently leading UX/UI at Meta For Data Technologies. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.",
+    "My work sits close to product and engineering — turning early requirements and ambiguous problems into flows, systems, prototypes and production-ready interfaces.",
+  ],
+  // Accessible name of the one-line career progression (levels from
+  // data/experience.js, oldest first).
+  progressionLabel: "Career progression",
   resume: {
     label: "Resume",
     href: contactDetails.resume,
@@ -17,7 +22,7 @@ export const journey = {
 // Add each tool's official SVG logo at `icon`; until the file exists the
 // tile shows the tool's name instead.
 export const workflow = {
-  heading: "What I use in my workflow",
+  heading: "Design in Figma. Think with AI. Prototype in React & Next.js.",
   from: "Design",
   to: "Code",
   tools: [

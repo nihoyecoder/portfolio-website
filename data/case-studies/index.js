@@ -7,7 +7,11 @@
 //   title, summary, category override the project's title / description / subtitle (this page only)
 //   subheadline              a line under the summary
 //   numbered: false          sections show their label without "01 —"
-//   meta                     [{ label, value }]  value may be a string or list
+//   context                  { zeroToOne?, company?, role?, team?, product?, status?, timeline?,
+//                              platforms?, ownership?: [] } — the professional context block
+//                            (CaseStudyMeta: fixed labels and order; leave out anything unknown,
+//                            never guess). zeroToOne only for products designed from scratch.
+//   meta                     [{ label, value }]  free-form alternative to `context`; value may be a string or list
 //   hero                     image()             defaults to the lead Selected Work visual
 //   headings                 { [sectionKey]: "…" } overrides a section's default heading
 //   labels                   { [sectionKey]: "…" } overrides a section's label ("01 — …")

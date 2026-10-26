@@ -90,7 +90,7 @@ function Project({ project, index }) {
       <div className={styles.text}>
         <span className="block overflow-hidden">
           <span data-work-line="meta" className={`block opacity-70 ${meta}`}>
-            {project.number} — {project.subtitle}
+            {project.number} — {project.tag ?? project.subtitle}
           </span>
         </span>
 
