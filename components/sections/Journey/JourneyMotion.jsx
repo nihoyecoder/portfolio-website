@@ -210,7 +210,7 @@ function trackFocus({ list, items, focus, onChange }) {
   sync();
 }
 
-// Heading words rise out of their masks, then the intro and résumé link.
+// Heading words rise out of their masks, then the intro and Resume link.
 function revealIntro(q) {
   gsap
     .timeline({ scrollTrigger: { trigger: q("[data-journey-intro]")[0], start: "top 80%", once: true } })

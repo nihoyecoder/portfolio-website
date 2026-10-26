@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CalendarIcon } from "./icons";
 import styles from "./Contact.module.css";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
 // Cal.com's dark theme mapped onto the Contact palette (Contact.module.css).
 // The scheduler runs in an iframe, so colours are passed as values: tints of
@@ -116,7 +117,7 @@ export default function BookingPanel({ cal, load, onRequestMessage }) {
           <div className={styles.bookingActions}>
             {cal.pageUrl && (
               <a href={cal.pageUrl} target="_blank" rel="noopener noreferrer" className={styles.secondary}>
-                Open booking page <span aria-hidden="true">↗</span>
+                Open booking page <ArrowIcon />
               </a>
             )}
             <button type="button" onClick={onRequestMessage} className={styles.secondary}>

@@ -6,6 +6,7 @@ import { contactDetails } from "@/lib/config/contact";
 import { site } from "@/lib/site";
 import FooterMotion from "./FooterMotion";
 import styles from "./Footer.module.css";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
 
@@ -120,7 +121,7 @@ function FooterLink({ label, href, external, download }) {
       <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
         <RollingText>{label}</RollingText>
         <span aria-hidden="true" className={styles.navArrow}>
-          ↗
+          <ArrowIcon />
         </span>
         <span className="sr-only"> (opens in a new tab)</span>
       </a>
@@ -132,6 +133,11 @@ function FooterLink({ label, href, external, download }) {
     return (
       <a href={href} download={download} className={className}>
         <RollingText>{label}</RollingText>
+        {download && (
+          <span aria-hidden="true" className={styles.navArrow}>
+            <ArrowIcon direction="down" />
+          </span>
+        )}
       </a>
     );
   }

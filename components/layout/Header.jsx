@@ -4,6 +4,7 @@ import { contactLink, navLinks, site } from "@/lib/site";
 import RollingText from "@/components/ui/RollingText";
 import HeaderShell from "./HeaderShell";
 import MobileMenu from "./MobileMenu";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
 // The nav row's height (logo, links, "Let's talk"); HeaderSpace reserves it.
 const ROW = "h-5 md:h-[42px]";
@@ -45,7 +46,7 @@ export default function Header({ intro = false }) {
 
         {/* Plain anchor: from other pages a full load lets the home page size
             its sections before the browser scrolls to #contact. */}
-        {/* A button in the same style as "Download résumé" */}
+        {/* A button in the same style as "Download Resume" */}
         <a
           href={contactLink.href}
           data-anim="nav"
@@ -56,7 +57,7 @@ export default function Header({ intro = false }) {
             aria-hidden="true"
             className="transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
           >
-            ↗
+            <ArrowIcon />
           </span>
         </a>
 

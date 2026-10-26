@@ -5,6 +5,7 @@ import JourneyMotion from "./JourneyMotion";
 import JourneyTimeline from "./JourneyTimeline";
 import WorkflowTools from "./WorkflowTools";
 import styles from "./Journey.module.css";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
 // Career timeline on the left, a sticky narrative on the right that ends in
 // the workflow tools. Layout lives in Journey.module.css; all motion lives in
@@ -72,7 +73,7 @@ function JourneyIntro() {
             aria-hidden="true"
             className="transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-y-0.5"
           >
-            ↓
+            <ArrowIcon direction="down" />
           </span>
         </a>
       </div>

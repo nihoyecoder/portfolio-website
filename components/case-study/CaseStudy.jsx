@@ -15,6 +15,7 @@ import ProjectShowcase from "./ProjectShowcase";
 import SolutionChapter from "./SolutionChapter";
 import VisualLanguage from "./VisualLanguage";
 import styles from "./CaseStudy.module.css";
+import ArrowIcon from "@/components/ui/ArrowIcon";
 
 // The story, in order. A section renders only when the project's data has
 // it, so every case study uses this one layout with its own content.
@@ -478,7 +479,7 @@ function Website({ data }) {
         <Row span="full" className={styles.siteLinkRow}>
           <a data-reveal href={data.link.href} target="_blank" rel="noopener noreferrer" className={styles.siteLink}>
             {data.link.label}
-            <span aria-hidden="true">↗</span>
+            <ArrowIcon />
             <span className="sr-only"> (opens in a new tab)</span>
           </a>
         </Row>
