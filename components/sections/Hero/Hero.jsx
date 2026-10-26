@@ -86,7 +86,7 @@ export default function Hero() {
               <HeroNameTail name={site.name} />
               {/* One role; the descriptor supports it without competing. */}
               <div className="lg:mt-4 lg:pl-[3cqw]">
-                <p className="text-[clamp(1.5rem,2.1vw,2rem)] leading-[1.05] tracking-[-0.035em]">
+                <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
                   <MaskLine>{profile.role}</MaskLine>
                 </p>
                 <p className={`mt-2.5 ${meta}`}>
@@ -118,13 +118,14 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 items-end gap-x-8 gap-y-6 md:mt-0 lg:-mt-16 md:grid-cols-2">
+      {/* Scroll cue left, product areas centred on the page. */}
+      <div className="mt-6 grid grid-cols-1 items-end gap-x-8 gap-y-6 md:mt-0 lg:-mt-16 md:grid-cols-[1fr_minmax(0,30rem)_1fr] lg:grid-cols-[1fr_minmax(0,38rem)_1fr]">
         <div data-anim="scroll" aria-hidden="true" className={`hidden flex-col items-center gap-3 md:flex ${meta}`}>
           <span>Scroll</span>
           <span className={styles.scrollLine} />
         </div>
 
-        <p data-anim="scroll" className={`md:text-right ${meta}`}>
+        <p data-anim="scroll" className={`text-center ${meta}`}>
           <span className="opacity-70">Designing across</span> <DotList items={profile.domains} />
         </p>
       </div>
