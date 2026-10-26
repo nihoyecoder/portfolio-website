@@ -33,7 +33,7 @@ export const footerNav = [
     label: "Links",
     links: [
       { label: "Contact", href: "/#contact" },
-      { label: "Resume", href: contactDetails.resume, download: "Manoj-Rawat-Resume.pdf" },
+      { label: "Resume", href: contactDetails.resume, external: true },
       ...footerSocials.map(({ label, href }) => ({ label, href, external: true })),
     ],
   },

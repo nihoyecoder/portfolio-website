@@ -8,9 +8,8 @@ export const journey = {
   intro:
     "I started in UX/UI and gradually moved deeper into product thinking, design systems and frontend development — designing complex digital products while increasingly building the experiences behind them.",
   resume: {
-    label: "Download Resume",
+    label: "Resume",
     href: contactDetails.resume,
-    fileName: "Manoj-Rawat-Resume.pdf",
   },
 };
 

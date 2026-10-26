@@ -65,16 +65,18 @@ function JourneyIntro() {
       <div data-journey-fade className="mt-8">
         <a
           href={journey.resume.href}
-          download={journey.resume.fileName}
+          target="_blank"
+          rel="noopener noreferrer"
           className="group inline-flex items-center gap-3 rounded-[3px] border border-accent bg-accent px-5 py-3.5 text-sm text-white transition-colors duration-500 hover:bg-transparent hover:text-accent"
         >
           {journey.resume.label}
           <span
             aria-hidden="true"
-            className="transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-y-0.5"
+            className="transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:group-hover:translate-x-0.5 motion-safe:group-hover:-translate-y-0.5"
           >
-            <ArrowIcon direction="down" />
+            <ArrowIcon />
           </span>
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>
       </div>
     </div>
