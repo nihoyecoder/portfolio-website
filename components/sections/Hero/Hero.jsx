@@ -30,7 +30,9 @@ function DotList({ items }) {
 
 function MaskLine({ children, className = "" }) {
   return (
-    <span className="block overflow-hidden">
+    // Padding (cancelled by the margin) gives descenders like g and y room
+    // inside the clip without moving anything.
+    <span className="-mb-[0.2em] block overflow-hidden pb-[0.2em]">
       <span data-anim="line" className={`block ${className}`}>
         {children}
       </span>
