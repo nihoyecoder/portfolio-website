@@ -10,8 +10,8 @@ import { gsap, media, useGSAP } from "@/lib/gsap";
 // as part of the intro; this component adds the idle sway afterwards.
 //
 // Each string's box spans exactly the gap it crosses — viewport edge ↔
-// portrait — in the hero's container units (the portrait column is 25cqw,
-// the columns either side 37.5cqw). Inside, an SVG maps that span to 0–1000
+// portrait — in the hero's container units (the portrait column is 22cqw,
+// the columns either side 39cqw). Inside, an SVG maps that span to 0–1000
 // units and the sag to 0–100, so cards can be pinned to exact points on the
 // curve with percentages. The path carries on under the portrait, so it still
 // reads as one string when the portrait's edge is pulled in.
@@ -35,7 +35,7 @@ const STRINGS = [
     // viewport's edge. Deeper sag.
     id: "left",
     path: stringPath(1185, 0),
-    box: { left: "calc(-37.5cqw - var(--gutter))", top: "calc(18.5cqw + 48px)", height: "2.4cqw" },
+    box: { left: "calc(-39cqw - var(--gutter))", top: "calc(16.5cqw + 64px)", height: "2.4cqw" },
     tools: [
       { name: "React", src: "/images/hero-tools/react.png", at: 0.17, rotation: -1, order: 4, sway: [1, 4.4] },
       { name: "GSAP", src: "/images/hero-tools/gsap.png", at: 0.49, rotation: 1.5, order: 2, sway: [-0.8, 3.8] },
@@ -47,7 +47,7 @@ const STRINGS = [
     // the viewport's edge. Shallower sag.
     id: "right",
     path: stringPath(-185, 1080),
-    box: { left: "100%", top: "5.3cqw", height: "2cqw" },
+    box: { left: "100%", top: "4.7cqw", height: "2cqw" },
     tools: [
       { name: "Figma", src: "/images/hero-tools/figma.png", at: 0.17, rotation: -1, order: 1, sway: [-1, 4.1] },
       { name: "Claude", src: "/images/hero-tools/claude.png", at: 0.46, rotation: 1, order: 3, sway: [0.8, 4.7] },
@@ -121,10 +121,10 @@ export default function HeroToolStrings() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 hidden [--card:clamp(40px,3.8cqw,64px)] [--hang:clamp(8px,0.75cqw,13px)] lg:block"
+      className="pointer-events-none absolute inset-0 -z-10 hidden [--card:clamp(34px,3.2cqw,54px)] [--hang:clamp(8px,0.75cqw,13px)] lg:block"
     >
       {STRINGS.map((string) => (
-        <div key={string.id} className="absolute w-[calc(37.5cqw+var(--gutter))]" style={string.box}>
+        <div key={string.id} className="absolute w-[calc(39cqw+var(--gutter))]" style={string.box}>
           <svg
             viewBox="0 0 1000 100"
             preserveAspectRatio="none"

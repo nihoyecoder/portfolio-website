@@ -67,7 +67,7 @@ export default function HeroMotion({ children, ...props }) {
         // (Queried on the document: selector text here is scoped to the hero.)
         tl.from(document.querySelectorAll('[data-site-header] [data-anim="nav"]'), { y: -10, autoAlpha: 0, duration: 0.7, stagger: 0.05 }, 0)
           .from(q('[data-anim="meta"]'), { y: -8, autoAlpha: 0, duration: 0.7, stagger: 0.06 }, 0.1)
-          .from(q('[data-anim="char"]'), { yPercent: 110, duration: 1.1, stagger: 0.03 }, 0.05)
+          .from(q('[data-anim="char"]'), { yPercent: 140, duration: 1.1, stagger: 0.03 }, 0.05)
           .fromTo(
             q('[data-anim="portrait-clip"]'),
             { clipPath: "inset(100% 0% 0% 0%)" },

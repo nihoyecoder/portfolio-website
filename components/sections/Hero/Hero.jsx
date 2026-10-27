@@ -13,7 +13,8 @@ import styles from "./Hero.module.css";
 
 const PORTRAIT_SRC = "/images/about/manoj-hero.webp";
 
-const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
+// Full-strength text: it sits on the rose gradient.
+const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-foreground";
 
 // Wraps text in a clipping mask so the timeline can raise it into view.
 function MaskLine({ children, className = "" }) {
@@ -46,9 +47,15 @@ export default function Hero() {
       <HeaderSpace />
 
       <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8">
-        <div className={`mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 md:mb-5 ${meta}`}>
-          <AvailabilityBadge data-anim="meta">{site.availability}</AvailabilityBadge>
-          <p data-anim="meta">
+        <div className={`mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 md:mb-5 lg:grid lg:grid-cols-[1fr_calc((100vw-2*var(--gutter))*0.22)_1fr] lg:gap-x-0 ${meta}`}>
+          {/* lg: the row uses the name grid's columns (worked out from the
+              viewport, as it sits outside the @container): the badge starts right
+              above MANOJ (9.4cqw in), the location ends right above the end of
+              RAWAT (8.6cqw from the right). */}
+          <AvailabilityBadge data-anim="meta" className="lg:ml-[calc((100vw-2*var(--gutter))*0.094)]">
+            {site.availability}
+          </AvailabilityBadge>
+          <p data-anim="meta" className="lg:col-start-3 lg:justify-self-end lg:mr-[calc((100vw-2*var(--gutter))*0.086)]">
             {site.location} <span aria-hidden="true">·</span>{" "}
             <LocalTime timeZone={site.timeZone} label={site.timeZoneLabel} />
           </p>
@@ -62,14 +69,15 @@ export default function Hero() {
         <div className="@container">
           <HeroName name={site.name} />
 
-          <div className="mt-6 grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8 lg:mt-0 lg:grid-cols-[1fr_25cqw_1fr] lg:gap-x-0">
+          <div className="mt-6 grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8 lg:mt-0 lg:grid-cols-[1fr_22cqw_1fr] lg:gap-x-0">
             {/* Role and current job — lg: RAWAT, the role and the job sit beside
-                the portrait, ending flush with the image (27px clears the
-                caption: mt-3 + one 15px line), so the job line lifts RAWAT. */}
-            <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[27px]">
+                the portrait, starting just right of it; the block ends a little
+                above the image's bottom (27px clears the caption). */}
+            <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[calc(27px+5cqw)]">
               <HeroNameTail name={site.name} />
-              <div className="lg:mt-4 lg:pl-[3cqw]">
-                <p className="text-[clamp(1.5rem,2.1vw,2rem)] font-semibold leading-[1.05] tracking-[-0.035em]">
+              {/* lg: a clear gap under RAWAT, in line with its R */}
+              <div className="lg:mt-[2.6cqw] lg:pl-[1.6cqw]">
+                <p className="font-display text-[clamp(1.5rem,2.1vw,2rem)] font-medium leading-[1.05] tracking-[-0.02em]">
                   <MaskLine>{profile.role}</MaskLine>
                 </p>
                 <p className={`mt-2.5 ${meta}`}>
@@ -82,7 +90,7 @@ export default function Hero() {
             </div>
 
             {/* Portrait — on desktop the tool strings hang behind it. */}
-            <div className="relative z-10 ml-auto w-[72%] max-w-sm md:col-start-2 md:row-span-3 md:row-start-1 md:-mt-[5cqw] md:w-full md:max-w-none lg:row-span-2 lg:-mt-[11.5cqw]">
+            <div className="relative z-10 ml-auto w-[64%] max-w-[21rem] md:col-start-2 md:row-span-3 md:row-start-1 md:-mt-[3.8cqw] md:w-[88%] md:max-w-none lg:w-full lg:row-span-2 lg:-mt-[9.7cqw]">
               <HeroToolStrings />
               <Portrait
                 src={hasPortrait ? PORTRAIT_SRC : null}
@@ -94,7 +102,7 @@ export default function Hero() {
             {/* Statement */}
             <p
               data-anim="copy"
-              className="max-w-[46ch] text-balance text-[clamp(1.125rem,1.5vw,1.375rem)] leading-snug text-muted lg:max-w-[min(46ch,calc(100%+20cqw-3rem))] md:col-start-1 md:row-start-3 md:self-end lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start lg:pt-6 lg:pr-[3cqw] lg:-mr-[20cqw] lg:relative lg:z-20"
+              className="max-w-[46ch] text-balance text-[clamp(1rem,1.2vw,1.125rem)] leading-snug text-foreground lg:max-w-none md:col-start-1 md:row-start-3 md:self-end lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start lg:ml-[9.6cqw] lg:mr-[0.8cqw] lg:pt-[2.6cqw]"
             >
               {profile.statement}
             </p>

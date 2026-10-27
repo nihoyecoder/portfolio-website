@@ -28,7 +28,7 @@ export default function Portrait({ src, alt, caption }) {
 
       <figcaption
         data-anim="copy"
-        className="mt-3 flex justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.08em] text-muted"
+        className="mt-3 flex justify-between gap-4 font-mono text-[10px] uppercase tracking-[0.08em] text-foreground"
       >
         {caption.map((part) => (
           <span key={part}>{part}</span>

@@ -10,13 +10,9 @@
      accent text on light backgrounds (4.7:1). */
   --accent-strong: #b04459;
   --signal: #2f8a57;
-  /* The hero background: a soft rose glow top right (behind RAWAT) and a
-     faint warm one bottom left, over the page colour. The preloader's frame
-     uses it too, so the hand-over is seamless. */
-  --hero-gradient:
-    radial-gradient(70% 60% at 88% 18%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
-    radial-gradient(60% 55% at 6% 96%, color-mix(in srgb, #e8a77f 20%, transparent), transparent 70%),
-    var(--background);
+  /* The hero background: white at the top to a light blush at the bottom.
+     The preloader's frame uses it too, so the hand-over is seamless. */
+  --hero-gradient: linear-gradient(180deg, #ffffff 0%, #f8dfe4 100%);
 }
 
 @theme inline {
@@ -31,6 +27,7 @@
   --font-sans: var(--font-primary), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-accent), ui-serif, Georgia, serif;
   --font-mono: var(--font-code), ui-monospace, monospace;
+  --font-display: var(--font-clash), var(--font-primary), ui-sans-serif, sans-serif;
 
   --animate-soft-pulse: soft-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
