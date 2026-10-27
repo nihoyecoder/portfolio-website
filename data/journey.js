@@ -6,7 +6,7 @@ const { company } = profile.current;
 
 export const journey = {
   heading: "My design journey so far.",
-  // Set in the serif accent, like "shape" and "touch" in later sections.
+  // Set in the Clash Display accent, like "shape" and "touch" in later sections.
   accentWord: "journey",
   intro: [
     `I'm a Product Designer, currently leading UX/UI at ${company}. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.`,

@@ -18,7 +18,7 @@
   --ink: var(--foreground);
   --paper: var(--background);
   /* Deep plum-ink section; surfaces are lighter tints of it, and the rose
-     accent is kept for highlights (e.g. the serif word). */
+     accent is kept for highlights (e.g. the Clash Display word). */
   --stage: #2a1d29;
   --surface: color-mix(in srgb, var(--stage), white 5%);
   --surface-hover: color-mix(in srgb, var(--stage), white 7%);

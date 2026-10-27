@@ -31,7 +31,7 @@ export default function Footer() {
                   <span
                     className={
                       word.replace(/\W/g, "") === footerIntro.accentWord
-                        ? "font-serif text-[1.08em] font-normal tracking-[-0.01em] text-accent"
+                        ? "font-display font-medium tracking-[-0.03em] text-accent"
                         : undefined
                     }
                   >

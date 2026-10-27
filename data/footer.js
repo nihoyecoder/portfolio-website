@@ -4,7 +4,7 @@ import { contactDetails } from "@/lib/config/contact";
 
 export const footerIntro = {
   heading: "Let's work together.",
-  // Set in the serif accent, like the section headings above.
+  // Set in the Clash Display accent, like the section headings above.
   accentWord: "together",
   intro:
     "Product design for 0→1 and complex digital products. Always open to good conversations, ambitious products and teams building something new.",

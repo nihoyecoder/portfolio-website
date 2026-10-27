@@ -49,7 +49,7 @@ function JourneyIntro() {
                 data-journey-word
                 className={
                   word === journey.accentWord
-                    ? "inline-block pr-[0.04em] font-serif text-[1.08em] font-normal tracking-[-0.01em] text-accent"
+                    ? "inline-block font-display font-medium tracking-[-0.03em] text-accent"
                     : "inline-block"
                 }
               >

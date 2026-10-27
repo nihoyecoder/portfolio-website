@@ -31,7 +31,7 @@ export default function ContactIdentity() {
                   data-contact-word
                   className={
                     word.replace(/\W/g, "") === contactIntro.accentWord
-                      ? "inline-block pr-[0.04em] font-serif text-[1.08em] font-normal tracking-[-0.01em] text-accent"
+                      ? "inline-block font-display font-medium tracking-[-0.03em] text-accent"
                       : "inline-block"
                   }
                 >
