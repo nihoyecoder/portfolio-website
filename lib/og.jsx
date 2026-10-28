@@ -108,7 +108,7 @@ export async function caseImage(project) {
   const title = project.title;
   const tag = project.tag ?? project.subtitle;
   const status = project.status;
-  const by = "Case study · Manoj Rawat, Product Designer";
+  const by = "Case study · Manoj Rawat, AI Product Designer";
 
   return new ImageResponse(
     (

@@ -2,7 +2,7 @@ import { caseStudySlugs, getCaseStudy } from "@/data/case-studies";
 import { caseImage, ogSize, ogType } from "@/lib/og";
 
 // Same card as the case study's Open Graph image, for Twitter / X.
-export const alt = "Case study by Manoj Rawat, Product Designer";
+export const alt = "Case study by Manoj Rawat, AI Product Designer";
 export const size = ogSize;
 export const contentType = ogType;
 

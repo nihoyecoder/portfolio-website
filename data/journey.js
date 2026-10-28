@@ -9,7 +9,7 @@ export const journey = {
   // Set in the Clash Display accent, like "shape" and "touch" in later sections.
   accentWord: "journey",
   intro: [
-    `I'm a Product Designer, currently leading UX/UI at ${company}. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.`,
+    `I'm an AI Product Designer, currently leading UX/UI at ${company}. Since starting out in 2023, I've moved from designing individual interfaces to owning end-to-end product experiences across healthcare, AI analytics, enterprise automation and mobility.`,
     "My work sits close to product and engineering — turning early requirements and ambiguous problems into flows, systems, prototypes and production-ready interfaces.",
   ],
   // Accessible name of the one-line career progression (levels from

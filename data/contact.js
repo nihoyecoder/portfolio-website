@@ -6,7 +6,7 @@ export const contactIntro = {
   // Set in the Clash Display accent, like "journey" and "shape" above.
   accentWord: "touch",
   intro:
-    "Open to Product Designer roles, 0→1 and AI-enabled product teams, and product-focused startups — and to the right collaboration. Tell me what you're building.",
+    "Open to AI Product Designer roles, 0→1 and AI-enabled product teams, and product-focused startups — and to the right collaboration. Tell me what you're building.",
 };
 
 export const contactOptions = {
