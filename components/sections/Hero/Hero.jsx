@@ -1,8 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { HeaderSpace } from "@/components/layout/Header";
-import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
-import LocalTime from "@/components/ui/LocalTime";
 import { profile } from "@/data/profile";
 import { site } from "@/lib/site";
 import HeroMotion from "./HeroMotion";
@@ -47,20 +45,6 @@ export default function Hero() {
       <HeaderSpace />
 
       <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8">
-        <div className={`mb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 md:mb-5 lg:grid lg:grid-cols-[1fr_calc((100vw-2*var(--gutter))*0.22)_1fr] lg:gap-x-0 ${meta}`}>
-          {/* lg: the row uses the name grid's columns (worked out from the
-              viewport, as it sits outside the @container): the badge starts right
-              above MANOJ (9.4cqw in), the location ends right above the end of
-              RAWAT (8.6cqw from the right). */}
-          <AvailabilityBadge data-anim="meta" className="lg:ml-[calc((100vw-2*var(--gutter))*0.094)]">
-            {site.availability}
-          </AvailabilityBadge>
-          <p data-anim="meta" className="lg:col-start-3 lg:justify-self-end lg:mr-[calc((100vw-2*var(--gutter))*0.086)]">
-            {site.location} <span aria-hidden="true">·</span>{" "}
-            <LocalTime timeZone={site.timeZone} label={site.timeZoneLabel} />
-          </p>
-        </div>
-
         {/*
           One container for name + body so both share cqw units.
           base: stacked column · md: copy left / portrait right ·
