@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { projects } from "@/data/projects";
 import ArrowIcon from "@/components/ui/ArrowIcon";
+import LinkPending from "@/components/ui/LinkPending";
 import { publicFileExists } from "@/lib/assets";
 import ProjectVisual from "./ProjectVisual";
 import WorkMotion from "./WorkMotion";
@@ -141,8 +142,7 @@ function Project({ project, index }) {
           <Link
             data-work-line="cta"
             href={project.href}
-            prefetch={false}
-            className={`group inline-flex items-center gap-2 rounded-[3px] border border-current/45 px-4 py-2.5 ${meta} transition-colors duration-300 hover:border-current hover:bg-current/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current`}
+            className={`group relative inline-flex items-center gap-2 rounded-[3px] border border-current/45 px-4 py-2.5 ${meta} transition-colors duration-300 hover:border-current hover:bg-current/12 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current`}
           >
             {project.cta}
             <span className="sr-only">: {project.title}</span>
@@ -152,6 +152,7 @@ function Project({ project, index }) {
             >
               <ArrowIcon />
             </span>
+            <LinkPending />
           </Link>
         </div>
       </div>

@@ -80,3 +80,45 @@ body {
     cursor: pointer;
   }
 }
+
+/*
+  Navigation feedback (components/ui/LinkPending): while a clicked link's
+  route loads, a bar runs along the link's bottom edge and the cursor shows
+  progress. The bar waits 120ms, so a prefetched (instant) route never flashes it.
+*/
+.link-pending::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+[data-link-pending].link-pending::after {
+  opacity: 0.9;
+  animation: link-pending 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 120ms both;
+}
+
+@keyframes link-pending {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-link-pending].link-pending::after {
+    animation: none;
+    transform: scaleX(1);
+    opacity: 0.6;
+  }
+}
+
+html[data-navigating],
+html[data-navigating] * {
+  cursor: progress !important;
+}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LinkPending from "@/components/ui/LinkPending";
 import { visualSize } from "@/data/projects";
 import styles from "./Work.module.css";
 
@@ -21,8 +22,9 @@ export default function ProjectVisual({ visual, role, number, exists, sizes, hre
   );
 
   return href ? (
-    <Link href={href} prefetch={false} aria-label={label} data-role={role} className={styles.frame}>
+    <Link href={href} aria-label={label} data-role={role} className={styles.frame}>
       {content}
+      <LinkPending />
     </Link>
   ) : (
     <div data-role={role} className={styles.frame}>
