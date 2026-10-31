@@ -9,6 +9,7 @@
   --gutter: 1.25rem;
 
   position: relative;
+  isolation: isolate; /* keeps the cursor grid (z-index -1) above the background */
   overflow: clip;
   padding-top: clamp(5rem, 12vw, 9rem);
   background-color: var(--background);

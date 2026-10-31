@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import CaseStudy from "@/components/case-study/CaseStudy";
 import Footer from "@/components/layout/Footer";
 import Header, { HeaderSpace } from "@/components/layout/Header";
+import CursorGrid from "@/components/ui/CursorGrid";
 import { caseStudySlugs, getCaseStudy } from "@/data/case-studies";
 
 // One page per project in data/projects.js, built at build time.
@@ -48,7 +49,9 @@ export default async function CaseStudyPage({ params }) {
       <div className="pt-5 md:pt-6">
         <HeaderSpace />
       </div>
-      <main>
+      {/* isolate: the cursor grid (z-index -1) sits above the page background */}
+      <main className="relative isolate">
+        <CursorGrid />
         <CaseStudy {...caseStudy} />
       </main>
       <Footer />

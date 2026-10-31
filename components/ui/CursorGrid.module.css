@@ -1,7 +1,7 @@
 /*
-  The cursor-revealed grid (HeroGrid.jsx). Sits behind every piece of hero
-  content (z-index -1 inside the hero's stacking context, above its
-  gradient) and never takes the pointer.
+  The cursor-revealed grid (CursorGrid.jsx). Sits behind every piece of the
+  section's content (z-index -1 inside the section's stacking context, above
+  its background) and never takes the pointer.
 */
 .root {
   position: absolute;
@@ -11,7 +11,7 @@
   pointer-events: none;
 }
 
-/* The square that follows the cursor; HeroGrid moves it by transform. */
+/* The square that follows the cursor; CursorGrid moves it by transform. */
 .spot {
   --size: clamp(440px, 40vw, 720px);
 

@@ -6,6 +6,7 @@ import JourneyTimeline from "./JourneyTimeline";
 import WorkflowTools from "./WorkflowTools";
 import styles from "./Journey.module.css";
 import ArrowIcon from "@/components/ui/ArrowIcon";
+import CursorGrid from "@/components/ui/CursorGrid";
 
 // Roles oldest → current for the one-line ladder (training sits apart).
 const ladder = experience.filter((item) => !item.training).reverse();
@@ -16,6 +17,8 @@ const ladder = experience.filter((item) => !item.training).reverse();
 export default function Journey() {
   return (
     <JourneyMotion id="journey" aria-labelledby="journey-heading" className={styles.root}>
+      {/* Background: a grid the cursor reveals (desktop pointer only) */}
+      <CursorGrid />
       <div data-journey-container className={styles.container}>
         <div className={styles.layout}>
           <div data-journey-panel className={styles.panel}>

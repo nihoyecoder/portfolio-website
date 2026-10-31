@@ -2,22 +2,27 @@
 
 import { useRef } from "react";
 import { gsap, media, useGSAP } from "@/lib/gsap";
-import styles from "./HeroGrid.module.css";
+import styles from "./CursorGrid.module.css";
 
 // Grid cell (px). Shared with the CSS through --cell.
 const CELL = 52;
 
-// A grid hidden in the hero's background, revealed around the cursor inside a
-// soft pink glow. Decorative, behind all hero content, never takes the pointer.
+// A grid hidden in a section's background, revealed around the cursor inside
+// a soft pink glow. Decorative, behind all of the section's content, never
+// takes the pointer.
+//
+// Render it as a direct child of the section it decorates. That element must
+// be positioned and form a stacking context (z-index or isolation: isolate),
+// so the grid sits above its background and below its content.
 //
 // Only one small square (the spot) follows the cursor, by transform alone, so
-// following it never repaints the hero. Inside it, the grid is shifted back by
-// the spot's offset (modulo one cell), so the lines stay fixed to the hero and
+// following it never repaints the host. Inside it, the grid is shifted back by
+// the spot's offset (modulo one cell), so the lines stay fixed to the section and
 // the spot reveals them as it passes rather than dragging them along.
 //
 // Mouse and trackpad only, from tablet width up, and not for reduced motion
-// (media.pointer, like the portrait's drift); elsewhere it stays hidden.
-export default function HeroGrid() {
+// (media.pointer, like the hero portrait's drift); elsewhere it stays hidden.
+export default function CursorGrid() {
   const ref = useRef(null);
 
   useGSAP(
@@ -26,16 +31,16 @@ export default function HeroGrid() {
 
       mm.add(media.pointer, () => {
         const root = ref.current;
-        const hero = root.parentElement;
+        const host = root.parentElement;
         const spot = root.firstElementChild;
         const lines = spot.querySelector("[data-grid-lines]");
 
         // Measured on resize, not per frame.
         let half = 0;
-        let phase = { x: 0, y: 0 }; // puts a line through the hero's centre
+        let phase = { x: 0, y: 0 }; // puts a line through the section's centre
         const measure = () => {
           half = spot.offsetWidth / 2;
-          phase = { x: (hero.offsetWidth / 2) % CELL, y: (hero.offsetHeight / 2) % CELL };
+          phase = { x: (host.offsetWidth / 2) % CELL, y: (host.offsetHeight / 2) % CELL };
         };
         measure();
 
@@ -57,7 +62,7 @@ export default function HeroGrid() {
         let client = null; // last pointer position, to follow while scrolling
 
         const moveTo = (clientX, clientY) => {
-          const rect = hero.getBoundingClientRect();
+          const rect = host.getBoundingClientRect();
           const x = clientX - rect.left;
           const y = clientY - rect.top;
           if (!shown) {
@@ -86,14 +91,14 @@ export default function HeroGrid() {
           if (client) moveTo(client.x, client.y);
         };
 
-        hero.addEventListener("pointermove", onPointerMove);
-        hero.addEventListener("pointerleave", onPointerLeave);
+        host.addEventListener("pointermove", onPointerMove);
+        host.addEventListener("pointerleave", onPointerLeave);
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", measure);
 
         return () => {
-          hero.removeEventListener("pointermove", onPointerMove);
-          hero.removeEventListener("pointerleave", onPointerLeave);
+          host.removeEventListener("pointermove", onPointerMove);
+          host.removeEventListener("pointerleave", onPointerLeave);
           window.removeEventListener("scroll", onScroll);
           window.removeEventListener("resize", measure);
           gsap.killTweensOf([spot, pos]);

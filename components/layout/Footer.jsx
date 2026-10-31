@@ -7,6 +7,7 @@ import { site } from "@/lib/site";
 import FooterMotion from "./FooterMotion";
 import styles from "./Footer.module.css";
 import ArrowIcon from "@/components/ui/ArrowIcon";
+import CursorGrid from "@/components/ui/CursorGrid";
 
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
 
@@ -17,6 +18,8 @@ export default function Footer() {
 
   return (
     <FooterMotion className={styles.root} aria-labelledby="footer-heading">
+      {/* Background: a grid the cursor reveals (desktop pointer only) */}
+      <CursorGrid />
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.lead}>
