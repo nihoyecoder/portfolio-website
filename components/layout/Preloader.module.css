@@ -341,10 +341,6 @@
   transition: opacity 0.5s ease;
 }
 
-.block[data-kind="rule"] {
-  border-radius: 0;
-}
-
 /* The accent, swept in from the left. */
 .fill {
   position: absolute;
@@ -381,10 +377,6 @@
 
 .wire[data-designed] .block[data-kind="logo"]::after {
   opacity: 1;
-}
-
-.wire[data-designed] .block[data-kind="rule"] {
-  background: var(--foreground);
 }
 
 /* ---- Selection, guides and the cursor -------------------------------- */

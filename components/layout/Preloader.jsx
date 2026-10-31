@@ -521,20 +521,6 @@ function measureHero() {
   }
   const caption = hero.querySelector("figcaption");
   if (shown(caption)) [...caption.children].forEach((el) => lines(el).forEach((r) => bar(r, lift(caption))));
-  for (const el of hero.querySelectorAll('[data-anim="scroll"]')) {
-    if (!shown(el)) continue;
-    if (el.tagName === "P") {
-      lines(el).forEach((r) => bar(r));
-      continue;
-    }
-    // The scroll cue: its label and the hairline under it.
-    const [label, rule] = el.children;
-    if (label) lines(label).forEach((r) => bar(r));
-    if (rule) {
-      const r = rule.getBoundingClientRect();
-      add("rule", { left: r.left + r.width / 2 - 1, top: r.top, width: 2, height: r.height });
-    }
-  }
   return blocks;
 }
 

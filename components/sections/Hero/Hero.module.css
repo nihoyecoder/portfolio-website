@@ -27,37 +27,3 @@
     visibility: visible;
   }
 }
-
-/* Scroll cue: a short segment travelling down a hairline. */
-.scrollLine {
-  position: relative;
-  overflow: hidden;
-  width: 1px;
-  height: 2.5rem;
-  background: var(--line);
-}
-
-.scrollLine::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  height: 40%;
-  background: var(--foreground);
-  animation: scroll-cue 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes scroll-cue {
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(250%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scrollLine::after {
-    animation: none;
-    transform: translateY(75%);
-  }
-}

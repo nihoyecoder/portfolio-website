@@ -97,14 +97,6 @@ export default function Hero() {
           </div>
         </div>
       </div>
-
-      {/* Scroll cue (tablet and up), centred in the left half. */}
-      <div className="hidden grid-cols-2 items-end gap-x-8 md:grid lg:-mt-16">
-        <div data-anim="scroll" aria-hidden="true" className={`flex flex-col items-center gap-3 ${meta}`}>
-          <span>Scroll</span>
-          <span className={styles.scrollLine} />
-        </div>
-      </div>
     </HeroMotion>
   );
 }

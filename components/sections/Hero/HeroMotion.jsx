@@ -77,7 +77,6 @@ export default function HeroMotion({ children, ...props }) {
           .from(q('[data-anim="portrait-img"]'), { scale: 1.3, yPercent: 8, duration: 1.5 }, 0.2)
           .from(q('[data-anim="line"]'), { yPercent: 105, duration: 0.9, stagger: 0.06 }, 0.6)
           .from(q('[data-anim="copy"]'), { y: 12, autoAlpha: 0, duration: 0.8, stagger: 0.06 }, 0.85)
-          .from(q('[data-anim="scroll"]'), { autoAlpha: 0, duration: 0.6 }, 1.2)
           // Tool strings (HeroToolStrings): the lines draw out from behind the
           // portrait, then each card drops in once its line has reached it.
           .add(drawStrings(q('[data-anim="string"]')), 1.05)
