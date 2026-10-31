@@ -3,6 +3,7 @@ import path from "node:path";
 import { HeaderSpace } from "@/components/layout/Header";
 import { profile } from "@/data/profile";
 import { site } from "@/lib/site";
+import HeroGrid from "./HeroGrid";
 import HeroMotion from "./HeroMotion";
 import HeroName, { HeroNameTail } from "./HeroName";
 import HeroToolStrings from "./HeroToolStrings";
@@ -40,6 +41,9 @@ export default function Hero() {
       <noscript>
         <style>{"[data-hero],[data-site-header] [data-anim]{visibility:visible!important}"}</style>
       </noscript>
+
+      {/* Background: a grid the cursor reveals (desktop pointer only) */}
+      <HeroGrid />
 
       {/* The header itself is fixed (rendered by the page) */}
       <HeaderSpace />

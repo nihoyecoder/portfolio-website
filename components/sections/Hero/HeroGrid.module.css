@@ -1,0 +1,62 @@
+/*
+  The cursor-revealed grid (HeroGrid.jsx). Sits behind every piece of hero
+  content (z-index -1 inside the hero's stacking context, above its
+  gradient) and never takes the pointer.
+*/
+.root {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* The square that follows the cursor; HeroGrid moves it by transform. */
+.spot {
+  --size: clamp(440px, 40vw, 720px);
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--size);
+  height: var(--size);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Soft light-pink bloom, wider than the grid reveal so it frames it. */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    closest-side,
+    rgb(240 150 172 / 0.34),
+    rgb(244 176 193 / 0.16) 45%,
+    rgb(248 205 216 / 0.05) 72%,
+    transparent
+  );
+}
+
+/* Feathered window onto the grid: solid in the middle, gone by the edge. */
+.mask {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mask-image: radial-gradient(closest-side, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.15) 70%, transparent 88%);
+}
+
+/* One cell larger than the spot, so shifting it by up to a cell leaves no gap. */
+.lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--size) + var(--cell));
+  height: calc(var(--size) + var(--cell));
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell);
+  will-change: transform;
+
+  --grid-line: color-mix(in srgb, var(--accent) 38%, transparent);
+}
