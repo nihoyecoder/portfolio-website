@@ -2,8 +2,13 @@
   The cursor-revealed grid (CursorGrid.jsx). Sits behind every piece of the
   section's content (z-index -1 inside the section's stacking context, above
   its background) and never takes the pointer.
+
+  Light pink by default; with a `color` (data-tint, --tint) the glow and the
+  lines take that colour instead (case studies use their theme accent).
 */
 .root {
+  --grid-line: color-mix(in srgb, var(--accent) 38%, transparent);
+
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -37,6 +42,20 @@
   );
 }
 
+.root[data-tint] {
+  --grid-line: color-mix(in srgb, var(--tint) 34%, transparent);
+}
+
+.root[data-tint] .glow {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--tint) 22%, transparent),
+    color-mix(in srgb, var(--tint) 10%, transparent) 45%,
+    color-mix(in srgb, var(--tint) 3%, transparent) 72%,
+    transparent
+  );
+}
+
 /* Feathered window onto the grid: solid in the middle, gone by the edge. */
 .mask {
   position: absolute;
@@ -57,6 +76,4 @@
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: var(--cell) var(--cell);
   will-change: transform;
-
-  --grid-line: color-mix(in srgb, var(--accent) 38%, transparent);
 }

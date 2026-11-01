@@ -1036,9 +1036,52 @@
 
 .frame img {
   object-fit: cover;
+  transition: opacity 0.5s ease;
+}
+
+/*
+  Skeleton while an image loads (LoadingImage): the frame's fill with a soft
+  light sweep. It sits under the image, so it only shows until the image
+  paints; once loaded it's removed, so transparent images never sit on it.
+  An image that arrives after hydration fades in over it.
+*/
+.frame:has(img):not([data-loaded])::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.32) 50%, transparent 70%) 0 0 / 250% 100%
+      no-repeat,
+    var(--skeleton, var(--canvas));
+  animation: skeleton 1.4s ease-in-out infinite;
+}
+
+.frame[data-loading] img {
+  opacity: 0;
+}
+
+@keyframes skeleton {
+  from {
+    background-position: 150% 0, 0 0;
+  }
+  to {
+    background-position: -50% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame:has(img):not([data-loaded])::before {
+    animation: none;
+  }
+
+  .frame img {
+    transition: none;
+  }
 }
 
 .frame[data-tone="project"] {
+  --skeleton: var(--p-bg);
+
   background-color: var(--p-bg);
 }
 

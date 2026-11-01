@@ -12,14 +12,14 @@ import CursorGrid from "@/components/ui/CursorGrid";
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
 
 // The closing signature: a calm, light layer after the dark Contact section.
-export default function Footer() {
+export default function Footer({ gridColor }) {
   const words = footerIntro.heading.split(" ");
   const { email, phone } = contactDetails;
 
   return (
     <FooterMotion className={styles.root} aria-labelledby="footer-heading">
       {/* Background: a grid the cursor reveals (desktop pointer only) */}
-      <CursorGrid />
+      <CursorGrid color={gridColor} />
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.lead}>

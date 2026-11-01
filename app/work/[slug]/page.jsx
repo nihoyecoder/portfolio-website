@@ -51,10 +51,10 @@ export default async function CaseStudyPage({ params }) {
       </div>
       {/* isolate: the cursor grid (z-index -1) sits above the page background */}
       <main className="relative isolate">
-        <CursorGrid />
+        <CursorGrid color={theme?.accent} />
         <CaseStudy {...caseStudy} />
       </main>
-      <Footer />
+      <Footer gridColor={theme?.accent} />
     </>
   );
 }

@@ -8,7 +8,8 @@ import styles from "./CursorGrid.module.css";
 const CELL = 52;
 
 // A grid hidden in a section's background, revealed around the cursor inside
-// a soft pink glow. Decorative, behind all of the section's content, never
+// a soft glow: light pink, or `color` when given (a case study's theme
+// accent). Decorative, behind all of the section's content, never
 // takes the pointer.
 //
 // Render it as a direct child of the section it decorates. That element must
@@ -22,7 +23,7 @@ const CELL = 52;
 //
 // Mouse and trackpad only, from tablet width up, and not for reduced motion
 // (media.pointer, like the hero portrait's drift); elsewhere it stays hidden.
-export default function CursorGrid() {
+export default function CursorGrid({ color }) {
   const ref = useRef(null);
 
   useGSAP(
@@ -112,7 +113,13 @@ export default function CursorGrid() {
   );
 
   return (
-    <div ref={ref} aria-hidden="true" className={styles.root} style={{ "--cell": `${CELL}px` }}>
+    <div
+      ref={ref}
+      aria-hidden="true"
+      data-tint={color ? "" : undefined}
+      className={styles.root}
+      style={{ "--cell": `${CELL}px`, ...(color && { "--tint": color }) }}
+    >
       <div className={styles.spot}>
         <div className={styles.glow} />
         <div className={styles.mask}>
