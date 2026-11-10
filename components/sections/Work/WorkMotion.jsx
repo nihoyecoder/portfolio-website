@@ -244,7 +244,7 @@ export default function WorkMotion({ palette, children, ...props }) {
         ScrollTrigger.addEventListener("scrollEnd", settle);
 
         // While the next section covers the stage, its content (projects,
-        // top bar, indicator) sinks, tips back and fades 1:1 with the scroll,
+        // indicator) sinks, tips back and fades 1:1 with the scroll,
         // like the hero's; the background layers stay. Runs from the next
         // section's top entering the viewport to it reaching the top — after
         // the projects' range.

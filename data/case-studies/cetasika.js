@@ -142,7 +142,7 @@ const cetasika = {
       media: {
         layout: "full",
         caption: "Home → Wellness centres → Centre services → Provider",
-        image: image(`${dir}/decisions/01-discovery.webp`, {
+        image: image(`${dir}/decisions/01-discovery-v2.webp`, {
           size: "wide",
           quality: 90,
           label: "Need-led discovery flow",

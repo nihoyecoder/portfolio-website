@@ -34,13 +34,6 @@
 
 /* ---------------------------------------------------------------- Static */
 
-.topbar {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding: 5rem var(--gutter) 2rem;
-}
-
 .project {
   display: grid;
   gap: 2.5rem;
@@ -175,14 +168,6 @@
 }
 
 /* Layers: panels 1–9 (closest to centre on top), scrim 10, text 20, chrome 30 */
-.root[data-mode="stage"] .topbar {
-  position: absolute;
-  z-index: 30;
-  top: max(1.25rem, env(safe-area-inset-top));
-  inset-inline: var(--gutter);
-  padding: 0;
-}
-
 .root[data-mode="stage"] .project {
   position: absolute;
   inset: 0;

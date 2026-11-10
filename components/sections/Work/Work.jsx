@@ -39,10 +39,10 @@ export default function Work() {
               />
             ),
         )}
-        <div className={`${styles.topbar} ${meta}`}>
-          <h2 id="work-heading">Selected work</h2>
-          <p aria-hidden="true">({String(projects.length).padStart(2, "0")})</p>
-        </div>
+        {/* The section's name for screen readers; nothing shows on screen. */}
+        <h2 id="work-heading" className="sr-only">
+          Selected work
+        </h2>
 
         {projects.map((project, index) => (
           <Project key={project.id} project={project} index={index} />
