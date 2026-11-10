@@ -1323,7 +1323,47 @@
   letter-spacing: -0.06em;
 }
 
+/* Decisions index, under the section heading: two columns from tablet up */
+.decisionIndex {
+  display: grid;
+  gap: 0 clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .decisionIndex {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.decisionIndex li {
+  border-bottom: 1px solid var(--line);
+}
+
+.decisionIndexLink {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.95rem 0;
+  font-size: clamp(0.95rem, 1.2vw, 1.0625rem);
+  line-height: 1.35;
+  transition: color 0.3s ease;
+}
+
+.decisionIndexLink:hover {
+  color: var(--p-accent);
+}
+
+.decisionIndexNumber {
+  flex: none;
+  color: var(--p-accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
 .decisionTitle {
+  scroll-margin-top: 6rem; /* clears the sticky case nav when jumped to */
   max-width: 24ch;
   font-size: clamp(1.75rem, 3vw, 2.75rem);
   font-weight: 500;
@@ -1515,13 +1555,86 @@
 }
 
 /* Ecosystem diagram: two providers feeding the platform, the consumer below.
-   Uses the shift chips and arrows above. */
+   Labels and hairline connectors only, no boxes or fills, so nothing in it
+   looks like a button. */
 .ecosystem {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 0.75rem clamp(0.5rem, 2.5vw, 1.75rem);
+  grid-template-columns: minmax(0, 1fr) minmax(1.5rem, 0.7fr) minmax(0, 1fr) minmax(1.5rem, 0.7fr) minmax(0, 1fr);
+  gap: 1.25rem clamp(0.5rem, 2vw, 1.5rem);
   align-items: center;
   text-align: center;
+}
+
+.ecoNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.ecoName {
+  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.ecoRole {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* The platform: the diagram's centre, larger and in the project's colour. */
+.ecoNode[data-hub] .ecoName {
+  color: var(--p-accent);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  letter-spacing: -0.02em;
+}
+
+/* Connector: a hairline ending in a small open arrowhead. */
+.ecoLink {
+  position: relative;
+  justify-self: stretch;
+  height: 1px;
+  background: color-mix(in srgb, var(--foreground) 35%, transparent);
+}
+
+.ecoLink::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 55%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--foreground) 55%, transparent);
+}
+
+.ecoLink[data-dir="right"]::after {
+  right: 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.ecoLink[data-dir="left"]::after {
+  left: 0;
+  transform: translateY(-50%) rotate(-135deg);
+}
+
+.ecoLink[data-dir="down"] {
+  justify-self: center;
+  width: 1px;
+  height: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+.ecoLink[data-dir="down"]::after {
+  top: auto;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(135deg);
 }
 
 .ecosystemDown {
@@ -1530,6 +1643,51 @@
 
 .ecosystemBelow {
   grid-column: 3;
+}
+
+/* Phones: too narrow for side arrows, so the providers sit side by side and
+   every connector points down into the platform. */
+@media (max-width: 639px) {
+  .ecosystem {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 0.9rem;
+  }
+
+  .ecoLink[data-dir="right"] {
+    grid-area: 2 / 1;
+  }
+
+  .ecoLink[data-dir="left"] {
+    grid-area: 2 / 2;
+  }
+
+  .ecoLink[data-dir="right"],
+  .ecoLink[data-dir="left"] {
+    justify-self: center;
+    width: 1px;
+    height: 1.75rem;
+  }
+
+  .ecoLink[data-dir="right"]::after,
+  .ecoLink[data-dir="left"]::after {
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) rotate(135deg);
+  }
+
+  .ecoNode[data-hub] {
+    grid-area: 3 / 1 / 4 / 3;
+  }
+
+  .ecosystemDown {
+    grid-area: 4 / 1 / 5 / 3;
+  }
+
+  .ecosystemBelow {
+    grid-area: 5 / 1 / 6 / 3;
+  }
 }
 
 /* ------------------------------------------------------- Experience */

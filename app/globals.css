@@ -10,8 +10,7 @@
      accent text on light backgrounds (4.7:1). */
   --accent-strong: #b04459;
   --signal: #2f8a57;
-  /* The hero background: white at the top to a light blush at the bottom.
-     The preloader's frame uses it too, so the hand-over is seamless. */
+  /* The hero background: white at the top to a light blush at the bottom. */
   --hero-gradient: linear-gradient(180deg, #ffffff 0%, #f8dfe4 100%);
 }
 

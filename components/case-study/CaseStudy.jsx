@@ -348,18 +348,31 @@ function Ecosystem({ data }) {
           {`${left} and ${right} both feed ${data.hub}, which ${data.consumers} use.`}
         </figcaption>
         <div aria-hidden="true" className={styles.ecosystem}>
-          <span className={styles.shiftItem}>{left}</span>
-          <span className={styles.shiftArrow}>→</span>
-          <span className={styles.shiftItem} data-new>
+          <EcoNode role="Provider">{left}</EcoNode>
+          <span className={styles.ecoLink} data-dir="right" />
+          <EcoNode role="Platform" hub>
             {data.hub}
-          </span>
-          <span className={styles.shiftArrow}>←</span>
-          <span className={styles.shiftItem}>{right}</span>
-          <span className={`${styles.shiftArrow} ${styles.ecosystemDown}`}>↓</span>
-          <span className={`${styles.shiftItem} ${styles.ecosystemBelow}`}>{data.consumers}</span>
+          </EcoNode>
+          <span className={styles.ecoLink} data-dir="left" />
+          <EcoNode role="Provider">{right}</EcoNode>
+          <span className={`${styles.ecoLink} ${styles.ecosystemDown}`} data-dir="down" />
+          <EcoNode role="Uses it" className={styles.ecosystemBelow}>
+            {data.consumers}
+          </EcoNode>
         </div>
       </figure>
     </div>
+  );
+}
+
+// One labelled point in the diagram: plain text, no box, so it reads as a
+// diagram rather than something to click.
+function EcoNode({ role, hub, className = "", children }) {
+  return (
+    <span className={`${styles.ecoNode} ${className}`} data-hub={hub || undefined}>
+      <span className={styles.ecoName}>{children}</span>
+      <span className={styles.ecoRole}>{role}</span>
+    </span>
   );
 }
 
@@ -401,7 +414,35 @@ function Approach({ data }) {
 }
 
 function Decisions({ data }) {
-  return data.map((decision, i) => <DesignDecision key={i} decision={decision} number={pad(i + 1)} />);
+  return (
+    <>
+      {data.length > 1 && <DecisionIndex decisions={data} />}
+      {data.map((decision, i) => (
+        <DesignDecision key={i} decision={decision} number={pad(i + 1)} />
+      ))}
+    </>
+  );
+}
+
+// Under the section heading: every decision at a glance, numbered, each a
+// link down to it (DesignDecision gives its title the id decision-NN).
+function DecisionIndex({ decisions }) {
+  return (
+    <Row className={styles.headBody}>
+      <ol data-reveal className={styles.decisionIndex}>
+        {decisions.map((decision, i) => (
+          <li key={i}>
+            <a href={`#decision-${pad(i + 1)}`} className={styles.decisionIndexLink}>
+              <span aria-hidden="true" className={styles.decisionIndexNumber}>
+                {pad(i + 1)}
+              </span>
+              <span>{copy(decision.title)}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </Row>
+  );
 }
 
 function Experience({ data }) {

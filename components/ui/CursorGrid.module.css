@@ -7,7 +7,7 @@
   lines take that colour instead (case studies use their theme accent).
 */
 .root {
-  --grid-line: color-mix(in srgb, var(--accent) 38%, transparent);
+  --grid-line: color-mix(in srgb, var(--accent) 28%, transparent);
 
   position: absolute;
   inset: 0;
@@ -35,23 +35,26 @@
   inset: 0;
   background: radial-gradient(
     closest-side,
-    rgb(240 150 172 / 0.34),
-    rgb(244 176 193 / 0.16) 45%,
-    rgb(248 205 216 / 0.05) 72%,
+    rgb(240 150 172 / 0.24),
+    rgb(244 176 193 / 0.11) 45%,
+    rgb(248 205 216 / 0.04) 72%,
     transparent
   );
 }
 
+/* Theme colours can be dark (Cetasika's teal), so the glow uses a pale
+   version of the tint (mixed towards white) and stays light behind text. */
 .root[data-tint] {
-  --grid-line: color-mix(in srgb, var(--tint) 34%, transparent);
+  --grid-line: color-mix(in srgb, var(--tint) 20%, transparent);
+  --tint-pale: color-mix(in srgb, var(--tint) 40%, white);
 }
 
 .root[data-tint] .glow {
   background: radial-gradient(
     closest-side,
-    color-mix(in srgb, var(--tint) 22%, transparent),
-    color-mix(in srgb, var(--tint) 10%, transparent) 45%,
-    color-mix(in srgb, var(--tint) 3%, transparent) 72%,
+    color-mix(in srgb, var(--tint-pale) 30%, transparent),
+    color-mix(in srgb, var(--tint-pale) 13%, transparent) 45%,
+    color-mix(in srgb, var(--tint-pale) 4%, transparent) 72%,
     transparent
   );
 }
