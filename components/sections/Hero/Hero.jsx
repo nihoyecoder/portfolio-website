@@ -66,7 +66,7 @@ export default function Hero() {
               {/* lg: a clear gap under RAWAT, in line with its R */}
               <div className="lg:mt-[2.6cqw] lg:pl-[1.6cqw]">
                 <p className="font-display text-[clamp(1.5rem,2.1vw,2rem)] font-medium leading-[1.05] tracking-[-0.02em]">
-                  <MaskLine>{profile.role}</MaskLine>
+                  <MaskLine>{profile.headline}</MaskLine>
                 </p>
                 <p className={`mt-2.5 ${meta}`}>
                   <MaskLine>
