@@ -5,6 +5,7 @@ import { FULL_SIZES } from "@/lib/case-study";
 import ArrowIcon from "@/components/ui/ArrowIcon";
 import CaseImage from "./CaseImage";
 import CaseStudyMeta, { ZeroToOneTag } from "./CaseStudyMeta";
+import HeroVideo from "./HeroVideo";
 import StatusBadge from "./StatusBadge";
 import { copy } from "./CaseText";
 import styles from "./CaseStudy.module.css";
@@ -66,7 +67,10 @@ export default function CaseHero({ project, study }) {
         </div>
 
         <div data-intro data-intro-media className={styles.heroVisual}>
-          {study.heroScreens ? (
+          {study.heroVideo ? (
+            // A demo video with sound, behind its poster and a Play button.
+            <HeroVideo video={study.heroVideo} sizes={FULL_SIZES} />
+          ) : study.heroScreens ? (
             <HeroScreens screens={study.heroScreens} logo={study.logo} />
           ) : study.heroPair ? (
             // Two projects side by side (e.g. a multi-project page).

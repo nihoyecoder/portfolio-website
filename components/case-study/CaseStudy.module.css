@@ -293,6 +293,136 @@
     0 50px 100px -40px rgb(0 0 0 / 0.65);
 }
 
+/* ------------------------------------------------------- Hero video */
+
+/* The video's own shape (set inline), on the stage colour while it loads */
+.heroVideo {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--p-bg);
+}
+
+.heroVideoMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The poster and its Play button: the whole poster starts the video */
+.heroVideoCover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.heroVideoPoster {
+  object-fit: cover;
+}
+
+/* A soft shade behind the button so it reads on any frame */
+.heroVideoCover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(16% 34% at 50% 50%, rgb(10 4 20 / 0.3), transparent 80%);
+  pointer-events: none;
+}
+
+/* One round Play button, with a soft halo so it reads on any frame */
+.heroVideoPlay {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(3.5rem, 6.5vw, 5.75rem);
+  height: clamp(3.5rem, 6.5vw, 5.75rem);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.95);
+  color: var(--p-accent);
+  box-shadow:
+    0 0 0 clamp(5px, 0.7vw, 10px) rgb(255 255 255 / 0.2),
+    0 24px 60px -18px rgb(0 0 0 / 0.6);
+  transition: transform 0.5s var(--ease);
+}
+
+/* Nudged right: a triangle looks centred a little past the middle */
+.heroVideoPlay svg {
+  width: 40%;
+  height: 40%;
+  margin-left: 8%;
+}
+
+.heroVideoTime {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroVideoSpinner {
+  width: 36%;
+  height: 36%;
+  border: 2px solid color-mix(in srgb, var(--p-accent) 25%, transparent);
+  border-top-color: var(--p-accent);
+  border-radius: 50%;
+  animation: heroVideoSpin 0.8s linear infinite;
+}
+
+@keyframes heroVideoSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.heroVideoCover:hover .heroVideoPlay {
+  transform: scale(1.06);
+}
+
+/* The cover is clipped by the rounded box, so the ring goes on the button */
+.heroVideoCover:focus-visible {
+  outline: none;
+}
+
+.heroVideoCover:focus-visible .heroVideoPlay {
+  outline: 3px solid #fff;
+  outline-offset: clamp(8px, 1vw, 13px);
+}
+
+.heroVideoFallback {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 2;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--p-bg);
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVideoPlay {
+    transition: none;
+  }
+
+  .heroVideoCover:hover .heroVideoPlay {
+    transform: none;
+  }
+
+  .heroVideoSpinner {
+    animation-duration: 2.4s;
+  }
+}
+
 /* ------------------------------------------------ Annotated screens */
 
 .annotated {

@@ -61,8 +61,9 @@ import cetasika from "./cetasika";
 import datalyon from "./datalyon";
 import oneev from "./oneev";
 import otherWorks from "./other-works";
+import uiSnip from "./ui-snip";
 
-const studies = { cetasika, datalyon, "1ev": oneev, "other-works": otherWorks };
+const studies = { cetasika, "ui-snip": uiSnip, datalyon, "1ev": oneev, "other-works": otherWorks };
 
 export const caseStudySlugs = projects.map((project) => project.id);
 
