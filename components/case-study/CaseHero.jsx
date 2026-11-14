@@ -3,6 +3,7 @@ import Link from "next/link";
 import { visualSize } from "@/data/projects";
 import { FULL_SIZES } from "@/lib/case-study";
 import ArrowIcon from "@/components/ui/ArrowIcon";
+import RollingText from "@/components/ui/RollingText";
 import CaseImage from "./CaseImage";
 import CaseStudyMeta, { ZeroToOneTag } from "./CaseStudyMeta";
 import HeroVideo from "./HeroVideo";
@@ -61,6 +62,7 @@ export default function CaseHero({ project, study }) {
                 {copy(study.subheadline)}
               </p>
             )}
+            {study.heroLink && <HeroLink link={study.heroLink} />}
 
             <CaseStudyMeta context={study.context} meta={study.meta} />
           </div>
@@ -97,6 +99,24 @@ export default function CaseHero({ project, study }) {
         </div>
       </div>
     </header>
+  );
+}
+
+// A button under the summary to the product itself, such as its store listing
+// ({ label, href, note }), in the study's accent. It opens in a new tab, and
+// the optional note sits beside it.
+function HeroLink({ link }) {
+  return (
+    <div data-intro className={styles.heroAction}>
+      <a href={link.href} target="_blank" rel="noopener noreferrer" className={`group ${styles.heroButton}`}>
+        <RollingText>{link.label}</RollingText>
+        <span aria-hidden="true" className={styles.heroButtonIcon}>
+          <ArrowIcon />
+        </span>
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
+      {link.note && <p className={styles.label}>{link.note}</p>}
+    </div>
   );
 }
 

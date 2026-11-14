@@ -4,9 +4,10 @@
 // Claude Code as his AI pair programmer. Sources: his case-study brief
 // (UI_Snip_Portfolio_Case_Study.pdf), his real panel screenshots (v0.1.0) and
 // the project's own notes (its CLAUDE.md files). Nothing here claims user
-// research, users, metrics or a launch: it's a working v0.1.0 with a private
-// beta next. Never publish the extension's ID, the backend's address or beta
-// access codes here.
+// research, users or metrics: v0.1.0 is in a limited beta on the Chrome Web
+// Store, as UI Snip Beta (November 2026), and its store link is public. Never
+// publish the backend's address, beta access codes or the development
+// build's extension ID here.
 //
 // Screens are the real side panel (1×), cropped by a few pixels so each row
 // shares one size. The workflow tiles are the panel's own feature art on
@@ -44,13 +45,20 @@ const uiSnip = {
   summary: "From visual inspiration to AI-ready implementation.",
   subheadline:
     "A Chrome extension that captures a design, a motion or an animation on any website and turns it into a structured prompt for AI coding tools like Claude Code, Cursor and Codex. I designed and built it end to end.",
+  // The store listing, as a button under the summary (components/case-study/
+  // CaseHero). In the beta, AI features ask for an access code.
+  heroLink: {
+    label: "Get it on the Chrome Web Store",
+    href: "https://chromewebstore.google.com/detail/ui-snip-beta/fmeenkmihdichlkaajkknhoplmcojaoj",
+    note: "Limited beta · v0.1.0",
+  },
   // Professional context (components/case-study/CaseStudyMeta).
   context: {
     zeroToOne: true,
     role: "Product Designer & Developer",
     team: "Solo, with Claude Code as my AI pair programmer",
     product: "Independent product: a Chrome extension with a small AI backend",
-    status: "v0.1.0 · working end to end · private beta next",
+    status: "v0.1.0 · limited beta on the Chrome Web Store",
     timeline: "Oct – Nov 2026",
     platforms: "Chrome side panel · Cloudflare Workers · Google Gemini",
     ownership: [
@@ -71,7 +79,7 @@ const uiSnip = {
     ],
     result: [
       "A working v0.1.0: all three workflows tested end to end in Chrome on real sites.",
-      "Next: a small private beta.",
+      "Now in a limited beta on the Chrome Web Store.",
     ],
   },
   // The demo (1:00, with sound): UI Snip running all three workflows on a
@@ -438,7 +446,7 @@ const uiSnip = {
       "The AI was quality-tested with more than 50 real Gemini calls, read by hand. They included a hostile page with text written to trick the AI, and none of the 9 answers about it repeated that text.",
     ],
     nextLabel: "Next",
-    next: "A small private beta with trusted testers, then a paid AI tier and a Chrome Web Store release before anyone else relies on it.",
+    next: "A limited beta with trusted testers, now on the Chrome Web Store, then a paid AI tier before anyone else relies on it.",
   },
 
   // ------------------------------------------------------------ Reflection
@@ -448,9 +456,9 @@ const uiSnip = {
       "Building UI Snip myself, with Claude Code as my pair programmer, changed how I design. Every decision met the real browser almost immediately, with its permissions, limits and timing, and the honest answer was often a clearer label rather than a cleverer feature.",
     ],
     next: [
-      "Run the private beta, and learn which workflow people come back to.",
+      "Run the beta, and learn which workflow people come back to.",
       "Longer captures and denser frames for Capture Motion.",
-      "A paid AI tier and a Chrome Web Store release.",
+      "A paid AI tier, then a full release beyond the beta.",
     ],
   },
 };

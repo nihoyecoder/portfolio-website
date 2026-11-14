@@ -219,6 +219,54 @@
   margin-top: 1.1rem;
 }
 
+/* A button to the product (e.g. its store listing) under the summary: the
+   site's header button, in the study's accent, with a note beside it */
+.heroAction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.heroButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--p-accent);
+  border-radius: 3px;
+  padding: 0.75rem 1.15rem;
+  background-color: var(--p-accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  transition:
+    background-color 0.5s var(--ease),
+    color 0.5s var(--ease);
+}
+
+.heroButton:hover {
+  background-color: transparent;
+  color: var(--p-accent);
+}
+
+.heroButton:focus-visible {
+  outline-color: var(--p-accent);
+}
+
+.heroButtonIcon {
+  display: flex;
+  font-size: 0.85em;
+  transition: translate 0.5s var(--ease);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .heroButton:hover .heroButtonIcon {
+    translate: 2px -2px;
+  }
+}
+
 /* Three overlapping phone screens on the project stage, with a logo */
 .heroStage {
   position: relative;
