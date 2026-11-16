@@ -6,9 +6,10 @@
 // capitals; measured widths (-0.055em tracking): MANOJ ≈ 3.49em, RAWAT ≈ 3.62em.
 //   base: stacked, widest word fills the width
 //   md:   one line, words pushed to the edges
-//   lg:   8.2cqw, so a 22cqw portrait sits between the words with room around
-//         them: MANOJ ends just left of the portrait (9.6cqw inset + its
-//         28.6cqw width) as RAWAT starts just right of it
+//   lg:   7.8cqw, so each word (MANOJ ≈ 27.2cqw, RAWAT ≈ 28.2cqw) fits in
+//         a side column beside the large portrait (at most 41.6cqw wide):
+//         MANOJ ends just short of the head (--lead, set in Hero), RAWAT
+//         starts just right of the portrait
 
 // One word's mask: the line, with room for the letters' overhang and the
 // descender of the "j" (the bottom padding is cancelled by the margin, so
@@ -19,16 +20,16 @@ export default function HeroName({ name }) {
   const words = name.toUpperCase().split(" ");
 
   return (
-    <h1 className="relative z-0 font-display text-accent font-medium leading-[0.8] tracking-[-0.055em] text-[calc(100cqw/3.74)] md:flex md:justify-between md:text-[calc(100cqw/7.4)] lg:text-[8.2cqw]">
+    <h1 className="relative z-0 font-display text-accent font-medium leading-[0.8] tracking-[-0.055em] text-[calc(100cqw/3.74)] md:flex md:justify-between md:text-[calc(100cqw/7.4)] lg:text-[7.8cqw]">
       <span className="sr-only">{name}</span>
       {words.map((word, w) => (
         <span
           key={word}
           aria-hidden="true"
           data-hero-word
-          // lg: the first word sits close to the portrait, in line with the
-          // statement below it.
-          className={`${BAND} ${w === words.length - 1 ? "lg:hidden" : "lg:pl-[9.6cqw]"}`}
+          // lg: the first word ends just short of the portrait's head; the
+          // last moves right of the portrait (HeroNameTail).
+          className={`${BAND} ${w === words.length - 1 ? "lg:hidden" : "lg:pl-(--lead)"}`}
         >
           {[...word].map((char, i) => (
             <span key={i} data-anim="char" className="inline-block">
@@ -41,8 +42,8 @@ export default function HeroName({ name }) {
   );
 }
 
-// lg: the last word moves down beside the bottom of the portrait (rendered
-// by Hero next to the role).
+// lg: the last word moves a line down, right of the portrait (rendered by
+// Hero above the role).
 // Decorative; HeroName already names the page.
 export function HeroNameTail({ name }) {
   const word = name.toUpperCase().split(" ").pop();
@@ -50,7 +51,7 @@ export function HeroNameTail({ name }) {
     <span
       aria-hidden="true"
       data-hero-word
-      className={`-mx-[0.03em] -mb-[0.22em] hidden overflow-hidden whitespace-nowrap px-[0.03em] pt-[0.06em] pb-[0.24em] font-display font-medium leading-[0.8] tracking-[-0.055em] text-accent lg:ml-[0.5cqw] lg:block lg:text-[8.2cqw]`}
+      className={`-mx-[0.03em] -mb-[0.22em] hidden overflow-hidden whitespace-nowrap px-[0.03em] pt-[0.06em] pb-[0.24em] font-display font-medium leading-[0.8] tracking-[-0.055em] text-accent lg:ml-[0.5cqw] lg:block lg:text-[7.8cqw]`}
     >
       {[...word].map((char, i) => (
         <span key={i} data-anim="char" className="inline-block">

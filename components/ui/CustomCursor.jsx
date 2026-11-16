@@ -14,7 +14,7 @@ const IDLE_MS = 1500; // the dot fades out when the pointer rests this long
 
 const RING = 68; // px, the expanded size the element is drawn at
 const DOT = 20; // px, the default solid dot
-const GRIP = 12; // px, over a draggable portrait anchor
+const GRIP = 12; // px, over something draggable (data-cursor="drag")
 const MAGNET = 6; // px, the most a small link pulls the ring toward its centre
 
 const ACCENT = "#c4546a";
@@ -103,13 +103,8 @@ export default function CustomCursor() {
           text = next.text;
           show();
         }
-        // The portrait editor marks a grabbable anchor via <html> cursor.
-        setState(grabbing() ? "drag" : next.mode);
+        setState(next.mode);
       };
-
-      // useEditableMask sets html.style.cursor to "grab"/"grabbing" near an
-      // anchor; the ring stays a small dot there so the anchor stays visible.
-      const grabbing = () => html.style.cursor === "grab" || html.style.cursor === "grabbing";
 
       const onMove = (event) => {
         if (event.pointerType !== "mouse") return;
@@ -131,9 +126,6 @@ export default function CustomCursor() {
           scrolling = false;
           show();
         }
-
-        if (grabbing()) setState("drag");
-        else if (state === "drag") setState(target ? "hover" : "default");
 
         // A gentle pull toward the centre of small links (text, nav), never
         // more than MAGNET px, so the ring still sits under the pointer.

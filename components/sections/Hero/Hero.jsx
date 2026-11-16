@@ -6,11 +6,12 @@ import { profile } from "@/data/profile";
 import { site } from "@/lib/site";
 import HeroMotion from "./HeroMotion";
 import HeroName, { HeroNameTail } from "./HeroName";
-import HeroToolStrings from "./HeroToolStrings";
 import Portrait from "./Portrait";
 import styles from "./Hero.module.css";
 
-const PORTRAIT_SRC = "/images/about/manoj-hero.webp";
+// The cut-out portrait (transparent WebP) at its real size. To replace it,
+// give the new file a new name: next.config.mjs caches images for 31 days.
+const PORTRAIT = { src: "/images/about/manoj-hero-cutout.webp", width: 1122, height: 1402 };
 
 // Full-strength text: it sits on the rose gradient.
 const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-foreground";
@@ -30,7 +31,7 @@ function MaskLine({ children, className = "" }) {
 
 export default function Hero() {
   // Checked on the server; falls back to a neutral placeholder until the file exists.
-  const hasPortrait = fs.existsSync(path.join(process.cwd(), "public", PORTRAIT_SRC));
+  const hasPortrait = fs.existsSync(path.join(process.cwd(), "public", PORTRAIT.src));
 
   return (
     <HeroMotion
@@ -52,20 +53,27 @@ export default function Hero() {
         {/*
           One container for name + body so both share cqw units.
           base: stacked column · md: copy left / portrait right ·
-          lg: portrait pierces the name between the two words.
+          lg: a large portrait between the two words, about 78% of the
+          screen's height tall. --pw is its width, capped so the words fit
+          either side. --lead moves MANOJ and the statement right, so MANOJ
+          ends 13% of the way into the portrait's box, about 80px short of
+          the hair: (100cqw − pw) / 2 + 0.13 pw − 27.22cqw (MANOJ is 3.49em
+          of the 7.8cqw name). Tuned to this photo's head position.
         */}
-        <div className="@container">
+        <div className="@container lg:[--lead:calc(22.78cqw_-_var(--pw)*0.37)] lg:[--pw:min(41.6cqw,62.4svh)]">
           <HeroName name={site.name} />
 
-          <div className="mt-6 grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8 lg:mt-0 lg:grid-cols-[1fr_22cqw_1fr] lg:gap-x-0">
-            {/* Role and current job — lg: RAWAT, the role and the job sit beside
-                the portrait, starting just right of it; the block ends a little
-                above the image's bottom (27px clears the caption). */}
-            <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-2 lg:self-end lg:pt-0 lg:mb-[calc(27px+5cqw)]">
+          <div className="mt-6 grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-8 lg:mt-0 lg:grid-cols-[1fr_var(--pw)_1fr] lg:gap-x-0">
+            {/* Role and current job — lg: RAWAT, the role and the job sit right
+                of the portrait, a line below MANOJ, beside the head, where the
+                cut-out leaves room (its shoulders start halfway down). */}
+            <div className="md:col-start-1 md:row-start-1 md:pt-4 lg:col-start-3 lg:row-start-1 lg:self-start lg:-ml-[2cqw] lg:pt-[1.2cqw]">
               <HeroNameTail name={site.name} />
               {/* lg: a clear gap under RAWAT, in line with its R */}
               <div className="lg:mt-[2.6cqw] lg:pl-[1.6cqw]">
-                <p className="font-display text-[clamp(1.5rem,2.1vw,2rem)] font-medium leading-[1.05] tracking-[-0.02em]">
+                {/* lg: a smaller floor so it stays on one line in the narrower
+                    side column (from 1024px wide). */}
+                <p className="font-display text-[clamp(1.5rem,2.1vw,2rem)] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[clamp(1.25rem,2.1vw,2rem)]">
                   <MaskLine>{profile.headline}</MaskLine>
                 </p>
                 <p className={`mt-2.5 ${meta}`}>
@@ -77,20 +85,19 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Portrait — on desktop the tool strings hang behind it. */}
-            <div className="relative z-10 ml-auto w-[64%] max-w-[21rem] md:col-start-2 md:row-span-3 md:row-start-1 md:-mt-[3.8cqw] md:w-[88%] md:max-w-none lg:w-full lg:row-span-2 lg:-mt-[9.7cqw]">
-              <HeroToolStrings />
-              <Portrait
-                src={hasPortrait ? PORTRAIT_SRC : null}
-                alt={`Portrait of ${site.name}`}
-                caption={["Fig. 01", site.name]}
-              />
+            {/* Portrait: a cut-out that drifts with the cursor. lg: its top sits
+                a little above MANOJ. */}
+            <div className="relative z-10 ml-auto w-[84%] max-w-[26rem] md:col-start-2 md:row-span-3 md:row-start-1 md:w-full md:max-w-none lg:w-full lg:row-span-2 lg:-mt-[9.4cqw]">
+              <Portrait image={{ ...PORTRAIT, src: hasPortrait ? PORTRAIT.src : null }} alt={`Portrait of ${site.name}`} />
             </div>
 
-            {/* Statement */}
+            {/* Statement — lg: under MANOJ, from its first letter to 16% into
+                the portrait's box (clear at these heights: the face starts at
+                24%). A little wider than the word, so it wraps into three
+                lines at 1280px too; balanced, the longest ends near MANOJ's J. */}
             <p
               data-anim="copy"
-              className="max-w-[46ch] text-balance text-[clamp(1rem,1.2vw,1.125rem)] leading-snug text-foreground lg:max-w-none md:col-start-1 md:row-start-3 md:self-end lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start lg:ml-[9.6cqw] lg:mr-[0.8cqw] lg:pt-[2.6cqw]"
+              className="max-w-[46ch] text-balance text-[clamp(1rem,1.2vw,1.125rem)] leading-snug text-foreground lg:max-w-none md:col-start-1 md:row-start-3 md:self-end lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start lg:ml-(--lead) lg:-mr-[calc(var(--pw)*0.16)] lg:pt-[2.6cqw]"
             >
               {profile.statement}
             </p>
