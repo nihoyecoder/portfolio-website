@@ -5,7 +5,7 @@
 // be removed (or set to null) and the page skips it. Copy fields can be a
 // string or a list of paragraphs; "\n" forces a line break in a heading.
 //
-// Kept deliberately short (a 3–5 minute read): problem and users, six
+// Kept deliberately short (a 3–5 minute read): problem and users, five
 // decisions, one solution overview of the app and clinic CMS, the design
 // system, the website, and the outcome.
 //
@@ -18,6 +18,10 @@
 import { image } from "@/lib/case-study";
 
 const dir = "/images/projects/cetasika/case-study";
+
+// An annotated composition at its real exported size (3840 × 2160), so its
+// marker boxes ([x1, y1, x2, y2]) are in the image's own pixels.
+const shot = (path, label, alt) => ({ src: `${dir}/${path}`, width: 3840, height: 2160, label, alt, quality: 90 });
 
 const cetasika = {
   // Optional page theme (this case study only): page background, text,
@@ -129,19 +133,37 @@ const cetasika = {
     {
       title: "Let users search by need, not product structure.",
       problem: [
-        "Users don't always know which provider category they need.",
-        "Someone may know they have back pain, need help with a skin concern or want prenatal yoga without knowing how Cetasika internally classifies that care.",
+        "Users don't always know which kind of wellness centre they need.",
+        "Someone may want relief from back pain, help with stress or a prenatal session without knowing whether that sits under yoga studios, massage centres or spas, or how Cetasika classifies it internally.",
       ],
       decision: [
-        "Structure discovery around:",
+        "Structure centre discovery around:",
         // A nested list renders inline ("a · b · c") and reads as a list.
-        ["Specialties", "Conditions", "Services", "Location", "Consultation type"],
+        ["Wellness concern", "Centre category", "Service", "Location and distance", "Availability"],
+        "Search starts from a wellness concern. Categories such as Yoga Studios or Massage & Spa group centres the way people recognise them, and service filters narrow the list. Each centre then shows its services, prices, trainers and locations before a session is requested.",
       ],
-      why: "The interface should follow the user's mental model instead of expecting users to understand Cetasika's internal provider structure.",
-      // IMAGE: one composition of the four steps from home to a provider.
+      why: "The interface should follow the user's mental model (what they need help with) instead of expecting them to understand how Cetasika categorises centres and services.",
+      // IMAGE: one composition of the four steps from home to requesting a
+      // centre session (2400 × 1350, so the markers are in those pixels).
       media: {
-        layout: "full",
-        caption: "Home → Wellness centres → Centre services → Provider",
+        layout: "annotated",
+        caption: "Home → Wellness centres → Centre services → Request appointment",
+        markers: [
+          { n: 1, box: [126, 338, 654, 420] },
+          { n: 2, box: [126, 626, 654, 922] },
+          { n: 3, box: [670, 513, 1187, 657] },
+          { n: 4, box: [670, 672, 1187, 874] },
+          { n: 5, box: [1218, 631, 1727, 1176] },
+          { n: 6, box: [1758, 557, 2272, 1145] },
+        ],
+        notes: [
+          "Search starts from a wellness concern, not a provider type.",
+          "Centres are grouped the way people look for them: yoga studios, massage centres and spas.",
+          "Inside a category, service filters such as Therapeutic Yoga or Prenatal narrow the list.",
+          "Each centre card answers the next questions: price per session and whether it's available today.",
+          "A centre's services open in a sheet, each with what it's for and its price.",
+          "On the centre's page, people pick a service and a location, see the session fee, then request an appointment.",
+        ],
         image: image(`${dir}/decisions/01-discovery-v2.webp`, {
           size: "wide",
           quality: 90,
@@ -150,7 +172,7 @@ const cetasika = {
         }),
       },
       impact:
-        "Users can begin with what they know — their need — and progressively reach the right doctor, centre or service.",
+        "Users can begin with what they know — their need — and progressively reach the right centre, service and location to book a session.",
     },
     {
       title: "Show one centre once — even when it offers multiple services.",
@@ -163,16 +185,28 @@ const cetasika = {
         "Services become attributes, tags and filtering options attached to that centre.",
       ],
       why: "Users choose between actual centres, not database relationships.",
-      // IMAGE: one composition of provider registration (exported at 3840px for HD).
+      // IMAGE: the centre results and their empty state (Figma Cetasika-App
+      // 24985:4691 and 24985:4633), with the distances pulled out beside the list.
       media: {
-        layout: "full",
-        caption: "Who are you registering as → How you provide services → Wellness category",
-        image: image(`${dir}/decisions/02-registration.webp`, {
-          size: "wide",
-          quality: 90,
-          label: "Provider registration flow",
-          alt: "Three registration screens: choosing between CetaUsers, Doctors and Holistic Wellness; choosing Wellness Center or Individual Wellness Provider; and selecting a wellness category such as Massage & Spa",
-        }),
+        layout: "annotated",
+        caption: "One list of centres, nearest first, and a clear empty state when none is nearby.",
+        image: shot(
+          "decisions/02-centre-results.webp",
+          "Centre results — nearest first, and the empty state",
+          "Two app screens. Therapeutic Yoga Centers: search, service filters (All, Therapeutic Yoga, Prenatal Yoga) and four centre cards, each with service tags and its distance, with the distances pulled out beside the list in order: 1.2, 2.6, 4.7 and 6.2 km, nearest first. Physiotherapy Clinics with the Therapeutic Yoga filter selected: No Centers Available, we couldn't find any centers in this area right now.",
+        ),
+        markers: [
+          { n: 1, box: [918, 608, 1550, 802] },
+          { n: 2, box: [920, 826, 1530, 1122] },
+          { n: 3, box: [1640, 790, 2030, 1945] },
+          { n: 4, box: [2384, 918, 2846, 1282] },
+        ],
+        notes: [
+          "Search and service filters narrow one list of centres.",
+          "One card per centre: its services show as tags, with “+4 more”, instead of the centre repeating for each service.",
+          "Nearest first: results are ordered by distance, and every card shows how far away the centre is.",
+          "Edge case: when no centre is available in the area, the screen says so plainly, and search and filters stay in place.",
+        ],
       },
       impact: "Cleaner results, less repetition and a structure that continues to work as centres add more services.",
     },
@@ -189,23 +223,40 @@ const cetasika = {
         ["Where am I?", "What happened?", "What should I do next?"],
         "Pending Approval → Booking Approved → Proceed to Pay → Payment Summary → Slide to Pay → Payment Successful → Appointment becomes actionable",
         "Depending on the appointment state, relevant actions can then appear, such as:",
-        ["Reschedule", "Cancel", "Proceed to Pay", "Get Directions", "Session OTP"],
+        ["Reschedule", "Cancel", "Proceed to Pay", "Get Directions", "Session OTP", "Book Again", "Rate Your Experience"],
       ],
       why: [
         "Doctor approval, payment and the actual appointment are separate parts of the same journey.",
         "Users should never have to guess whether the booking is confirmed or what action is expected from them next.",
       ],
-      // IMAGE: one composition of the existing UI (exported at 3840px for HD).
+      // IMAGE: Payment Summary, Payment Successful and My Appointments (Figma
+      // Cetasika-App 24986:5428, 24986:5316 and 24986:4897). The long list is
+      // shown in two parts: its first screen, then the rest from the fourth card.
       media: {
-        layout: "full",
+        layout: "annotated",
         caption:
           "Every state answers three questions: where am I, what happened, and what do I need to do next?",
-        image: image(`${dir}/decisions/03-booking-states.webp`, {
-          size: "wide",
-          quality: 90,
-          label: "Booking states — approval, payment and confirmation",
-          alt: "Three app screens: a payment summary with the fee breakdown, total payable, refund information and Slide to Pay; a Payment Successful confirmation with status, date, time, payment method and receipt; and My Appointments showing Pending Approval and Booking Approved bookings with Reschedule, Cancel and Proceed to Pay actions",
-        }),
+        image: shot(
+          "decisions/03-booking-states-v2.webp",
+          "Booking states — pay, confirm and track",
+          "Four app screens. Payment Summary: a fee breakdown with the total payable of ₹1,059, important information, the refund notice and Slide to Pay. Payment Successful: status, date, time, payment method, Download Receipt and View Appointment. My Appointments, in two parts: Pending Approval with Reschedule; Booking Approved with Cancel and Proceed to Pay; a paid booking with Get Directions and a Session OTP to share with the doctor; Cancelled with Book Again; and a past appointment with Rate Your Experience.",
+        ),
+        markers: [
+          { n: 1, box: [153, 669, 884, 1173] },
+          { n: 2, box: [131, 1793, 901, 1929] },
+          { n: 3, box: [1093, 669, 1854, 1406] },
+          { n: 4, box: [2037, 735, 2800, 1610] },
+          { n: 5, box: [2932, 191, 3695, 777] },
+          { n: 6, box: [2932, 785, 3695, 1775] },
+        ],
+        notes: [
+          "Every charge is itemised before paying, with the total payable highlighted; booking and refund terms sit right below.",
+          "Slide to Pay shows the amount and makes paying a deliberate gesture, not an accidental tap.",
+          "The confirmation states the outcome and the details (status, date, time, method, receipt), then one next step: View Appointment.",
+          "Each booking shows its status in words and colour, with only the actions that status allows: Reschedule while pending, Proceed to Pay once approved.",
+          "Once paid, the appointment becomes actionable: Get Directions, and a Session OTP to share with the doctor.",
+          "Closed bookings still lead somewhere: Book Again after a cancellation, Rate Your Experience after a visit.",
+        ],
       },
       impact: [
         [
@@ -231,153 +282,33 @@ const cetasika = {
         ["Available day / date", "Available time", "Appointment slots", "Their own booking availability"],
       ],
       why: "The product should adapt to the doctor's schedule rather than forcing the doctor to adapt to the product.",
-      // IMAGE: one composition of the availability flow (exported at 3840px for HD).
+      // IMAGE: one composition of the availability flow (exported at 3840px for
+      // HD). The phones face straight on, so each marker is a band across one.
       media: {
-        layout: "full",
+        layout: "annotated",
         caption: "Set availability → See slots by date → Manage individual slots",
-        image: image(`${dir}/decisions/04-doctor-availability.webp`, {
-          size: "wide",
-          quality: 90,
-          label: "Doctor availability — flexible slot management",
-          alt: "Three Availability and Slots screens: setting a location, appointment type, date, start and end time, slot duration, buffer and weekly repeat; schedules listed by date for each clinic; and one schedule expanded to tick individual 15-minute slots on or off",
-        }),
+        image: shot(
+          "decisions/04-doctor-availability.webp",
+          "Doctor availability — flexible slot management",
+          "Three Availability and Slots screens: setting a location, appointment type, date, start and end time, slot duration, buffer and weekly repeat; schedules listed by date for each clinic; and one schedule expanded to tick individual 15-minute slots on or off",
+        ),
+        markers: [
+          { n: 1, box: [503, 505, 1350, 862] },
+          { n: 2, box: [503, 890, 1350, 1392] },
+          { n: 3, box: [503, 1412, 1350, 1772] },
+          { n: 4, box: [1496, 866, 2344, 1347] },
+          { n: 5, box: [2488, 1125, 3337, 1497] },
+        ],
+        notes: [
+          "Each schedule belongs to a clinic location and a consultation type: video or in-clinic.",
+          "Doctors pick the date and their own start and end times, instead of one fixed working day.",
+          "Slot duration, the buffer between appointments and a weekly repeat are set once for the schedule.",
+          "Schedules are listed by date, each card summarising its clinic, type, hours, days, slot duration, repeat and buffer.",
+          "A schedule expands into its slots, and individual slots can be switched on or off.",
+        ],
       },
       impact:
         "More realistic scheduling, greater flexibility and control for providers, and support for doctors with different consulting patterns.",
-    },
-    {
-      // A designed future monetisation model — not a released feature. Keep
-      // the copy in that tense until it ships.
-      title: "Design subscription as a lifecycle, not just a paywall.",
-      status: "Designed · not yet released",
-      context: [
-        "Cetasika explored a subscription model for Doctors and Wellness Centres, designed as a future monetisation model for providers.",
-        "The core provider experience stays available through a free plan, while advanced capabilities can be offered through a paid Cetasika subscription.",
-      ],
-      problem: [
-        "Introducing a subscription required more than designing an upgrade screen. Providers needed to understand:",
-        [
-          "What remains free",
-          "What paid plans unlock",
-          "Why upgrading is useful",
-          "Their current subscription status",
-          "Renewal date and pricing",
-          "How to cancel",
-          "What happens if automatic renewal fails",
-          "What happens to an active subscription when deleting an account",
-        ],
-        "A subscription experience that only handles purchase would leave important lifecycle and edge cases unresolved.",
-      ],
-      decision: [
-        "Design the subscription as a complete lifecycle:",
-        "Discover → Compare → Upgrade → Activate → Manage → Renew / Recover → Cancel",
-        "Keep the core product accessible through a free plan, then clearly communicate the additional value of the paid plan — for both Doctors and Wellness Centres, with benefits relevant to each.",
-      ],
-      why: [
-        "Subscription is an ongoing relationship, not a single transaction.",
-        "The experience therefore needs transparency before purchase, confirmation after purchase, ongoing management and clear recovery for exceptional states.",
-      ],
-      // Benefit names follow the latest design (e.g. "Unlimited Slots").
-      principles: [
-        {
-          title: "Explain value before payment",
-          text: [
-            "Allow providers to compare free and paid capabilities before choosing a plan. Examples explored for Doctors:",
-            [
-              "Video Consultation",
-              "Prescription Upload",
-              "Unlimited Slots",
-              "Unlimited Chats",
-              "Multi-location Support",
-              "Priority Support",
-              "Verified Badge",
-              "Personalised Profile Video",
-              "Access to New Features",
-              "Boosted Visibility",
-              "Sharing and Promotion",
-            ],
-            "For Centres, operational benefits:",
-            [
-              "Additional services",
-              "Additional packages",
-              "Unlimited chats",
-              "Multi-location support",
-              "Priority support",
-              "Verified status",
-              "Access to new features",
-              "Boosted visibility",
-              "Sharing and promotion",
-            ],
-          ],
-        },
-        {
-          title: "Surface upgrades contextually",
-          text: "The provider dashboard can communicate the availability of Cetasika Plus and let providers upgrade when the additional capability is relevant.",
-          principle: "Promote the upgrade where users can understand why it matters.",
-        },
-        {
-          title: "Close the purchase loop",
-          text: [
-            "After a successful subscription, clearly communicate:",
-            ["Subscription activation", "Current plan", "Next billing date"],
-            "Providers should never be left unsure whether the upgrade succeeded.",
-          ],
-        },
-        {
-          title: "Give users control after subscribing",
-          text: [
-            "My Subscription clearly shows:",
-            ["Current Plan", "Status", "Renewal Date", "Price", "Cancellation action"],
-          ],
-          principle: "Recurring payments need recurring visibility and control.",
-        },
-        {
-          title: "Treat failed renewal as a recoverable state",
-          text: [
-            "If automatic payment fails, a dedicated paused / payment-failure state explains:",
-            [
-              "The payment did not go through",
-              "The system will retry",
-              "Check balance / payment details",
-              "Manage Subscription is available",
-            ],
-          ],
-          principle: "Payment failure should explain what happened and how to recover.",
-        },
-        {
-          title: "Resolve subscription before account deletion",
-          text: [
-            "If a provider tries to delete their account while a subscription is active, they manage or cancel the subscription first. The screen shows:",
-            ["Current plan", "Active status", "Renewal date", "Price", "Manage Subscription", "Back to Profile"],
-            "The subscription remains active until the end of the current billing period.",
-          ],
-          principle: "Account deletion should not silently break an active billing relationship.",
-        },
-      ],
-      // IMAGE: one composition of the existing UI (exported at 3840px for HD).
-      media: {
-        layout: "full",
-        caption:
-          "Subscription was designed as an ongoing provider relationship — from understanding the value to managing renewal, failure and cancellation.",
-        image: image(`${dir}/decisions/05-subscription.webp`, {
-          size: "wide",
-          quality: 90,
-          label: "Cetasika subscription — compare, upgrade and recover",
-          alt: "Three provider screens: a Cetasika subscription comparison of the Free and Plus plans with features such as Video Consultation, Unlimited Slots and Priority Support; a centre dashboard with a Grow Your Center with Cetasika PLUS upgrade module; and a Subscription Paused message explaining the payment didn't go through, with Manage Subscription",
-        }),
-      },
-      // Intended outcomes of the design — not measured results.
-      impact: [
-        "Designed to:",
-        [
-          "Make free vs paid value easier to understand",
-          "Give providers control over recurring billing",
-          "Create clearer upgrade opportunities",
-          "Handle failed renewal without leaving users confused",
-          "Prevent account deletion from conflicting with an active subscription",
-          "Create a reusable monetisation model for both Doctors and Wellness Centres",
-        ],
-      ],
     },
     {
       // The clinic-management CMS (Main Admin, Staff / Receptionists, Doctors)
@@ -468,18 +399,70 @@ const cetasika = {
           why: "Doctors need their clinical schedule and patient context, not the entire clinic's administrative dashboard.",
         },
       ],
-      // IMAGE (CMS): one composition of the clinic CMS (exported at 3840px for HD).
-      media: {
-        layout: "full",
-        caption:
-          "One appointment system connects Admin, Staff and Doctors while giving each role only the context they need.",
-        image: image(`${dir}/decisions/06-clinic-appointments.webp`, {
-          size: "wide",
-          quality: 90,
-          label: "Clinic Management System — Admin, Queue and Doctor views",
-          alt: "The Cetasika Clinic Management System on three devices: the Queue board with Booked, Checked In, Waiting, In Consultation and Completed patients; a Doctor dashboard with today's schedule and calendar; and the Admin dashboard with total appointments, patients today, revenue, total visits, today's appointments and the live queue",
-        }),
-      },
+      // IMAGES (CMS): one annotated screen per role, in the order of the
+      // principles above. Each is the first 1920 × 1080 of a Figma frame
+      // (Cetasika-App 24988:13716 admin, 24988:14089 queue, 24988:14530
+      // doctor) at 2×. The admin and queue frames' sidebar panel stops short
+      // in Figma; it's carried down to the bottom of the crop.
+      media: [
+        {
+          layout: "annotated",
+          caption: "Main Admin: the whole clinic at a glance.",
+          image: shot(
+            "decisions/05-admin-dashboard.webp",
+            "Clinic CMS — Main Admin dashboard",
+            "The Clinic Management dashboard for the main admin: today's appointments, patients and revenue, and visits this month; revenue and patient-visit charts; today's appointments with Upcoming, In Consultation, Waiting, Completed and Cancelled counts; and the live queue. The sidebar includes Doctors, Receptionists, Billing and Settings.",
+          ),
+          markers: [
+            { n: 1, box: [572, 346, 3788, 634] },
+            { n: 2, box: [572, 1472, 3788, 2156] },
+            { n: 3, box: [36, 182, 484, 1126] },
+          ],
+          notes: [
+            "Clinic-wide numbers first: appointments and patients today, today's revenue and this month's visits.",
+            "Today's appointments by status, beside the live queue with each patient's token, doctor and status.",
+            "The admin's menu also runs the clinic itself: doctors, receptionists, billing and settings.",
+          ],
+        },
+        {
+          layout: "annotated",
+          caption: "Queue: one board that moves every patient through the day.",
+          image: shot(
+            "decisions/05-queue-board.webp",
+            "Clinic CMS — Queue board",
+            "The Queue board: counts for today's patients, waiting, in consultation and completed; filters for date, doctor, branch, department and status; columns for Booked, Checked In, Waiting, In Consultation and Completed, with patient cards showing time, token, doctor and visit type, one tagged Through Cetasika; and a card menu open on Move to, listing Checked-in, Waiting, In Consultation and Completed.",
+          ),
+          markers: [
+            { n: 1, box: [540, 888, 3788, 972] },
+            { n: 2, box: [1196, 1672, 1970, 2044] },
+            { n: 3, box: [2506, 1298, 3144, 1682] },
+          ],
+          notes: [
+            "One board for the day: patients move from Booked to Checked In, Waiting, In Consultation and Completed, with a count at each stage.",
+            "Staff move a patient to the next stage from the card's menu.",
+            "Bookings made in the Cetasika app join the same queue, and keep their Through Cetasika tag at every stage.",
+          ],
+        },
+        {
+          layout: "annotated",
+          caption: "Doctors: their own day, without the clinic's administration.",
+          image: shot(
+            "decisions/05-doctor-dashboard.webp",
+            "Clinic CMS — Doctor dashboard",
+            "The doctor's dashboard for Dr. Sarah Johnson: a banner to integrate with the Cetasika app; counts for today's appointments, patients, prescriptions and completed appointments; today's schedule with each patient's time, reason, status and time until the appointment; and a calendar. The sidebar has no Doctors or Receptionists items.",
+          ),
+          markers: [
+            { n: 1, box: [36, 182, 484, 910] },
+            { n: 2, box: [588, 1142, 3004, 2156] },
+            { n: 3, box: [552, 222, 3812, 742] },
+          ],
+          notes: [
+            "A doctor's menu leaves out clinic administration, such as managing doctors and receptionists.",
+            "Their own day as a schedule: each patient's time, reason for the visit, status and how long until it starts.",
+            "A prompt to connect their Cetasika app account, so appointments, patients and prescriptions stay in sync.",
+          ],
+        },
+      ],
       impact: [
         [
           "Creates one connected clinic workflow",
