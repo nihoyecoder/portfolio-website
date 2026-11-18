@@ -89,42 +89,8 @@ export const projects = [
     ],
   },
   {
-    id: "1ev",
-    number: "03",
-    title: "1EV",
-    subtitle: "EV Charging Platform",
-    tag: "EV Mobility Platform · End-to-End UX",
-    description:
-      "Designing an end-to-end EV charging experience covering discovery, booking, payments and live charging.",
-    href: "/work/1ev",
-    cta: "View case study",
-    // The 1EV app background: Figma "Gradient (Used in UI)", teal to navy.
-    // `background` is its navy end, used while colours cross-fade.
-    background: "#090F2F",
-    gradient: "linear-gradient(125deg, #053A42 0%, #090F2F 100%)",
-    foreground: "#E6F4F7",
-    accent: "#ffffff",
-    visuals: [
-      {
-        src: "/images/projects/1ev/charger-discovery.webp",
-        label: "Charger discovery",
-        alt: "Three phones showing 1EV on a deep teal background: the wallet with Evoins, a charging station's details with Check In, and the charger map",
-      },
-      {
-        src: "/images/projects/1ev/station-details.webp",
-        label: "Slot booking",
-        alt: "1EV Slot Booking with charging type, estimate and Booking Preview, beside the Booking Successful summary",
-      },
-      {
-        src: "/images/projects/1ev/charging-session.webp",
-        label: "Charging session",
-        alt: "A live 1EV charging session at 68%, between a charging-interrupted screen with Try Again and the completed session details",
-      },
-    ],
-  },
-  {
     id: "datalyon",
-    number: "04",
+    number: "03",
     title: "Datalyon",
     subtitle: "AI-Powered Data Analytics",
     tag: "0→1 AI Analytics Product · Product Design",
@@ -153,6 +119,40 @@ export const projects = [
         src: "/images/projects/datalyon/data-profile.webp",
         label: "Data profile",
         alt: "Data Profile: a warning that 2 of 12 columns need attention, quality metrics and a column table",
+      },
+    ],
+  },
+  {
+    id: "1ev",
+    number: "04",
+    title: "1EV",
+    subtitle: "EV Charging Platform",
+    tag: "EV Mobility Platform · End-to-End UX",
+    description:
+      "Designing an end-to-end EV charging experience covering discovery, booking, payments and live charging.",
+    href: "/work/1ev",
+    cta: "View case study",
+    // The 1EV app background: Figma "Gradient (Used in UI)", teal to navy.
+    // `background` is its navy end, used while colours cross-fade.
+    background: "#090F2F",
+    gradient: "linear-gradient(125deg, #053A42 0%, #090F2F 100%)",
+    foreground: "#E6F4F7",
+    accent: "#ffffff",
+    visuals: [
+      {
+        src: "/images/projects/1ev/charger-discovery.webp",
+        label: "Charger discovery",
+        alt: "Three phones showing 1EV on a deep teal background: the wallet with Evoins, a charging station's details with Check In, and the charger map",
+      },
+      {
+        src: "/images/projects/1ev/station-details.webp",
+        label: "Slot booking",
+        alt: "1EV Slot Booking with charging type, estimate and Booking Preview, beside the Booking Successful summary",
+      },
+      {
+        src: "/images/projects/1ev/charging-session.webp",
+        label: "Charging session",
+        alt: "A live 1EV charging session at 68%, between a charging-interrupted screen with Try Again and the completed session details",
       },
     ],
   },
