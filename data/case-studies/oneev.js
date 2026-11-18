@@ -20,8 +20,12 @@
 import { image } from "@/lib/case-study";
 
 const dir = "/images/projects/1ev/case-study";
+// At the files' real size (750 × 1624), so a screen's `markers` boxes
+// ([x1, y1, x2, y2]) are in its own pixels.
 const screen = (name, label, alt, extra = {}) => ({
   ...image(`${dir}/screens/${name}.webp`, { size: "phone", quality: 90, label, alt }),
+  width: 750,
+  height: 1624,
   ...extra,
 });
 const detail = (name, label, alt, caption) => ({
@@ -129,8 +133,26 @@ const oneEv = {
           layout: "phones",
           caption: "Slot booking with an estimated price before Review Booking · the booking summary that follows",
           images: [
-            screen("booking-by-unit", "Slot Booking — By Unit", "Slot Booking: select your EV, charging type By Unit with an Enter Units field, estimated time 45 mins and 56%, slot selection, and a Booking Preview with an estimated price of ₹5000 and Review Booking"),
-            screen("booking-summary", "Booking Successful", "Booking Successful: a summary with station, date and time, vehicle and booking ID, Download Receipt, next steps, and Done"),
+            screen("booking-by-unit", "Slot Booking — By Unit", "Slot Booking: select your EV, charging type By Unit with an Enter Units field, estimated time 45 mins and 56%, slot selection, and a Booking Preview with an estimated price of ₹5000 and Review Booking", {
+              markers: [
+                { n: 1, box: [28, 540, 700, 710] },
+                { n: 2, box: [62, 875, 690, 1008] },
+                { n: 3, box: [0, 1372, 740, 1592] },
+              ],
+            }),
+            screen("booking-summary", "Booking Successful", "Booking Successful: a summary with station, date and time, vehicle and booking ID, Download Receipt, next steps, and Done", {
+              markers: [
+                { n: 4, box: [28, 418, 722, 950] },
+                { n: 5, box: [28, 980, 722, 1295] },
+              ],
+            }),
+          ],
+          notes: [
+            "Three ways to say how much: by unit (kWh), by battery percentage or by price.",
+            "Each mode estimates what's missing: here, the time and battery percentage for a kWh amount.",
+            "The estimated price stays in view before Review Booking.",
+            "The summary confirms station, time, vehicle and booking ID, with the receipt to download.",
+            "Next steps say what to do on the day: arrive 15 minutes early, and pay the rest at the station.",
           ],
         },
         // The selector's three states, from the component set (they only
@@ -164,15 +186,31 @@ const oneEv = {
           screen("charging-session", "Live charging session", "Live session: Charging Normally, 14.6 kWh delivered, 68%, current power 47 kW, cost ₹286, 32 min, about 18 min remaining", {
             title: "Live session",
             caption: "Energy, cost and time remaining at a glance",
+            markers: [
+              { n: 1, box: [40, 490, 710, 900] },
+              { n: 2, box: [55, 968, 695, 1265] },
+            ],
           }),
           screen("session-interrupted", "Charging interrupted", "Charging interrupted: your charging session stopped unexpectedly, reconnecting with a 00:18 timer, Try Again, Report an issue and Need help", {
             title: "Interrupted",
             caption: "What happened, a reconnect in progress, and Try Again",
+            markers: [
+              { n: 3, box: [25, 495, 725, 990] },
+              { n: 4, box: [15, 1015, 735, 1225] },
+            ],
           }),
           screen("session-completed", "Session details", "Session Details: charge completed, 24.8 kWh delivered, duration, average power, charging cost ₹486, platform fee ₹10, total ₹496, the station and View Receipt", {
             title: "Completed",
             caption: "Energy, cost, platform fee and total — then the receipt",
+            markers: [{ n: 5, box: [22, 940, 728, 1222] }],
           }),
+        ],
+        notes: [
+          "A live status with energy delivered and a progress bar: the session is never a black box.",
+          "Power, cost so far, time charging and time remaining, side by side.",
+          "An interruption says what happened, and shows the reconnect in progress.",
+          "A way out: Try Again first, then Report an issue or Need help.",
+          "The completed session lists charging cost and platform fee before the total, then the receipt.",
         ],
       },
       impact: "Drivers always know what the charger is doing, what it has cost, and what to do if it stops.",
@@ -193,15 +231,33 @@ const oneEv = {
           screen("care-home", "1EV Care — Home", "1EV Care home: select your EV, Need help on the road with four quick roadside actions, and Services below", {
             title: "Care Home",
             caption: "Help on the road first; planned services below",
+            markers: [{ n: 1, box: [25, 935, 725, 1270] }],
           }),
           screen("care-providers", "1EV Care — Recommended centre", "Service Centre: we found the best match for your issue — EV Care Diagnostics, 4.8 rating, 3.2 km away, fits your XEV 9e, from ₹599, next available today 5:30 PM, Accept This Centre or Show Me Another Option", {
             title: "Recommended centre",
             caption: "One best-fit match — accept it, or see another",
+            markers: [
+              { n: 2, box: [22, 232, 728, 530] },
+              { n: 3, box: [0, 962, 748, 1322] },
+              { n: 4, box: [12, 1345, 738, 1565] },
+            ],
           }),
           screen("care-technician-tracking", "Roadside — Technician on the way", "Technician is on the way: live map with a 12 min ETA, arrival OTP, the verified roadside partner, and Call, Message and Share Trip", {
             title: "Track help",
             caption: "Who is coming, when, and how to verify them",
+            markers: [
+              { n: 5, box: [10, 355, 740, 782] },
+              { n: 6, box: [10, 795, 740, 1298] },
+            ],
           }),
+        ],
+        notes: [
+          "Help on the road comes first: four large tiles for the common problems, above planned services.",
+          "One recommendation, with the reason: the vehicle, the reported issue, location and the centre's capabilities.",
+          "The facts that decide it: rating, distance, fit for the vehicle, price and the next available slot.",
+          "Accept it in one tap, or ask for another option instead of comparing a long list.",
+          "Live tracking with the technician's arrival time and distance.",
+          "An arrival OTP and a verified partner card: who is coming, and how to check it's them.",
         ],
       },
       impact: "Planned care feels considered; getting help takes as few decisions as possible.",

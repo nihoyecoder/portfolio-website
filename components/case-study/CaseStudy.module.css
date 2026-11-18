@@ -512,6 +512,19 @@
   box-shadow: 0 0 0 3px var(--background);
 }
 
+/* On a stage (screens on the project's colour) markers take the stage's text
+   colour, so they read on a dark stage as well as a light one */
+.stage .marker {
+  border-color: var(--p-fg);
+  background-color: color-mix(in srgb, var(--p-fg) 8%, transparent);
+}
+
+.stage .markerNumber {
+  background-color: var(--p-fg);
+  color: var(--p-bg);
+  box-shadow: 0 0 0 3px var(--p-bg);
+}
+
 /* A secondary screen overlapping the main one (below it on small screens) */
 .overlay {
   position: relative;

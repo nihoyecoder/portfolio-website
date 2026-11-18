@@ -23,6 +23,8 @@ const SIZES = {
 //   phones            mobile screens on the project's tinted canvas
 //   sequence          mobile screens as numbered steps of a flow
 //                     (`arrows: true` draws an arrow between screens)
+//                     Both take `markers` on a screen and `notes` below the
+//                     row, as in annotated.
 //   before-after      two labelled states
 //   annotated         one screenshot with numbered highlight boxes and notes;
 //                     optional overlapping `overlay` screen and zoomed `details`
@@ -58,7 +60,7 @@ export default function CaseMedia({ media }) {
   if (layout === "phones" || layout === "sequence") {
     return (
       <Figure caption={caption}>
-        <Screens images={media.images} sequence={layout === "sequence"} arrows={media.arrows} />
+        <Screens images={media.images} sequence={layout === "sequence"} arrows={media.arrows} notes={media.notes} />
       </Figure>
     );
   }
@@ -137,7 +139,7 @@ function Figure({ span = "full", caption, children }) {
 }
 
 // On phones the row scrolls sideways instead of shrinking the screens.
-function Screens({ images, sequence, arrows }) {
+function Screens({ images, sequence, arrows, notes }) {
   const arrowed = sequence && arrows;
   return (
     <>
@@ -150,6 +152,7 @@ function Screens({ images, sequence, arrows }) {
             <li key={image.src} className={styles.screen}>
               <div className={styles.shot}>
                 <CaseImage image={image} sizes={SIZES.screen} compact />
+                <Markers image={image} markers={image.markers} />
                 {arrowed && i < images.length - 1 && <SequenceArrow />}
               </div>
               {sequence && (
@@ -168,7 +171,46 @@ function Screens({ images, sequence, arrows }) {
           Swipe to see all screens →
         </p>
       )}
+      <Notes notes={notes} />
     </>
+  );
+}
+
+// Highlight boxes over one image, given in the image's own pixels
+// ([x1, y1, x2, y2]) so they stay on target at any width. `n` ties a box to
+// a note. The parent must be the image's positioned box.
+function Markers({ image, markers = [] }) {
+  const pct = (value, total) => `${((value / total) * 100).toFixed(3)}%`;
+  return markers.map(({ n, box: [x1, y1, x2, y2] }, i) => (
+    <span
+      key={i}
+      data-marker
+      aria-hidden="true"
+      className={styles.marker}
+      style={{
+        left: pct(x1, image.width),
+        top: pct(y1, image.height),
+        width: pct(x2 - x1, image.width),
+        height: pct(y2 - y1, image.height),
+      }}
+    >
+      <span className={styles.markerNumber}>{pad(n)}</span>
+    </span>
+  ));
+}
+
+// What the markers point to, numbered in order.
+function Notes({ notes = [] }) {
+  if (notes.length === 0) return null;
+  return (
+    <ol className={styles.markerNotes}>
+      {notes.map((note, i) => (
+        <li key={i} data-reveal>
+          <span className={styles.noteNumber}>{pad(i + 1)}</span>
+          <span>{copy(note)}</span>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -181,34 +223,17 @@ function SequenceArrow() {
   );
 }
 
-// Highlight boxes are given in the image's own pixels ([x1, y1, x2, y2]) so
-// they stay on target at any width. `n` ties a box to a note; the overlay
-// can carry a note number too.
+// One screenshot with highlight boxes (see Markers) and their notes; the
+// overlay can carry a note number too.
 function Annotated({ media }) {
   const { image, markers = [], notes = [], overlay, details = [] } = media;
-  const pct = (value, total) => `${((value / total) * 100).toFixed(3)}%`;
 
   return (
     <>
       <div className={styles.annotated} data-overlay={overlay ? "" : undefined}>
         <div className={styles.annotatedShot}>
           <CaseImage image={image} sizes={SIZES.full} reveal />
-          {markers.map(({ n, box: [x1, y1, x2, y2] }, i) => (
-            <span
-              key={i}
-              data-marker
-              aria-hidden="true"
-              className={styles.marker}
-              style={{
-                left: pct(x1, image.width),
-                top: pct(y1, image.height),
-                width: pct(x2 - x1, image.width),
-                height: pct(y2 - y1, image.height),
-              }}
-            >
-              <span className={styles.markerNumber}>{pad(n)}</span>
-            </span>
-          ))}
+          <Markers image={image} markers={markers} />
           {publicFileExists(image.src) && <Lightbox image={image} />}
         </div>
         {overlay && (
@@ -223,16 +248,7 @@ function Annotated({ media }) {
         )}
       </div>
 
-      {notes.length > 0 && (
-        <ol className={styles.markerNotes}>
-          {notes.map((note, i) => (
-            <li key={i} data-reveal>
-              <span className={styles.noteNumber}>{pad(i + 1)}</span>
-              <span>{copy(note)}</span>
-            </li>
-          ))}
-        </ol>
-      )}
+      <Notes notes={notes} />
 
       {details.length > 0 && (
         <div className={styles.details}>
