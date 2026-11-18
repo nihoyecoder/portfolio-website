@@ -40,8 +40,11 @@
 
 @media (min-width: 1024px) {
   .grid {
+    /* Also used by grids inside a figure that must land on the same column
+       lines (the notes under an annotated screen) */
+    --grid-gap: clamp(1.25rem, 2.2vw, 2rem);
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(1.25rem, 2.2vw, 2rem);
+    column-gap: var(--grid-gap);
   }
 
   .side {
@@ -134,10 +137,10 @@
   margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
 }
 
-/* Live site link, right under the website visual */
+/* Live site link, right under the website visual, on the reading column
+   with the note that follows it */
 .siteLinkRow {
   margin-top: 1.25rem;
-  text-align: center;
 }
 
 .siteLink {
@@ -552,6 +555,20 @@
 @media (min-width: 768px) {
   .markerNotes {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* On the page grid: four columns per note, so the notes start on the
+   screenshot's edges and on the reading column (columns 1, 5 and 9) */
+@media (min-width: 1024px) {
+  .markerNotes {
+    max-width: none;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--grid-gap);
+  }
+
+  .markerNotes li {
+    grid-column: span 4;
   }
 }
 
@@ -974,10 +991,11 @@
     grid-column: 6 / -1;
   }
 
+  /* Text starts on the column line; the column gap already separates it
+     from the screens */
   .story[data-flip] .storyAside {
     grid-column: 8 / -1;
     padding-right: 0;
-    padding-left: 1rem;
   }
 
   .story[data-flip] .storyMedia {
@@ -1625,10 +1643,12 @@
   font-weight: 500;
 }
 
+/* What a decision changed. The label sits above the text, like Problem /
+   Decision / Why, so the text starts on the reading column's edge whatever
+   the label says ("Impact", "User benefit", "Why"). */
 .result {
-  display: flex;
-  gap: 0.9rem;
-  align-items: baseline;
+  display: grid;
+  gap: 0.6rem;
   max-width: 40rem;
   font-size: 17px;
   line-height: 1.5;
@@ -2624,13 +2644,34 @@
   }
 }
 
+/* On the page grid: the card takes the page's twelve columns (subgrid), so
+   its second and third columns start on the same lines as the hero above.
+   The card's padding only insets its outer edges. */
 @media (min-width: 1024px) {
-  .tldrWide {
-    grid-column: span 2;
+  .tldr {
+    display: grid;
+    grid-template-columns: subgrid;
   }
 
-  .tldrWide + .tldrWide {
-    grid-column: span 1;
+  .tldr > * {
+    grid-column: 1 / -1;
+  }
+
+  .tldrList {
+    grid-template-columns: subgrid;
+    column-gap: normal; /* the page's gap */
+  }
+
+  .tldrList > div {
+    grid-column: span 4;
+  }
+
+  .tldrList > .tldrWide {
+    grid-column: span 8;
+  }
+
+  .tldrList > .tldrWide + .tldrWide {
+    grid-column: span 4;
   }
 }
 

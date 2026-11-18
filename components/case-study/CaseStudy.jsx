@@ -523,7 +523,7 @@ function Website({ data }) {
       )}
       {data.media && <CaseMedia media={data.media} />}
       {data.link && (
-        <Row span="full" className={styles.siteLinkRow}>
+        <Row className={styles.siteLinkRow}>
           <a data-reveal href={data.link.href} target="_blank" rel="noopener noreferrer" className={styles.siteLink}>
             {data.link.label}
             <ArrowIcon />
