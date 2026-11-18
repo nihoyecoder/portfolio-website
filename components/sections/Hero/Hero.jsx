@@ -49,7 +49,10 @@ export default function Hero() {
       {/* The header itself is fixed (rendered by the page) */}
       <HeaderSpace />
 
-      <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8">
+      {/* lg: the whole composition sits 5% of the screen's height below
+          centre, a little further from the nav (the portrait's faded bottom
+          still ends inside the screen). Relative, so nothing reflows. */}
+      <div className="flex flex-1 flex-col justify-center pt-12 md:pt-8 lg:relative lg:top-[5svh]">
         {/*
           One container for name + body so both share cqw units.
           base: stacked column · md: copy left / portrait right ·
