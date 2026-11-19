@@ -5,13 +5,15 @@ export default function ExperienceCard({ item }) {
   return (
     <li data-journey-item className={styles.item}>
       <article className={styles.card}>
-        <div className="flex items-start justify-between gap-6">
-          {/* Balanced, so a long title wraps into even lines rather than
-              leaving one word on its own */}
-          <h3 className="text-balance text-[1.25rem] font-semibold leading-tight tracking-[-0.03em] xl:text-[1.375rem]">
+        {/* The title stays on one line; the company takes what's left beside
+            it (sm and up), or goes under the title on phones, where both
+            don't fit side by side. Balanced if a very narrow phone still
+            wraps it. */}
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <h3 className="text-balance text-[1.25rem] font-semibold leading-tight tracking-[-0.03em] sm:whitespace-nowrap xl:text-[1.375rem]">
             {item.role}
           </h3>
-          <p className="max-w-[45%] pt-1 text-right text-sm leading-snug text-muted">{item.company}</p>
+          <p className="text-sm leading-snug text-muted sm:max-w-[45%] sm:pt-1 sm:text-right">{item.company}</p>
         </div>
         {item.promotedFrom && (
           <p className="mt-2 flex items-center gap-1.5 font-mono text-[10.5px] uppercase tracking-[0.08em] text-accent-strong">
