@@ -13,7 +13,7 @@ export const profile = {
   headline: "AI Product Design Engineer",
   role: "AI Product Designer",
   statement:
-    "I design 0→1 products and build design systems in Figma. I explore flows and edge cases with ChatGPT, Claude Code and Figma MCP to prototype interactions in the browser.",
+    "I design 0→1 products and build design systems in Figma, explore flows and edge cases with ChatGPT, prototype interactions with Claude Code and Figma MCP.",
   current: {
     title: current.role,
     company: current.company,
