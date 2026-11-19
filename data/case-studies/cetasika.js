@@ -36,7 +36,7 @@ const cetasika = {
 
   // ---------------------------------------------------------------- Overview
   summary:
-    "Designing a connected healthcare and wellness experience across Consumer App, Provider CMS and Web — helping patients discover care while enabling doctors and wellness centres to manage the services behind it.",
+    "One connected healthcare and wellness product across app, provider CMS and web: patients discover care, and doctors and wellness centres manage the services behind it.",
 
   // Professional context (components/case-study/CaseStudyMeta). Only facts
   // from this file; the company isn't recorded here yet, so it's left out.
@@ -84,14 +84,11 @@ const cetasika = {
   // ------------------------------------------------------ 01 Problem + users
   challenge: {
     statement: "Healthcare and wellness were becoming fragmented.",
-    body: [
-      "As Cetasika expanded from doctor appointments into wellness services, centres, packages and ongoing care, every new capability added another layer of complexity.",
-      "The challenge was to create one understandable ecosystem without turning the product into separate experiences for every provider or service.",
-    ],
+    body: "Cetasika grew from doctor appointments into wellness services, centres and packages. One ecosystem had to serve doctors, centres and patients without splitting into a separate experience for each.",
     problems: [
       {
         title: "Too many provider types",
-        text: "Different wellness services were becoming separate account structures.",
+        text: "Each wellness service was becoming its own account structure.",
       },
       {
         title: "Fragmented discovery",
@@ -103,25 +100,15 @@ const cetasika = {
       },
       {
         title: "Operational complexity",
-        text: "Consumer experiences depended on information configured by Doctors and Centres.",
+        text: "What patients saw depended on what doctors and centres configured.",
       },
     ],
-    note: "Research across healthcare and wellness platforms helped identify recurring patterns around discovery, provider trust, availability and booking.",
     users: {
       title: "Three sides of one ecosystem.",
       groups: [
-        {
-          title: "Patients",
-          text: "Discover doctors and wellness services, compare providers, book care and manage appointments.",
-        },
-        {
-          title: "Doctors",
-          text: "Manage profiles, clinic locations, availability, appointments and patient interactions.",
-        },
-        {
-          title: "Wellness Centres",
-          text: "Manage services, trainers, packages, availability and bookings.",
-        },
+        { title: "Patients", text: "Discover, compare, book and manage care." },
+        { title: "Doctors", text: "Profiles, clinic locations, availability and appointments." },
+        { title: "Wellness Centres", text: "Services, trainers, packages and bookings." },
       ],
       // Rendered as a live diagram (no image needed).
       ecosystem: { providers: ["Doctors", "Wellness Centres"], hub: "Cetasika", consumers: "Patients" },
@@ -132,22 +119,14 @@ const cetasika = {
   decisions: [
     {
       title: "Let users search by need, not product structure.",
-      problem: [
-        "Users don't always know which kind of wellness centre they need.",
-        "Someone may want relief from back pain, help with stress or a prenatal session without knowing whether that sits under yoga studios, massage centres or spas, or how Cetasika classifies it internally.",
-      ],
-      decision: [
-        "Structure centre discovery around:",
-        // A nested list renders inline ("a · b · c") and reads as a list.
-        ["Wellness concern", "Centre category", "Service", "Location and distance", "Availability"],
-        "Search starts from a wellness concern. Categories such as Yoga Studios or Massage & Spa group centres the way people recognise them, and service filters narrow the list. Each centre then shows its services, prices, trainers and locations before a session is requested.",
-      ],
-      why: "The interface should follow the user's mental model (what they need help with) instead of expecting them to understand how Cetasika categorises centres and services.",
+      problem: "Users know what they need, not how Cetasika categorises centres.",
+      decision: "Organise discovery around the need: wellness concern, centre category, service, location and availability.",
+      why: "Match the user's mental model, not the platform's structure.",
       // IMAGE: one composition of the four steps from home to requesting a
       // centre session (2400 × 1350, so the markers are in those pixels).
       media: {
         layout: "annotated",
-        caption: "Home → Wellness centres → Centre services → Request appointment",
+        caption: "Need → Category → Centre → Request",
         markers: [
           { n: 1, box: [126, 338, 654, 420] },
           { n: 2, box: [126, 626, 654, 922] },
@@ -171,25 +150,19 @@ const cetasika = {
           alt: "Four app screens: the patient home with wellness categories, a list of therapeutic yoga centres, a centre's services with prices, and a studio page for choosing a service and location before requesting an appointment",
         }),
       },
-      impact:
-        "Users can begin with what they know — their need — and progressively reach the right centre, service and location to book a session.",
+      impact: "Users start from their need and reach the right centre, service and location.",
     },
     {
       title: "Show one centre once — even when it offers multiple services.",
-      problem: [
-        "A wellness centre offering several services could appear multiple times in the All results.",
-        "From the system's perspective these may be multiple service relationships. From the user's perspective, it is still one centre.",
-      ],
-      decision: [
-        "Make the Centre the primary result entity.",
-        "Services become attributes, tags and filtering options attached to that centre.",
-      ],
-      why: "Users choose between actual centres, not database relationships.",
+      problem: "A centre with several services appeared once per service in the results.",
+      decision: "Make the centre the result; its services become tags and filters.",
+      why: "Users choose between centres, not database relationships.",
       // IMAGE: the centre results and their empty state (Figma Cetasika-App
       // 24985:4691 and 24985:4633), with the distances pulled out beside the list.
       media: {
         layout: "annotated",
-        caption: "One list of centres, nearest first, and a clear empty state when none is nearby.",
+        caption: "One centre, one card · Nearest first · A clear empty state",
+        panFocus: 0.38, // phones open on the list and its distances
         image: shot(
           "decisions/02-centre-results.webp",
           "Centre results — nearest first, and the empty state",
@@ -208,34 +181,19 @@ const cetasika = {
           "Edge case: when no centre is available in the area, the screen says so plainly, and search and filters stay in place.",
         ],
       },
-      impact: "Cleaner results, less repetition and a structure that continues to work as centres add more services.",
+      impact: [["Cleaner results", "Less repetition", "Scales as centres add services"]],
     },
     {
       title: "Keep users informed through every booking state.",
-      problem: [
-        "Booking a doctor is not always one instant action. A booking can move through multiple states:",
-        "Request sent → Pending approval → Booking approved → Payment required → Payment completed → Appointment ready",
-        "Without clear feedback between these stages, users may not know whether their booking was accepted, whether payment is required, whether payment succeeded or what they need to do next.",
-      ],
-      decision: [
-        "Design the booking experience around explicit status, contextual next actions and clear confirmation at every major transition.",
-        "The appointment experience should continuously communicate:",
-        ["Where am I?", "What happened?", "What should I do next?"],
-        "Pending Approval → Booking Approved → Proceed to Pay → Payment Summary → Slide to Pay → Payment Successful → Appointment becomes actionable",
-        "Depending on the appointment state, relevant actions can then appear, such as:",
-        ["Reschedule", "Cancel", "Proceed to Pay", "Get Directions", "Session OTP", "Book Again", "Rate Your Experience"],
-      ],
-      why: [
-        "Doctor approval, payment and the actual appointment are separate parts of the same journey.",
-        "Users should never have to guess whether the booking is confirmed or what action is expected from them next.",
-      ],
+      problem: "A booking moves through approval and payment, and users couldn't always tell where it stood.",
+      decision: "Make every state explicit, with the next action beside it and a clear confirmation at each step.",
+      why: "Users should never guess whether a booking is confirmed, or what to do next.",
       // IMAGE: Payment Summary, Payment Successful and My Appointments (Figma
       // Cetasika-App 24986:5428, 24986:5316 and 24986:4897). The long list is
       // shown in two parts: its first screen, then the rest from the fourth card.
       media: {
         layout: "annotated",
-        caption:
-          "Every state answers three questions: where am I, what happened, and what do I need to do next?",
+        caption: "Request → Approval → Payment → Appointment",
         image: shot(
           "decisions/03-booking-states-v2.webp",
           "Booking states — pay, confirm and track",
@@ -258,35 +216,19 @@ const cetasika = {
           "Closed bookings still lead somewhere: Book Again after a cancellation, Rate Your Experience after a visit.",
         ],
       },
-      impact: [
-        [
-          "Reduces uncertainty",
-          "Makes approval and payment states easier to understand",
-          "Prevents users from missing required actions",
-          "Provides explicit payment confirmation",
-          "Keeps appointment actions relevant to the current state",
-          "Creates continuity from booking request to appointment day",
-        ],
-      ],
+      impact: [["Less uncertainty", "Clear next action", "Visible payment state"]],
     },
     {
       title: "Let doctors manage availability around their actual schedule.",
-      problem: [
-        "Doctors don't always work within one strict, identical daily time window. A fixed schedule such as 9 AM → 5 PM wouldn't represent many doctors' real availability.",
-        "A doctor may want to consult:",
-        ["In the morning on one day", "In the afternoon on another", "Late in the evening on another", "With different slots for different dates"],
-      ],
-      decision: [
-        "Let doctors create and manage appointment slots around their own availability rather than forcing every appointment into one predefined working-hours range. The scheduling model supports valid slots at any time across a 24-hour day — not automatic 24/7 availability.",
-        "Doctors control:",
-        ["Available day / date", "Available time", "Appointment slots", "Their own booking availability"],
-      ],
-      why: "The product should adapt to the doctor's schedule rather than forcing the doctor to adapt to the product.",
+      problem: "Doctors don't always consult in one fixed 9-to-5 window; their hours change by day and date.",
+      decision: "Doctors set their own dates, times and slots, at any valid time of day (not automatic 24/7 availability).",
+      why: "The product adapts to the doctor's schedule, not the other way round.",
       // IMAGE: one composition of the availability flow (exported at 3840px for
       // HD). The phones face straight on, so each marker is a band across one.
       media: {
         layout: "annotated",
         caption: "Set availability → See slots by date → Manage individual slots",
+        panFocus: 0.24,
         image: shot(
           "decisions/04-doctor-availability.webp",
           "Doctor availability — flexible slot management",
@@ -307,97 +249,24 @@ const cetasika = {
           "A schedule expands into its slots, and individual slots can be switched on or off.",
         ],
       },
-      impact:
-        "More realistic scheduling, greater flexibility and control for providers, and support for doctors with different consulting patterns.",
+      impact: [["Realistic scheduling", "More provider control", "Fits different consulting patterns"]],
     },
     {
       // The clinic-management CMS (Main Admin, Staff / Receptionists, Doctors)
       // — not the Wellness Centre side. Roles and controls follow the CMS
       // screenshots; don't add permissions they don't show.
       title: "Design one appointment system for three operational roles.",
-      context: [
-        "The Cetasika CMS is the clinic-management system, designed for:",
-        ["Main Admin", "Staff / Receptionists", "Doctors"],
-        "It supports clinic operations including:",
-        [
-          "Dashboard",
-          "Queue",
-          "Appointments",
-          "Patients",
-          "Doctors",
-          "Receptionists / Staff",
-          "Prescriptions",
-          "Payments / Billing",
-          "Settings",
-        ],
-      ],
-      problem: [
-        "Appointments are handled by multiple people inside the clinic. The Main Admin needs operational visibility, Staff / Receptionists need to create and coordinate bookings, and Doctors need a focused view of their own patients, availability and appointments.",
-        "Giving all three roles the exact same interface would either create unnecessary complexity or fail to support their individual responsibilities.",
-      ],
-      decision: [
-        "Create one shared clinic appointment system while presenting the information and controls in the context each role needs.",
-        "“One operational system, different levels of control and context.”",
-        "Main Admin / Staff → Create Appointment → Enter Appointment Details → Assign Patient → Assign Doctor → Schedule Appointment → Appointment enters clinic schedule / queue → Doctor sees it in their appointment view",
-      ],
-      why: [
-        "All three roles work with the same underlying appointment information, but their responsibilities are different.",
-        "The design keeps appointment data connected while reducing unnecessary information for each role.",
-      ],
+      problem: "Main Admin, staff and doctors all handle appointments, and one identical interface would overload some and underserve others.",
+      decision: "One shared appointment system, with information and controls shaped for each role.",
+      why: "Same appointment data, different responsibilities.",
       principlesLabel: "Three roles, one system",
       principles: [
-        {
-          title: "Main Admin",
-          text: [
-            "Clinic-wide oversight:",
-            [
-              "Total appointments",
-              "Patients today",
-              "Revenue",
-              "Total visits",
-              "Today's appointments",
-              "Live queue",
-              "Doctors",
-              "Staff / Receptionists",
-              "Prescriptions",
-              "Payments / Billing",
-              "Clinic settings",
-            ],
-          ],
-          why: "The Main Admin should be able to understand clinic operations without opening every individual module.",
-        },
+        { title: "Main Admin", text: "Clinic-wide oversight, without opening every module." },
         {
           title: "Staff / Receptionists",
-          text: [
-            "Staff support daily appointment operations. Manual appointment creation is divided into two clear steps.",
-            "Step 01 — Appointment details:",
-            ["Appointment Type", "Date", "Reason for Visit", "Appointment Status", "Booked or Waitlist", "Notes for Staff"],
-            "Step 02 — Doctor & patient assigning:",
-            [
-              "Search / select an existing patient",
-              "Register a new patient when required",
-              "Select the appropriate doctor",
-              "Schedule the appointment",
-            ],
-          ],
-          why: "Separating appointment details from patient / doctor assignment prevents the workflow from becoming one large administrative form.",
+          text: "Appointments created in two steps (the details, then patient and doctor) instead of one long form.",
         },
-        {
-          title: "Doctors",
-          text: [
-            "The same appointment system from a more focused perspective:",
-            [
-              "Current availability",
-              "Next appointment",
-              "Appointment date / time",
-              "Patient",
-              "Appointment type",
-              "Appointment status",
-              "Relevant appointment details / actions",
-            ],
-          ],
-          why: "Doctors need their clinical schedule and patient context, not the entire clinic's administrative dashboard.",
-        },
+        { title: "Doctors", text: "Their own schedule and patients, not the clinic's administration." },
       ],
       // IMAGES (CMS): one annotated screen per role, in the order of the
       // principles above. Each is the first 1920 × 1080 of a Figma frame
@@ -463,16 +332,7 @@ const cetasika = {
           ],
         },
       ],
-      impact: [
-        [
-          "Creates one connected clinic workflow",
-          "Gives Main Admin clinic-wide visibility",
-          "Makes manual scheduling clearer for staff",
-          "Gives Doctors a focused appointment experience",
-          "Keeps appointment data consistent from creation to consultation",
-          "Reduces dependence on disconnected administrative processes",
-        ],
-      ],
+      impact: [["One connected clinic workflow", "Clearer scheduling for staff", "A focused view for doctors"]],
     },
   ],
 
@@ -480,10 +340,7 @@ const cetasika = {
   // One overview of the app and the clinic CMS, then two image boxes.
   // (Uses the `operations` section layout: body, groups, then media.)
   operations: {
-    body: [
-      "Cetasika brings patients, providers and clinics into one connected product: a mobile app where patients find and book care and providers run their services, and a Clinic Management CMS where clinics run their day-to-day operations.",
-      "Both sides share the same appointment information — what a doctor, centre or clinic sets up is what a patient can find, book and manage.",
-    ],
+    body: "Patients book in the app; providers and clinics run their side in the app and the Clinic CMS. What a provider sets up is what a patient can find and book.",
     groups: [
       {
         title: "Cetasika app",
@@ -524,7 +381,7 @@ const cetasika = {
 
   // ------------------------------------------------------- 05 Design system
   designSystem: {
-    body: "Cetasika needed consistency across very different workflows without making every surface identical.",
+    body: "Consistent across very different workflows, without making every surface identical.",
     platforms: [
       {
         name: "Consumer App patterns",
@@ -555,53 +412,27 @@ const cetasika = {
     principle: "One interaction language, adapted to different contexts.",
     visualLanguage: {
       title: "Calm, not clinical.",
-      body: [
-        "Healthcare interfaces can feel sterile, while wellness products can feel overly lifestyle-driven.",
-        "Cetasika needed to feel credible enough for healthcare while remaining approachable for everyday wellbeing.",
-      ],
+      body: "Credible enough for healthcare, approachable enough for everyday wellbeing.",
       colors: [
-        {
-          hex: "#1FA3AC",
-          name: "Primary Teal",
-          rationale: "Used for headings, selected states, icons, labels, and core brand accents.",
-        },
-        {
-          hex: "#27696D",
-          name: "Deep Teal",
-          rationale: "Used for stronger text, borders, darker brand emphasis, and secondary actions.",
-        },
-        {
-          hex: "#FE7E01",
-          name: "CTA Orange",
-          rationale: "Used for the strongest actions like Pay, Subscribe, Upgrade, and other high-priority CTAs.",
-        },
-        {
-          hex: "#E6F4FD",
-          name: "Soft Aqua / Ice Blue",
-          rationale: "Used for headers, cards, soft backgrounds, and calm supporting surfaces.",
-        },
+        { hex: "#1FA3AC", name: "Primary Teal", rationale: "Headings, selected states, icons and accents." },
+        { hex: "#27696D", name: "Deep Teal", rationale: "Stronger text, borders and secondary actions." },
+        { hex: "#FE7E01", name: "CTA Orange", rationale: "The strongest actions: Pay, Subscribe, Upgrade." },
+        { hex: "#E6F4FD", name: "Soft Aqua / Ice Blue", rationale: "Headers, cards and calm backgrounds." },
       ],
     },
   },
 
   // -------------------------------------------------------------- 06 Website
   website: {
-    body: "While the App and CMS prioritise task completion, the Cetasika website needed to explain the larger healthcare and wellness ecosystem and create a stronger emotional first impression.",
+    body: "The app and CMS are for getting things done; the website tells the bigger story and makes the first impression.",
     contrast: [
       { title: "Product UI", text: ["Functional", "Predictable", "Efficient", "Information-driven"] },
       { title: "Website", text: ["Story-driven", "Expressive", "Motion-led", "Brand-focused"] },
     ],
-    journey: [
-      "Hero storytelling",
-      "Future of Health",
-      "Health Journey",
-      "App / CMS solutions",
-      "Digital foundation",
-      "Call to action",
-    ],
     // IMAGE: one composition of the website (exported at 3840px for HD).
     media: {
       layout: "full",
+      caption: "Hero → Future of Health → Health journey → App & CMS → Digital foundation → Call to action",
       image: image(`${dir}/website/overview.webp`, {
         size: "wide",
         quality: 90,
@@ -610,7 +441,7 @@ const cetasika = {
       }),
     },
     link: { href: "https://www.cetasika.com", label: "www.cetasika.com" },
-    note: "I also used AI-assisted React / Next.js and GSAP workflows to bring parts of the design closer to implementation while collaborating with frontend engineering.",
+    note: "I used AI-assisted React / Next.js and GSAP to take parts of the design closer to implementation, alongside frontend engineering.",
   },
 
   // -------------------------------------------------------------- 07 Outcome
@@ -625,8 +456,8 @@ const cetasika = {
     learning: {
       title: "What I learned",
       body: [
-        "The hardest part wasn't designing individual screens. It was deciding what should remain consistent as the product expanded.",
-        "Cetasika taught me that scalable UX often starts by simplifying the underlying product model before simplifying the interface.",
+        "The hardest part wasn't the screens; it was deciding what stays consistent as the product grows.",
+        "Scalable UX often starts by simplifying the product model, then the interface.",
       ],
     },
   },

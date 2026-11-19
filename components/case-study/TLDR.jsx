@@ -3,23 +3,17 @@ import { copy, paragraphs } from "./CaseText";
 import styles from "./CaseStudy.module.css";
 
 // The case study in one card, right under the hero, for a reader with 30
-// seconds: the problem, Manoj's role, the team, three key decisions and the
-// result. Reuses the study's own content — the challenge statement, the
-// context block and the first three decision headings — unless `tldr`
-// overrides a field; anything unknown is left out.
+// seconds: the problem, three key decisions and the result. Role and team
+// are in the hero just above, so they aren't repeated. Reuses the study's own
+// content — the challenge statement and the first three decision headings —
+// unless `tldr` overrides a field; anything unknown is left out.
 export default function TLDR({ project, study }) {
   const tldr = study.tldr ?? {};
   const problem = tldr.problem ?? study.challenge?.statement;
-  const role = study.context?.role;
-  const team = study.context?.team;
   const decisions = tldr.decisions ?? (study.decisions ?? []).slice(0, 3).map((decision) => decision.title);
   const result = tldr.result ?? [project.status, project.outcome].filter(Boolean);
 
-  const rows = [
-    ["Problem", problem],
-    ["My role", role],
-    ["Team", team],
-  ].filter(([, value]) => value);
+  const rows = [["Problem", problem]].filter(([, value]) => value);
 
   return (
     <section aria-label={`${project.title} in short`} className={styles.tldrSection}>

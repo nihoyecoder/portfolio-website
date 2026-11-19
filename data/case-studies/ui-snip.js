@@ -14,10 +14,14 @@
 // Night. Colours are UI Snip's tokens (src/panel/theme.css in the extension).
 
 const dir = "/images/projects/ui-snip/case-study";
+// The real panel screenshots on the project's violet (also its Selected Work
+// slides), 1600 × 1000.
+const panels = "/images/projects/ui-snip";
 
 // An image at its real exported size, so nothing is cropped or stretched.
+// A path starting with "/" is used as is (the panel screenshots).
 const shot = (path, width, height, label, alt, extra = {}) => ({
-  src: `${dir}/${path}`,
+  src: path.startsWith("/") ? path : `${dir}/${path}`,
   width,
   height,
   label,
@@ -44,7 +48,7 @@ const uiSnip = {
   category: "Chrome Extension · AI Developer Tool",
   summary: "From visual inspiration to AI-ready implementation.",
   subheadline:
-    "A Chrome extension that captures a design, a motion or an animation on any website and turns it into a structured prompt for AI coding tools like Claude Code, Cursor and Codex. I designed and built it end to end.",
+    "A Chrome extension that turns any design, motion or animation on the web into a structured prompt for AI coding tools. Designed and built by me, end to end.",
   // The store listing, as a button under the summary (components/case-study/
   // CaseHero). In the beta, AI features ask for an access code.
   heroLink: {
@@ -92,8 +96,7 @@ const uiSnip = {
     height: 1160,
     title: "UI Snip demo video",
     duration: "1:00",
-    caption:
-      "UI Snip on a live site: Capture Motion, Select Design and Inspect Animation, each ending in a prompt for an AI coding tool.",
+    caption: "Capture Motion, Select Design and Inspect Animation on a live site, each ending in an AI-ready prompt.",
     poster: { src: `${dir}/hero/demo-poster.webp` },
   },
 
@@ -115,52 +118,28 @@ const uiSnip = {
   // --------------------------------------------------------------- Problem
   challenge: {
     statement: "The gap between seeing and building.",
-    body: [
-      "Design inspiration lives across websites, videos and motion-heavy interfaces. Recreating it means switching tools, capturing references, interpreting timing and explaining visual behaviour by hand.",
-      "AI coding tools can build almost anything you can describe. But a screenshot loses the layout, type and colour behind a design, words like “smooth” or “bouncy” carry no timing, and most AI coding tools can't watch a screen recording at all.",
-    ],
+    body: "AI coding tools build what you can describe. But a screenshot loses the layout, type and colour behind a design, “smooth” carries no timing, and most AI tools can't watch a recording.",
     hmwLabel: "Design challenge",
     hmw: "How might we turn what someone sees on a website into context an AI coding tool can build from, without pretending every detail can be measured?",
     problems: [
-      {
-        title: "Scattered references",
-        text: "Screenshots and screen recordings sit apart from element details, animation observations and implementation instructions.",
-      },
-      {
-        title: "Lost detail",
-        text: "A picture shows how something looks, not the layout, type, colour and spacing behind it.",
-      },
-      {
-        title: "Motion is hard to put into words",
-        text: "Timing, easing and order make an interaction feel right, and they're the first things lost in a description.",
-      },
-      {
-        title: "Guesses that look like facts",
-        text: "AI fills every gap with confidence. Nothing tells you which values were measured and which were guessed.",
-      },
+      { title: "Scattered references", text: "Screenshots, recordings and notes live apart." },
+      { title: "Lost detail", text: "A picture shows the look, not the layout, type and spacing behind it." },
+      { title: "Motion is hard to describe", text: "Timing, easing and order are the first things lost." },
+      { title: "Guesses that look like facts", text: "Nothing shows which values were measured and which were guessed." },
     ],
     users: {
       title: "Designed for people who build from references.",
       groups: [
-        {
-          title: "UI/UX designers",
-          text: "Collect a reference and hand it to AI, or to developers, with its details intact.",
-        },
-        {
-          title: "Frontend developers",
-          text: "Start from real values (type, spacing, timing, keyframes) instead of eyeballing a screenshot.",
-        },
-        {
-          title: "AI-assisted builders",
-          text: "Paste a structured prompt and a storyboard into Claude Code, Cursor or Codex instead of describing a screen from memory.",
-        },
+        { title: "UI/UX designers", text: "Hand a reference to AI or developers, details intact." },
+        { title: "Frontend developers", text: "Start from real values, not an eyeballed screenshot." },
+        { title: "AI-assisted builders", text: "Paste a structured prompt into Claude Code, Cursor or Codex." },
       ],
     },
   },
 
   // -------------------------------------------------------------- Approach
   approach: {
-    body: "UI Snip has three workflows, each collecting a different kind of evidence: what something looks like, how it moves, and what the browser itself reports. All three follow the same four steps, so it feels like one tool, not three.",
+    body: "Three workflows, three kinds of evidence (how it looks, how it moves, what the browser reports), all in the same four steps.",
     layout: "flow",
     principles: [
       { title: "Discover", text: "Notice a UI or motion detail worth recreating." },
@@ -168,44 +147,17 @@ const uiSnip = {
       { title: "Review", text: "Check the frames and the facts, each labelled by how it was found." },
       { title: "Recreate", text: "Copy a prompt, for React or HTML/CSS, into an AI coding tool." },
     ],
+    // The panel itself, one tab per workflow, rather than illustrations.
     media: {
-      layout: "three-up",
-      caption: "Three ways to capture an idea: appearance, motion frames, or behaviour the browser reports.",
-      images: [
-        shot(
-          "workflows/select-design.webp",
-          960,
-          720,
-          "Select Design",
-          "UI Snip's Select Design artwork: a dashed selection frame around a web page, with a pointer",
-          {
-            caption:
-              "Select Design: a button, a section or the visible page, as a screenshot plus the design facts behind it: layout, type, colour and spacing.",
-          },
-        ),
-        shot(
-          "workflows/capture-motion.webp",
-          960,
-          720,
-          "Capture Motion",
-          "UI Snip's Capture Motion artwork: a stack of film frames with a play button and a 5-second recording badge",
-          {
-            caption:
-              "Capture Motion: up to five seconds of any animation, video or GIF, as timestamped frames and a storyboard.",
-          },
-        ),
-        shot(
-          "workflows/inspect-animation.webp",
-          960,
-          720,
-          "Inspect Animation",
-          "UI Snip's Inspect Animation artwork: an easing curve beside a panel of sliders",
-          {
-            caption:
-              "Inspect Animation: what Chrome itself reports about an element's animation (timing, easing, keyframes) and how the element changed.",
-          },
-        ),
-      ],
+      layout: "full",
+      caption: "Select Design · Capture Motion · Inspect Animation: how it looks, how it moves, what the browser reports.",
+      image: shot(
+        `${panels}/workflows.webp`,
+        1600,
+        1000,
+        "UI Snip · three workflows",
+        "UI Snip's side panel three times on its violet background: the Select Design, Capture Motion and Inspect Animation tabs, each asking “What do you want to capture?”",
+      ),
     },
   },
 
@@ -213,46 +165,52 @@ const uiSnip = {
   decisions: [
     {
       title: "Label what's measured, and what's guessed.",
-      problem:
-        "An AI coding tool treats every number in a prompt as true. If a real transition time sits next to a guessed one, neither the AI nor the person reading can tell which to trust.",
-      decision: [
-        "Every fact carries one of four labels, in the panel and in the prompt.",
-        "When UI Snip can't tell, it says so: “Not reported by Chrome”, or “No animation detected” rather than “no animation exists”.",
-      ],
-      why: "Trust comes from being honest about uncertainty. A label tells the AI what it may change, and tells the person what to double-check.",
+      problem: "An AI tool treats every number as true, so a guessed value next to a real one can't be told apart.",
+      decision: "Every fact carries one of four labels, in the panel and in the prompt; when UI Snip can't tell, it says so.",
+      why: "A label tells the AI what it may change, and the person what to double-check.",
       principlesLabel: "Four labels",
       principles: [
-        {
-          title: "Observed",
-          text: "Read straight from the browser: computed styles, Chrome's animation timing, easing and keyframes, the page's structure.",
-        },
-        {
-          title: "Measured",
-          text: "Sampled over time: position, size and opacity as they change, and each captured frame's time.",
-        },
-        {
-          title: "Estimated",
-          text: "Inferred: a likely trigger, an easing fit, and everything an AI reads from frames.",
-        },
-        {
-          title: "Recommended",
-          text: "A suggestion, such as a library or an approach, whether from a template or from AI.",
-        },
+        { title: "Observed", text: "Read straight from the browser." },
+        { title: "Measured", text: "Sampled over time, frame by frame." },
+        { title: "Estimated", text: "Inferred, including everything AI reads from frames." },
+        { title: "Recommended", text: "A suggestion, from a template or from AI." },
       ],
-      impact: "Exact values stay exact, and estimates are clearly estimates.",
+      // The real panel: Select Design's Observed screenshot and Inspect
+      // Animation's Measured motion with an Estimated trigger (1600 × 1000).
+      media: {
+        layout: "annotated",
+        caption: "Observed · Measured · Estimated, side by side in the panel.",
+        image: shot(
+          `${panels}/design-and-inspect.webp`,
+          1600,
+          1000,
+          "Labels in the panel",
+          "Select Design's chosen element with its Observed screenshot and design facts, beside Inspect Animation's Measured motion: type not reported by Chrome, a click trigger labelled Estimated, about 100 ms and the change measured",
+        ),
+        markerTone: "light", // on the panel's dark violet
+        panFocus: 0.31,
+        markers: [
+          { n: 1, box: [270, 182, 712, 612] },
+          { n: 2, box: [880, 126, 1308, 224] },
+          { n: 3, box: [884, 278, 1300, 342] },
+        ],
+        notes: [
+          "Observed: read straight from the browser, like the element's screenshot and its design facts.",
+          "Measured: sampled over time, such as position, size and opacity as the element changes.",
+          "Estimated: inferred, like this likely click trigger, so the AI knows it may change it and the reader knows to double-check.",
+        ],
+      },
+      impact: "Exact values stay exact; estimates are clearly estimates.",
     },
     {
       title: "Turn motion into frames an AI can read.",
-      problem:
-        "Motion is the hardest part of a reference to describe, and most AI coding tools can't watch a video.",
-      decision: [
-        "Draw a box over the animation and start the capture: a three-second countdown leaves time to press play on the page, then UI Snip records up to five seconds of that area from the tab's own picture. That's about 20 cropped, timestamped frames, never a video file.",
-        "Frames that look the same fold into keyframes, and a timeline with a scrubber, thumbnails and timestamps lets you check them. The storyboard (one image of the frames in order, with their times) goes to the AI, or into your own tool.",
-      ],
-      why: "A storyboard is something both people and AI can read. Because it's taken from what Chrome draws, it works for video, GIFs, CSS and JavaScript animation alike.",
+      problem: "Motion is the hardest part of a reference to describe, and most AI coding tools can't watch a video.",
+      decision: "Record up to five seconds of an area as about 20 timestamped frames, fold them into keyframes, and send one storyboard image.",
+      why: "People and AI can both read a storyboard, whatever made the motion: video, GIF, CSS or JavaScript.",
       media: {
         layout: "sequence",
         arrows: true,
+        caption: "Capture → Keyframes → Storyboard → Prompt",
         images: [
           shot(
             "decisions/motion-frames.webp",
@@ -280,86 +238,70 @@ const uiSnip = {
           ),
         ],
       },
-      impact: "Motion becomes something you can hand over: a storyboard and a prompt, from five seconds of capture.",
+      impact: "Five seconds of motion becomes a storyboard and a prompt you can hand over.",
     },
     {
       title: "Let AI add to the prompt, never overwrite it.",
-      problem:
-        "Sending every capture to AI makes each prompt slow and dependent on a daily quota. Worse, an AI rewrite can quietly change an exact value.",
-      decision: [
-        "Every workflow builds its prompt on the device first: instant, free and private. “Enhance with AI” then adds its own part to that prompt, which stays word for word.",
-        "Capture Motion is the exception, because frames are pictures: there the AI writes the prompt. If it fails or reaches its limit, a local prompt takes its place and asks your coding tool to read the attached storyboard.",
-      ],
-      why: "AI should improve the result, not become a single point of failure. And it should never be able to change a value the browser reported.",
+      problem: "Sending every capture to AI is slow and quota-bound, and a rewrite can quietly change an exact value.",
+      decision: "Build every prompt on the device first; AI adds its own section and never edits it. For motion, a local fallback stands in if AI fails.",
+      why: "AI should improve the result, not become a single point of failure.",
       principlesLabel: "The AI's rules",
       principles: [
-        {
-          title: "Adds, never replaces",
-          text: "Its part is headed “from AI”, below the unchanged local prompt.",
-        },
-        {
-          title: "Doesn't restate values",
-          text: "It's told never to repeat a number, and any value it writes that the evidence doesn't have is flagged.",
-        },
-        {
-          title: "Says what it is",
-          text: "Its own headings say what's Estimated and what's Recommended.",
-        },
+        { title: "Adds, never replaces", text: "Its part sits below the unchanged local prompt." },
+        { title: "Doesn't restate values", text: "Any number it adds that the evidence lacks is flagged." },
+        { title: "Says what it is", text: "Its headings mark what's Estimated or Recommended." },
       ],
-      impact: "There's always a prompt to copy, whether or not the AI is available.",
+      impact: "There's always a prompt to copy, with or without AI.",
     },
     {
       title: "Make every send a conscious choice.",
-      problem:
-        "A screenshot can show anything on a page. Gemini's free tier lets people at Google read what's sent. And the AI's answer gets pasted into a tool that can run commands.",
-      decision:
-        "Nothing runs on a page until you choose a workflow, and nothing leaves the device without a click. The line beside every AI button says what's sent and who may see it, before it's sent.",
-      why: "Consent means knowing what you're sharing before you share it.",
+      problem: "A screenshot can show anything, people at Google may read what's sent on Gemini's free tier, and the answer lands in a tool that can run commands.",
+      decision: "Nothing runs until you choose a workflow, nothing leaves without a click, and every AI button says what's sent and who may see it.",
+      why: "Consent means knowing what you share before you share it.",
       principlesLabel: "Privacy and safety, by design",
       principles: [
-        {
-          title: "Say what's sent, every time",
-          text: "“This sends the storyboard to Google's Gemini. Google may use it to improve its products, and people at Google may read it. Use public pages only.”",
-        },
-        {
-          title: "No page words in prompts",
-          text: "Text is described by what it's for and how long it is (“h2, 1 line, 38 characters”), never copied. No page address, no form values, no cookies.",
-        },
-        {
-          title: "Treat the page as untrusted",
-          text: "A page can hide text aimed at the AI. The AI treats pictures as data, answers show only as text, and a web address or command in an answer is flagged before you paste it.",
-        },
+        { title: "Say what's sent, every time", text: "The notice sits beside every AI button." },
+        { title: "No page words in prompts", text: "Text is described, never copied: “h2, 1 line, 38 characters”." },
+        { title: "Treat the page as untrusted", text: "Hidden instructions are ignored; links and commands are flagged." },
       ],
-      impact: "Every AI request is a choice, and a private page still gets a local prompt.",
+      // The real panel: the notice above Generate prompt, then the result.
+      media: {
+        layout: "annotated",
+        caption: "The notice sits beside the button, before anything is sent.",
+        image: shot(
+          `${panels}/capture-motion.webp`,
+          1600,
+          1000,
+          "Capture Motion · consent",
+          "Capture Motion's frames with the note “This sends the storyboard to Google's Gemini. Google may use it to improve its products, and people at Google may read it. Use public pages only.” above Generate prompt, beside the AI-written prompt marked as written by AI, with what it says about the motion Estimated",
+        ),
+        markerTone: "light",
+        panFocus: 0.32,
+        markers: [
+          { n: 1, box: [276, 618, 742, 832] },
+          { n: 2, box: [880, 578, 1302, 664] },
+        ],
+        notes: [
+          "Before anything is sent, the line above the button says what goes to Google's Gemini, that people at Google may read it, and to use public pages only.",
+          "The finished prompt says it was written by AI from the storyboard, and that what it says about the motion is Estimated.",
+        ],
+      },
+      impact: "Every AI request is a choice; a private page still gets a local prompt.",
     },
   ],
 
   // --------------------------------------------------------- Visual design
   designSystem: {
     statement: "Polished, minimal and calm, with no cluttered DevTools look.",
-    body: "The look started in Figma with the home screen. Every other screen takes its colours, type and surfaces, so the whole panel reads as one product.",
+    body: "Designed in Figma from the home screen out, so the whole panel reads as one product.",
     platforms: [
-      {
-        name: "One clear next step",
-        detail:
-          "Every screen has one main action. Secondary actions sit beside it and the rest move into More, so nothing is lost and nothing competes.",
-      },
-      {
-        name: "Precise review",
-        detail: "Frames get a scrubber, a selected state, thumbnails and timestamps, and work from the keyboard too.",
-      },
-      {
-        name: "Honest system feedback",
-        detail:
-          "Ready, selecting, capturing, measuring and AI states are always explicit, and warnings stay in view rather than behind a disclosure.",
-      },
+      { name: "One clear next step", detail: "One main action per screen; the rest move into More." },
+      { name: "Precise review", detail: "Frames get a scrubber, thumbnails and timestamps, and keyboard control." },
+      { name: "Honest system feedback", detail: "Every state is explicit, and warnings stay in view." },
     ],
     visualLanguage: {
       title: "Night, violet and glass.",
-      body: [
-        "UI Snip sits beside every kind of website, so it has one look, always dark, that never borrows from the page it's reading.",
-        "Saturated violet is kept for the next action. Everything else stays in quiet lilacs on Night.",
-      ],
+      body: "Always dark, so it never borrows from the page it reads. Saturated violet is kept for the next action.",
       colors: [
         {
           hex: "#1A0F2B",
@@ -421,19 +363,19 @@ const uiSnip = {
     items: [
       {
         title: "The visible page, not a stitched full page",
-        text: "Scrolling to capture a whole page would trigger the site's own scroll animations and lazy loading, and repeat sticky headers. So Full page means the visible part, clearly labelled.",
+        text: "Scrolling to stitch would trigger the site's own animations and lazy loading.",
       },
       {
         title: "Five seconds, about four frames a second",
-        text: "Chrome only sends a new picture when the tab changes, so a change shorter than the 250 ms between frames can be missed. Longer captures and denser frames are next.",
+        text: "A change shorter than 250 ms can be missed; denser frames are next.",
       },
       {
         title: "A permission only when it's needed",
-        text: "Capture Motion needs Chrome's tab capture, whose warning reads “Read and change all your data on all websites”. It's requested the first time Capture Motion is used, at the cost of a one-time restart, so Select Design never shows that warning.",
+        text: "Tab capture is requested on first use of Capture Motion, so Select Design never shows its warning.",
       },
       {
         title: "AI on a free tier, with guardrails",
-        text: "With no paid services yet, requests are rate-limited and capped per day, regions where Gemini's free tier isn't allowed are refused, and beta testers need an access code.",
+        text: "Rate limits, a daily cap, region checks and beta access codes.",
       },
     ],
   },
@@ -442,8 +384,8 @@ const uiSnip = {
   validation: {
     status: "A working v0.1.0, not yet tested with users beyond me.",
     body: [
-      "I tested all three workflows end to end in Chrome on real sites. Each workflow also has automated checks that drive the real, built extension in Chrome against local test pages whose true values are known, so what UI Snip reports can be compared with what's really there.",
-      "The AI was quality-tested with more than 50 real Gemini calls, read by hand. They included a hostile page with text written to trick the AI, and none of the 9 answers about it repeated that text.",
+      "All three workflows tested end to end in Chrome on real sites, plus automated checks against test pages whose true values are known.",
+      "The AI was read by hand across 50+ real Gemini calls; on a hostile page written to trick it, none of the 9 answers repeated the planted text.",
     ],
     nextLabel: "Next",
     next: "A limited beta with trusted testers, now on the Chrome Web Store, then a paid AI tier before anyone else relies on it.",
@@ -452,8 +394,8 @@ const uiSnip = {
   // ------------------------------------------------------------ Reflection
   reflection: {
     body: [
-      "Designing an AI product is mostly deciding what the AI shouldn't do: what it may not change, what it must label, when it waits for a click, and what happens when it fails.",
-      "Building UI Snip myself, with Claude Code as my pair programmer, changed how I design. Every decision met the real browser almost immediately, with its permissions, limits and timing, and the honest answer was often a clearer label rather than a cleverer feature.",
+      "Designing an AI product is mostly deciding what the AI shouldn't do: what it may not change, what it must label, and what happens when it fails.",
+      "Building it myself meant every decision met the real browser immediately, and the honest answer was often a clearer label, not a cleverer feature.",
     ],
     next: [
       "Run the beta, and learn which workflow people come back to.",

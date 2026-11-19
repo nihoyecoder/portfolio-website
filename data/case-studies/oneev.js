@@ -54,8 +54,7 @@ const oneEv = {
   // ------------------------------------------------------------------ Hero
   category: "EV Charging & Mobility Ecosystem",
   summary: "Making electric mobility simpler.",
-  subheadline:
-    "Designing intuitive charging, vehicle care and assistance experiences within one connected EV ecosystem.",
+  subheadline: "Charging, vehicle care and roadside help in one connected EV app.",
   // Professional context (components/case-study/CaseStudyMeta). Not marked
   // 0→1 and no launch status: neither is recorded for 1EV.
   context: {
@@ -94,7 +93,7 @@ const oneEv = {
   // ------------------------------------------------------------- Challenge
   challenge: {
     statement: "EV ownership comes with decisions most drivers have never had to make.",
-    body: "Charging asks people to think in kWh, judge unfamiliar stations and trust sessions that can stop without warning. Servicing an EV is fragmented, and a breakdown is time-critical. Each moment carries uncertainty — about cost, progress or what to do next. The challenge was to make them predictable without hiding the complexity underneath.",
+    body: "Charging asks drivers to think in kWh and trust sessions that can stop without warning; servicing is fragmented, and a breakdown is urgent. Each moment carries uncertainty about cost, progress or what to do next.",
     hmw: "How might we make EV charging and vehicle care simpler, more predictable and easier to navigate?",
     journey: {
       title: "Three journeys, three speeds",
@@ -123,15 +122,13 @@ const oneEv = {
     {
       labels,
       title: "Simplifying charging decisions.",
-      problem:
-        "Some drivers know the energy they need; others only know what they want to spend. Asking everyone for kWh forces mental maths.",
-      decision:
-        "Three ways to say how much: by kWh, by battery percentage or by ₹ budget. Each mode estimates what's missing — time, percentage or units — and all three lead to the same slot choice, an estimated price before review, and a booking summary.",
-      why: "Match the interaction to the user's mental model, and show the estimate before commitment.",
+      problem: "Some drivers know the kWh they need; others only what they want to spend.",
+      decision: "Three ways to say how much (kWh, battery % or ₹ budget), each estimating the rest, all leading to the same booking.",
+      why: "Match how drivers think, and show the estimate before they commit.",
       media: [
         {
           layout: "phones",
-          caption: "Slot booking with an estimated price before Review Booking · the booking summary that follows",
+          caption: "Choose how much → See the estimate → Book",
           images: [
             screen("booking-by-unit", "Slot Booking — By Unit", "Slot Booking: select your EV, charging type By Unit with an Enter Units field, estimated time 45 mins and 56%, slot selection, and a Booking Preview with an estimated price of ₹5000 and Review Booking", {
               markers: [
@@ -159,7 +156,7 @@ const oneEv = {
         // exist there; every booking screen in the file shows By Unit).
         {
           layout: "full",
-          caption: "The charging-type selector's three states, from the component set: By Unit, By Percentage and By Price.",
+          caption: "By Unit · By Percentage · By Price, from the component set",
           image: {
             src: `${dir}/details/booking-modes.webp`,
             width: 3300,
@@ -170,16 +167,14 @@ const oneEv = {
           },
         },
       ],
-      impact: "Drivers plan a charge in the terms they already think in — and see what they'll pay before they pay it.",
+      impact: "Drivers plan in their own terms, and see the price before paying.",
     },
     {
       labels,
       title: "Making charging progress and failures understandable.",
-      problem:
-        "A live session is a black box, and an interruption is a high-anxiety moment: did it stop, was I charged, what now?",
-      decision:
-        "Explicit session states — starting, live, completed, interrupted — with energy, cost and time remaining, a clear payment summary, and recovery actions such as Try Again or Find Another Charger.",
-      why: "Visibility of system status, meaningful feedback and a way out of every failure.",
+      problem: "A live session is a black box; an interruption leaves drivers asking if it stopped, if they paid, and what now.",
+      decision: "Explicit session states with energy, cost and time remaining, a clear payment summary and recovery actions.",
+      why: "Visible system status, and a way out of every failure.",
       media: {
         layout: "sequence",
         images: [
@@ -213,18 +208,15 @@ const oneEv = {
           "The completed session lists charging cost and platform fee before the total, then the receipt.",
         ],
       },
-      impact: "Drivers always know what the charger is doing, what it has cost, and what to do if it stops.",
+      impact: [["What it's doing", "What it costs", "What to do if it stops"]],
     },
     {
       labels,
       title: "Making vehicle care and assistance easier.",
-      context:
-        "1EV Care's requirements come from the Care MVP specification by Komal Sankapal. I designed the customer-facing experience.",
-      problem:
-        "Routine servicing and a roadside breakdown are different jobs — one planned and comparative, the other urgent. One generic flow fails both.",
-      decision:
-        "1EV Care split into two journeys — Book a service and Get help on the road — with contextual service selection, one recommended provider you can accept or swap, live technician tracking and cancellation.",
-      why: "Progressive disclosure, fewer decisions under stress, and urgent actions given priority.",
+      context: "Requirements from the Care MVP specification by Komal Sankapal; I designed the customer experience.",
+      problem: "Servicing is planned and comparative, a breakdown is urgent, and one generic flow fails both.",
+      decision: "Two journeys, Book a service and Get help on the road: one recommended provider to accept or swap, then live tracking and cancellation.",
+      why: "Fewer decisions under stress, and urgent actions first.",
       media: {
         layout: "sequence",
         images: [
@@ -260,7 +252,7 @@ const oneEv = {
           "An arrival OTP and a verified partner card: who is coming, and how to check it's them.",
         ],
       },
-      impact: "Planned care feels considered; getting help takes as few decisions as possible.",
+      impact: [["Planned care, considered", "Urgent help, in few decisions"]],
     },
   ],
 
@@ -269,10 +261,7 @@ const oneEv = {
     body: "The same dark interface language runs through charging, wallet and 1EV Care, so new modules feel like one product.",
     visualLanguage: {
       title: "Dark, calm and high-contrast.",
-      body: [
-        "1EV is dark-only: deep navy surfaces, high-contrast text and an electric teal kept for primary actions and live states.",
-        "Status always pairs colour with a label and an icon — never colour alone.",
-      ],
+      body: "Dark-only: deep navy surfaces, high-contrast text, and electric teal kept for primary actions and live states. Status always pairs colour with a label and an icon.",
       colors: [
         { hex: "#010518", name: "Ink Navy", rationale: "The app background — every screen starts from it." },
         { hex: "#00C6BD", name: "1EV Teal", token: "Color/Primary/60", rationale: "Primary actions — the full-width pill — and live states." },
@@ -342,7 +331,7 @@ const oneEv = {
   // --------------------------------------------------------------- Outcome
   // Intended outcomes of the design — no measured results exist yet.
   outcomes: {
-    body: "These are the intended outcomes of the design work, not measured results.",
+    body: "Designed outcomes, not measured results.",
     points: [
       "More understandable charging decisions.",
       "Transparent pricing and progress.",
@@ -352,7 +341,7 @@ const oneEv = {
     ],
     learning: {
       title: "What I learned",
-      body: "Connected products are tested at their seams — when a charge stops, a quote changes or someone needs help. Designing those edge states first made the everyday paths simpler too.",
+      body: "Connected products are tested at their seams: when a charge stops, a quote changes or someone needs help. Designing those edge states first made the everyday paths simpler too.",
     },
   },
 };

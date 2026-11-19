@@ -9,6 +9,8 @@ import styles from "./CaseStudy.module.css";
 
 const SIZES = {
   full: FULL_SIZES,
+  // An annotated screenshot: full width, or 64rem wide and panning on phones.
+  pan: "(min-width: 1280px) calc(100vw - 80px), (min-width: 768px) calc(100vw - 64px), 1024px",
   wide: "(min-width: 1024px) 62vw, 94vw",
   2: "(min-width: 768px) 46vw, 94vw",
   3: "(min-width: 768px) 30vw, 94vw",
@@ -57,19 +59,28 @@ export default function CaseMedia({ media }) {
     );
   }
 
+  // The caption sits right under the visual as its one-line takeaway; the
+  // numbered notes (and any zoomed details) follow the figure.
   if (layout === "phones" || layout === "sequence") {
     return (
-      <Figure caption={caption}>
-        <Screens images={media.images} sequence={layout === "sequence"} arrows={media.arrows} notes={media.notes} />
-      </Figure>
+      <>
+        <Figure caption={caption}>
+          <Screens images={media.images} sequence={layout === "sequence"} arrows={media.arrows} />
+        </Figure>
+        <Notes notes={media.notes} />
+      </>
     );
   }
 
   if (layout === "annotated") {
     return (
-      <Figure caption={caption}>
-        <Annotated media={media} />
-      </Figure>
+      <>
+        <Figure caption={caption}>
+          <Annotated media={media} />
+        </Figure>
+        <Notes notes={media.notes} />
+        <Details details={media.details} />
+      </>
     );
   }
 
@@ -139,7 +150,7 @@ function Figure({ span = "full", caption, children }) {
 }
 
 // On phones the row scrolls sideways instead of shrinking the screens.
-function Screens({ images, sequence, arrows, notes }) {
+function Screens({ images, sequence, arrows }) {
   const arrowed = sequence && arrows;
   return (
     <>
@@ -171,7 +182,6 @@ function Screens({ images, sequence, arrows, notes }) {
           Swipe to see all screens →
         </p>
       )}
-      <Notes notes={notes} />
     </>
   );
 }
@@ -199,18 +209,38 @@ function Markers({ image, markers = [] }) {
   ));
 }
 
-// What the markers point to, numbered in order.
+// What the markers point to, numbered in order: short callouts on the page
+// grid, under the figure.
 function Notes({ notes = [] }) {
   if (notes.length === 0) return null;
   return (
-    <ol className={styles.markerNotes}>
-      {notes.map((note, i) => (
-        <li key={i} data-reveal>
-          <span className={styles.noteNumber}>{pad(i + 1)}</span>
-          <span>{copy(note)}</span>
-        </li>
-      ))}
-    </ol>
+    <div className={styles.grid}>
+      <ol className={`${styles.full} ${styles.markerNotes}`}>
+        {notes.map((note, i) => (
+          <li key={i} data-reveal>
+            <span className={styles.noteNumber}>{pad(i + 1)}</span>
+            <span>{copy(note)}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+// Zoomed crops under an annotated screenshot, so small UI stays readable.
+function Details({ details = [] }) {
+  if (details.length === 0) return null;
+  return (
+    <div className={styles.grid}>
+      <div className={`${styles.full} ${styles.details}`}>
+        {details.map((detail) => (
+          <div key={detail.src} className={styles.detail} data-wide={detail.wide || undefined}>
+            <CaseImage image={detail} sizes={detail.wide ? SIZES.full : SIZES[2]} reveal />
+            {detail.caption && <p className={styles.caption}>{copy(detail.caption)}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -223,19 +253,24 @@ function SequenceArrow() {
   );
 }
 
-// One screenshot with highlight boxes (see Markers) and their notes; the
-// overlay can carry a note number too.
+// One screenshot with highlight boxes (see Markers); the overlay can carry a
+// note number too. Its notes and details follow the figure (CaseMedia).
 function Annotated({ media }) {
-  const { image, markers = [], notes = [], overlay, details = [] } = media;
+  const { image, markers = [], overlay } = media;
 
   return (
     <>
-      <div className={styles.annotated} data-overlay={overlay ? "" : undefined}>
-        <div className={styles.annotatedShot}>
-          <CaseImage image={image} sizes={SIZES.full} reveal />
-          <Markers image={image} markers={markers} />
-          {publicFileExists(image.src) && <Lightbox image={image} />}
+      {/* markerTone: "light" for screenshots on a dark background */}
+      <div className={styles.annotated} data-overlay={overlay ? "" : undefined} data-tone={media.markerTone}>
+        {/* Phones: the screenshot keeps a readable width and pans sideways,
+            opening on `panFocus` (0–1 of its width) when it's set */}
+        <div className={styles.pan} data-pan-focus={media.panFocus}>
+          <div className={styles.annotatedShot}>
+            <CaseImage image={image} sizes={SIZES.pan} reveal />
+            <Markers image={image} markers={markers} />
+          </div>
         </div>
+        {publicFileExists(image.src) && <Lightbox image={image} />}
         {overlay && (
           <div className={styles.overlay}>
             <CaseImage image={overlay} sizes={SIZES.overlay} reveal />
@@ -247,19 +282,9 @@ function Annotated({ media }) {
           </div>
         )}
       </div>
-
-      <Notes notes={notes} />
-
-      {details.length > 0 && (
-        <div className={styles.details}>
-          {details.map((detail) => (
-            <div key={detail.src} className={styles.detail} data-wide={detail.wide || undefined}>
-              <CaseImage image={detail} sizes={detail.wide ? SIZES.full : SIZES[2]} reveal />
-              {detail.caption && <p className={styles.caption}>{copy(detail.caption)}</p>}
-            </div>
-          ))}
-        </div>
-      )}
+      <p aria-hidden="true" className={`${styles.label} ${styles.scrollHint}`}>
+        Swipe to explore →
+      </p>
     </>
   );
 }

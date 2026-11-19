@@ -46,8 +46,7 @@ const datalyon = {
   // ------------------------------------------------------------------ Hero
   category: "AI-Powered Data Analytics / Enterprise SaaS",
   summary: "From raw data to real insights.",
-  subheadline:
-    "Designing an AI-powered analytics experience that simplifies the journey from data connection to decision-making.",
+  subheadline: "An AI-powered analytics product that takes people from connecting data to making decisions.",
   // Professional context (components/case-study/CaseStudyMeta). Designed by
   // two designers together, so no individual ownership list is claimed.
   context: {
@@ -85,18 +84,14 @@ const datalyon = {
   // ------------------------------------------------------------- Challenge
   challenge: {
     statement: "Having data doesn't mean knowing what to do with it.",
-    body: [
-      "Turning raw data into actionable insights involves multiple decisions — choosing sources, understanding data quality, creating visualizations and interpreting results.",
-      "For users unfamiliar with analytical workflows, these steps can create unnecessary complexity.",
-    ],
+    body: "Choosing sources, checking quality, building charts, reading results: each step is a decision, and many users aren't analysts.",
     hmwLabel: "Design challenge",
     hmw: "How might we make the journey from raw data to actionable insights intuitive, guided and accessible?",
-    note: "Datalyon was designed from scratch. The reasoning below is design rationale — it hasn't yet been validated with users.",
   },
 
   // -------------------------------------------------------------- Strategy
   approach: {
-    body: "We structured the experience around four key decisions to help users progress with clarity while remaining in control.",
+    body: "Four steps, each one clear, with the user in control throughout.",
     layout: "flow",
     principles: [
       { title: "Connect", text: "Make data sources easy to recognize and select." },
@@ -111,10 +106,8 @@ const datalyon = {
     {
       labels,
       title: "Make the first step obvious.",
-      problem:
-        "A first-time user's question is simply where their data lives — not how a connector is configured.",
-      decision:
-        "Rather than overwhelming users with technical configuration, we introduced recognizable data-source options and guided sheet selection.",
+      problem: "A first-time user knows where their data lives, not how a connector is configured.",
+      decision: "Recognisable data sources and guided sheet selection, instead of technical configuration.",
       why: "Recognition over recall, and progressive disclosure.",
       media: {
         layout: "annotated",
@@ -149,9 +142,8 @@ const datalyon = {
       labels,
       title: "Build confidence before analysis.",
       problem: "Quality problems hidden in a file surface later, as charts that quietly mislead.",
-      decision:
-        "Data profiling makes hidden quality issues visible through clear metrics, column-level information and cleaning suggestions — helping users identify what needs attention before proceeding.",
-      why: "Visibility of system status, and informed decision-making.",
+      decision: "Profile the data first: clear metrics, column-level detail and cleaning suggestions, before any analysis.",
+      why: "Visible system status, and informed decisions.",
       media: {
         layout: "annotated",
         image: shot(
@@ -178,7 +170,7 @@ const datalyon = {
             200,
             "Attention banner",
             "Banner: 2 of 12 columns need your attention. Everything else looks healthy; fix the flagged columns now or continue and fix them later.",
-            { wide: true, caption: "Up close: the warning leads with a count and a choice, not an error." },
+            { wide: true, caption: "A count and a choice, not an error." },
           ),
           shot(
             "decisions/profiling-metrics.webp",
@@ -186,7 +178,7 @@ const datalyon = {
             312,
             "Quality metrics",
             "Metric cards: Total Columns 12, Missing Data 0.01% — 7 cells across 60,000.",
-            { caption: "Metrics in plain terms — “7 cells across 60,000”." },
+            { caption: "Plain terms: “7 cells across 60,000”." },
           ),
           shot(
             "decisions/profiling-review.webp",
@@ -194,7 +186,7 @@ const datalyon = {
             148,
             "Next step",
             "Skip & Proceed and Review Cleaning buttons.",
-            { caption: "Two explicit choices: review the suggested cleaning, or skip and proceed." },
+            { caption: "Two explicit next steps." },
           ),
         ],
       },
@@ -202,11 +194,9 @@ const datalyon = {
     {
       labels,
       title: "Replace the blank canvas with momentum.",
-      problem:
-        "An empty dashboard asks people to know which chart answers which question before they've seen their data.",
-      decision:
-        "Instead of requiring users to configure every visualization from scratch, the experience presents an AI-generated dashboard with metrics, charts and suggested insights.",
-      why: "Reduce initial effort while supporting exploration.",
+      problem: "An empty dashboard asks people to pick charts before they've seen their data.",
+      decision: "Start from an AI-generated dashboard of metrics, charts and suggested insights.",
+      why: "Less effort up front, with room to explore.",
       media: {
         layout: "annotated",
         caption: "An AI-generated starting point, not a finished answer.",
@@ -232,13 +222,12 @@ const datalyon = {
     {
       labels,
       title: "Let AI assist, not take over.",
-      problem:
-        "AI that only answers leaves people unable to shape the result; manual tools alone bring back the blank canvas.",
-      decision:
-        "Conversational AI lets users explore questions in natural language, while chart configuration controls keep the flexibility to refine and customize their dashboards.",
+      problem: "AI that only answers leaves people unable to shape the result; manual tools alone bring back the blank canvas.",
+      decision: "Ask questions in natural language, and refine any chart with full controls.",
       why: "Human control and flexibility.",
       media: {
         layout: "split",
+        caption: "AI assists. The user stays in control.",
         images: [
           shot(
             "decisions/ai-chat.webp",
@@ -246,7 +235,7 @@ const datalyon = {
             1710,
             "AI Assistant",
             "The AI Assistant panel: asked why sales dropped last week, it explains an 8.3% drop driven by the North region, beside the dashboard's charts, with suggested follow-up questions.",
-            { title: "AI assists", caption: "Ask in plain language — “Why did sales drop last week?” — and get an explained answer." },
+            { title: "AI assists", caption: "“Why did sales drop last week?”, answered and explained." },
           ),
           shot(
             "decisions/chart-editor.webp",
@@ -254,7 +243,7 @@ const datalyon = {
             1710,
             "Chart editor",
             "The Edit Chart panel beside the selected line chart: header and title, chart type (Line, Bar, Pie, Area), data mapping, aggregation and filters.",
-            { title: "You stay in control", caption: "Refine any chart: type, data mapping, aggregation and filters." },
+            { title: "You stay in control", caption: "Type, data mapping, aggregation, filters." },
           ),
         ],
       },
@@ -323,7 +312,7 @@ const datalyon = {
         ],
       },
     ],
-    note: "Colour is never the only signal: warnings pair amber with an icon and plain language, and every status keeps its label. One thing to revisit — small amber text on white is low in contrast.",
+    note: "Colour is never the only signal: every status keeps its label. To revisit: small amber text on white is low in contrast.",
   },
 
   // -------------------------------------------------------------- Journey
@@ -331,6 +320,7 @@ const datalyon = {
     media: [
       {
         layout: "flow",
+        caption: "Connect → Profile → Generate → Explore, in one experience.",
         images: [
           shot("journey/connect.webp", 1600, 1000, "Connect data", "Choosing a data source", { title: "Connect data" }),
           shot("journey/profile.webp", 1600, 1000, "Profile data", "The data profile with quality metrics", { title: "Profile data" }),
@@ -339,24 +329,22 @@ const datalyon = {
         ],
       },
     ],
-    note: "The resulting design connects data preparation, visualization and AI-assisted exploration in one experience. Each stage is intended to reduce uncertainty while giving people the flexibility to investigate and act on their data.",
   },
 
   // ------------------------------------------------------------ Validation
   // Honest status: designed, not yet tested with users. The next step moved
   // here from the reflection.
   validation: {
-    status: "Not yet validated with users.",
-    body: "Datalyon was designed from scratch. The reasoning in this case study is design rationale — it hasn't yet been tested with users.",
+    status: "Not yet validated with users. The reasoning here is design rationale.",
     nextLabel: "Next validation step",
-    next: "Evaluate whether first-time users can connect a dataset, understand its quality, generate a dashboard and confidently interpret an insight — without assistance.",
+    next: "Can first-time users connect a dataset, read its quality, generate a dashboard and interpret an insight, unaided?",
   },
 
   // ------------------------------------------------------------ Reflection
   reflection: {
     body: [
-      "Working collaboratively on Datalyon reinforced an important lesson: simplifying a complex product isn't about removing powerful capabilities, but about making them easier to discover, understand and use.",
-      "We focused on progressive disclosure, meaningful feedback, and an experience where AI supports people without taking away their control.",
+      "Simplifying a complex product isn't about removing capability; it's about making it easier to discover, understand and use.",
+      "Progressive disclosure and clear feedback let AI help without taking control.",
     ],
   },
 };

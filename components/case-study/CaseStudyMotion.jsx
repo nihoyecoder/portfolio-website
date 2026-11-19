@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { gsap, media, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 const CLIP_OPEN = "inset(0% 0% 0% 0% round 18px)";
@@ -11,6 +11,17 @@ const CLIP_OPEN = "inset(0% 0% 0% 0% round 18px)";
 // No pinning; nothing moves with reduced motion.
 export default function CaseStudyMotion({ children, ...props }) {
   const ref = useRef(null);
+
+  // Phones: a panning screenshot opens on its UI rather than its left edge.
+  // data-pan-focus is the point to centre, as a fraction of its width.
+  useEffect(() => {
+    ref.current?.querySelectorAll("[data-pan-focus]").forEach((el) => {
+      const range = el.scrollWidth - el.clientWidth;
+      if (range <= 0) return;
+      const target = Number(el.dataset.panFocus) * el.scrollWidth - el.clientWidth / 2;
+      el.scrollLeft = Math.max(0, Math.min(range, target));
+    });
+  }, []);
 
   useGSAP(
     () => {

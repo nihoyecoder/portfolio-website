@@ -10,7 +10,7 @@
 
 .article {
   --gutter: 1.25rem;
-  --space: clamp(4rem, 8vw, 6.5rem);
+  --space: clamp(5rem, 10vw, 8.5rem);
   --canvas: #e6e2d9;
   --ink-soft: #35332f;
   --radius: 18px;
@@ -483,6 +483,27 @@
   position: relative;
 }
 
+/* Phones: a wide screenshot keeps a readable width (64rem) and pans
+   sideways; the markers stay on target, being placed in the image's own
+   proportions. The padding leaves room for the badges at the edges. */
+@media (max-width: 767px) {
+  .pan {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    margin: -0.9rem 0 0 -0.9rem;
+    padding: 0.9rem 0 0 0.9rem;
+  }
+
+  .pan::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pan > .annotatedShot {
+    width: max(100%, 64rem);
+  }
+}
+
 /* A highlight box over part of a screenshot, numbered to match a note */
 .marker {
   position: absolute;
@@ -509,6 +530,17 @@
   letter-spacing: 0.04em;
   transform: translate(-45%, -45%);
   box-shadow: 0 0 0 3px var(--background);
+}
+
+/* A screenshot on a dark background: white markers */
+.annotated[data-tone="light"] .marker {
+  border-color: #fff;
+  background-color: rgb(255 255 255 / 0.08);
+}
+
+.annotated[data-tone="light"] .markerNumber {
+  background-color: #fff;
+  color: #1a0f2b;
 }
 
 /* On a stage (screens on the project's colour) markers take the stage's text
@@ -557,9 +589,10 @@
   }
 }
 
+/* What each highlight shows: one box per note, in the TL;DR card's style */
 .markerNotes {
   display: grid;
-  gap: 0.9rem 2rem;
+  gap: clamp(0.75rem, 1.4vw, 1rem);
   max-width: 64rem;
   margin-top: 1.75rem;
 }
@@ -576,7 +609,7 @@
   .markerNotes {
     max-width: none;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--grid-gap);
+    gap: var(--grid-gap);
   }
 
   .markerNotes li {
@@ -587,10 +620,14 @@
 .markerNotes li {
   display: grid;
   grid-template-columns: 2.25rem minmax(0, 1fr);
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--line);
+  align-content: start;
+  padding: clamp(1rem, 1.6vw, 1.35rem) clamp(1rem, 1.8vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--foreground) 3%, transparent);
+  color: var(--ink-soft);
   font-size: 15.5px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 /* Zoomed crops under a screenshot, so small UI stays readable */
@@ -1321,8 +1358,18 @@
   max-width: 40rem;
   margin-top: 1rem;
   color: var(--muted);
-  font-size: 14.5px;
+  font-size: 15px;
   line-height: 1.5;
+}
+
+/* A figure's own caption is its one-line takeaway (e.g. Request → Approval
+   → Payment), so it reads a step stronger than a screen's caption */
+.figure > figure > figcaption.caption {
+  margin-top: 1.1rem;
+  color: var(--ink-soft);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .columns {
@@ -1357,11 +1404,12 @@
   justify-content: center;
   align-items: flex-start;
   gap: clamp(1rem, 3vw, 3rem);
-  padding: clamp(2rem, 6vw, 5.5rem) clamp(1.25rem, 4vw, 4rem);
+  padding: clamp(2rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 4rem);
 }
 
+/* Large enough to read the UI: up to 21rem a screen */
 .screen {
-  flex: 0 1 clamp(9rem, 24vw, 17rem);
+  flex: 0 1 clamp(10rem, 27vw, 21rem);
   min-width: 0;
 }
 
@@ -1385,7 +1433,7 @@
 }
 
 .sequence .screen {
-  flex-basis: 22%;
+  flex-basis: 28%;
 }
 
 /* Sequence with arrows: a fixed gap the arrow can centre in */
@@ -1396,7 +1444,7 @@
 }
 
 .arrowed .screen {
-  flex: 0 1 clamp(9rem, 22vw, 17rem);
+  flex: 0 1 clamp(10rem, 24vw, 19rem);
 }
 
 /* A connected journey reads level, so the arrows line up */
@@ -1438,9 +1486,10 @@
     overscroll-behavior-x: contain;
   }
 
+  /* Most of the width each, so the UI stays readable without zooming */
   .screen,
   .sequence .screen {
-    flex: 0 0 62%;
+    flex: 0 0 80%;
     scroll-snap-align: start;
   }
 
@@ -1510,8 +1559,9 @@
 
 /* -------------------------------------------------------- Decisions */
 
+/* Generous space between decisions; little inside each copy block */
 .decision {
-  padding-top: clamp(3rem, 6vw, 4.75rem);
+  padding-top: clamp(4.5rem, 9vw, 7.5rem);
 }
 
 .decisionHead {
@@ -1568,10 +1618,11 @@
   letter-spacing: 0.08em;
 }
 
+/* The decision headline carries the thinking, so it leads */
 .decisionTitle {
   scroll-margin-top: 6rem; /* clears the sticky case nav when jumped to */
   max-width: 24ch;
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-size: clamp(2.1rem, 4vw, 3.5rem);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.035em;
@@ -1594,9 +1645,9 @@
 
 .decisionContext {
   max-width: 46rem;
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
   color: var(--ink-soft);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.55;
 }
 
@@ -1627,10 +1678,11 @@
   line-height: 1.35;
 }
 
+/* Problem / Decision / Why: one short line each, smaller than the headline */
 .reasons {
   display: grid;
-  gap: 1.75rem;
-  margin-top: 2.5rem;
+  gap: 1.25rem;
+  margin-top: 2rem;
 }
 
 @media (min-width: 768px) {
@@ -1641,10 +1693,10 @@
 }
 
 .reasons dd {
-  margin-top: 0.6rem;
+  margin-top: 0.45rem;
   color: var(--ink-soft);
-  font-size: 16.5px;
-  line-height: 1.55;
+  font-size: 15.5px;
+  line-height: 1.5;
 }
 
 /* The decision itself carries the weight */
@@ -1660,8 +1712,10 @@
   display: grid;
   gap: 0.6rem;
   max-width: 40rem;
-  font-size: 17px;
-  line-height: 1.5;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
 }
 
 /* Before → after model, e.g. five roles into three */
@@ -2054,6 +2108,7 @@
 
 .noteNumber {
   color: var(--p-accent);
+  font-variant-numeric: tabular-nums;
   font-size: 11px;
   letter-spacing: 0.08em;
   line-height: 1.9;
@@ -2066,7 +2121,6 @@
   border: 1px dashed currentColor;
   border-radius: 999px;
   color: var(--muted);
-  font-variant-numeric: tabular-nums;
   font-size: 9.5px;
   letter-spacing: 0.08em;
   line-height: 1.5;
@@ -2646,8 +2700,9 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  /* Problem, then the key decisions beside it; the result under them */
   .tldrWide {
-    grid-column: span 3;
+    grid-column: 2 / span 2;
   }
 }
 
@@ -2673,12 +2728,9 @@
     grid-column: span 4;
   }
 
+  /* The decisions and the result start on column 5, like the hero text */
   .tldrList > .tldrWide {
-    grid-column: span 8;
-  }
-
-  .tldrList > .tldrWide + .tldrWide {
-    grid-column: span 4;
+    grid-column: 5 / span 8;
   }
 }
 
