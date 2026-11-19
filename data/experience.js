@@ -12,7 +12,7 @@ const MFD = "MFD (Meta For Data Technologies)";
 
 export const experience = [
   {
-    role: "UX/UI Lead",
+    role: "UX/UI (Product Design) Lead",
     level: "Lead",
     company: MFD,
     promotedFrom: "UX/UI Designer",

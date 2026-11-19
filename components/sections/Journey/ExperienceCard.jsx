@@ -6,7 +6,9 @@ export default function ExperienceCard({ item }) {
     <li data-journey-item className={styles.item}>
       <article className={styles.card}>
         <div className="flex items-start justify-between gap-6">
-          <h3 className="text-[1.25rem] font-semibold leading-tight tracking-[-0.03em] xl:text-[1.375rem]">
+          {/* Balanced, so a long title wraps into even lines rather than
+              leaving one word on its own */}
+          <h3 className="text-balance text-[1.25rem] font-semibold leading-tight tracking-[-0.03em] xl:text-[1.375rem]">
             {item.role}
           </h3>
           <p className="max-w-[45%] pt-1 text-right text-sm leading-snug text-muted">{item.company}</p>
