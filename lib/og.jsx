@@ -28,8 +28,10 @@ async function googleFont(family, weight, text, italic = false) {
   }
 }
 
-async function fonts({ sans, mono }) {
-  const list = await Promise.all([googleFont("Manrope", 600, sans), googleFont("Geist Mono", 500, mono)]);
+// Manrope throughout: semibold for the headline, medium for the small caps
+// lines (the weight they had as mono).
+async function fonts({ sans, small }) {
+  const list = await Promise.all([googleFont("Manrope", 600, sans), googleFont("Manrope", 500, small)]);
   return list.filter(Boolean);
 }
 
@@ -38,16 +40,17 @@ const logo = readFile(join(process.cwd(), "public/brand/manoj-logo.png")).then(
   () => null,
 );
 
-// One line of mono caps: a label or a fact.
+// One line of small caps: a label or a fact.
 function Line({ text, color, size = 22 }) {
   if (!text) return null;
   return (
     <div
       style={{
         display: "flex",
-        fontFamily: "Geist Mono",
+        fontFamily: "Manrope",
+        fontWeight: 500,
         fontSize: size,
-        letterSpacing: "0.06em",
+        letterSpacing: "0.1em",
         textTransform: "uppercase",
         color,
       }}
@@ -99,7 +102,7 @@ export async function homeImage() {
         <Line text={proof} color={HOME.text} />
       </Frame>
     ),
-    { ...ogSize, fonts: await fonts({ sans: name + role, mono: footer + proof }) },
+    { ...ogSize, fonts: await fonts({ sans: name + role, small: footer + proof }) },
   );
 }
 
@@ -136,6 +139,6 @@ export async function caseImage(project) {
         <Line text={status} color={project.foreground} />
       </Frame>
     ),
-    { ...ogSize, fonts: await fonts({ sans: title, mono: by + tag + status }) },
+    { ...ogSize, fonts: await fonts({ sans: title, small: by + tag + status }) },
   );
 }

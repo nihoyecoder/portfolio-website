@@ -24,7 +24,6 @@
   --color-signal: var(--signal);
 
   --font-sans: var(--font-primary), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-code), ui-monospace, monospace;
   --font-display: var(--font-clash), var(--font-primary), ui-sans-serif, sans-serif;
 
   --animate-soft-pulse: soft-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;

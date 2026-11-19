@@ -77,7 +77,7 @@ function JourneyIntro() {
       <ol
         data-journey-fade
         aria-label={journey.progressionLabel}
-        className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[10.5px] uppercase tracking-[0.08em] text-muted"
+        className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[10.5px] uppercase tracking-[0.08em] text-muted"
       >
         {ladder.map((item, i) => (
           <li key={item.role} className="flex items-center gap-2">

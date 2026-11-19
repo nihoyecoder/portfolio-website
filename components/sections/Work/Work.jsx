@@ -7,7 +7,7 @@ import ProjectVisual from "./ProjectVisual";
 import WorkMotion from "./WorkMotion";
 import styles from "./Work.module.css";
 
-const meta = "font-mono text-[11px] uppercase tracking-[0.08em]";
+const meta = "text-[11px] uppercase tracking-[0.08em]";
 
 // Lead visual first, then the two supporting views.
 const ROLES = ["lead", "a", "b"];

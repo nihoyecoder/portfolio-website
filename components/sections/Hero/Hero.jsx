@@ -14,7 +14,7 @@ import styles from "./Hero.module.css";
 const PORTRAIT = { src: "/images/about/manoj-hero-cutout.webp", width: 1122, height: 1402 };
 
 // Full-strength text: it sits on the rose gradient.
-const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-foreground";
+const meta = "text-[11px] uppercase tracking-[0.08em] text-foreground";
 
 // Wraps text in a clipping mask so the timeline can raise it into view.
 function MaskLine({ children, className = "" }) {

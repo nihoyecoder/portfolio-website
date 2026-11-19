@@ -3,7 +3,7 @@ import { workflow } from "@/data/journey";
 import { publicFileExists } from "@/lib/assets";
 import styles from "./Journey.module.css";
 
-const caption = "font-mono text-[10.5px] uppercase tracking-[0.08em] text-muted";
+const caption = "text-[10.5px] uppercase tracking-[0.08em] text-muted";
 
 // "What I use in my workflow" — tools in the order work moves from design to
 // code. Each tile shows the official logo once its SVG exists in /public,

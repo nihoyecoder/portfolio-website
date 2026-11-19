@@ -97,7 +97,6 @@
   background-color: color-mix(in oklab, var(--p-bg) 88%, var(--p-fg));
   box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--p-bg) 76%, var(--p-fg));
   color: color-mix(in oklab, var(--p-fg) 55%, var(--p-bg));
-  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;

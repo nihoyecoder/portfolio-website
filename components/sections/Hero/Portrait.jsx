@@ -36,7 +36,7 @@ export default function Portrait({ image, alt }) {
             className="relative flex items-end rounded-[3px] bg-[#dcd6cb] p-4"
             style={{ aspectRatio: `${image.width} / ${image.height}` }}
           >
-            <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">Portrait</span>
+            <span className="text-[10px] uppercase tracking-[0.08em] text-muted">Portrait</span>
           </div>
         )}
       </div>

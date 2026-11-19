@@ -9,7 +9,7 @@ import styles from "./Footer.module.css";
 import ArrowIcon from "@/components/ui/ArrowIcon";
 import CursorGrid from "@/components/ui/CursorGrid";
 
-const meta = "font-mono text-[11px] uppercase tracking-[0.08em] text-muted";
+const meta = "text-[11px] uppercase tracking-[0.08em] text-muted";
 
 // The closing signature: a calm, light layer after the dark Contact section.
 export default function Footer({ gridColor }) {

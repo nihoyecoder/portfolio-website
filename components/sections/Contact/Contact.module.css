@@ -134,7 +134,6 @@
   gap: 1rem;
   padding: 0.9rem 1rem;
   color: var(--text-faint);
-  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -423,7 +422,6 @@
 .optional {
   margin-left: auto;
   color: var(--text-faint);
-  font-family: var(--font-mono);
   font-size: 10.5px;
   font-weight: 400;
   letter-spacing: 0.06em;
@@ -640,7 +638,6 @@
 .devHint {
   margin-top: 0.5rem;
   color: var(--text-muted);
-  font-family: var(--font-mono);
   font-size: 11.5px;
   line-height: 1.5;
 }
@@ -809,7 +806,6 @@
   border-radius: 8px;
   background-color: var(--surface-raised);
   color: var(--paper);
-  font-family: var(--font-mono);
   font-size: 12.5px;
   overflow-wrap: anywhere;
   user-select: all;
