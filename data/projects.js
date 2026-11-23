@@ -89,42 +89,8 @@ export const projects = [
     ],
   },
   {
-    id: "datalyon",
-    number: "03",
-    title: "Datalyon",
-    subtitle: "AI-Powered Data Analytics",
-    tag: "0→1 AI Analytics Product · Product Design",
-    description:
-      "Designing an AI-powered analytics experience that takes people from raw data to real insights.",
-    href: "/work/datalyon",
-    cta: "View case study",
-    // Datalyon Figma purples: Primary/500 glow top-right, Primary/700, and
-    // the brand charcoal (Primary 09) under the text.
-    background: "#5D356E",
-    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(155 113 176 / 0.5), transparent 60%), linear-gradient(235deg, #844C9D 0%, #5D356E 50%, #41363F 100%)",
-    foreground: "#ffffff",
-    accent: "#ffffff",
-    visuals: [
-      {
-        src: "/images/projects/datalyon/assistant.webp",
-        label: "AI Assistant",
-        alt: "Datalyon on a desktop monitor in a lilac room: the AI Assistant beside a Sales Performance dashboard, answering why sales dropped last week",
-      },
-      {
-        src: "/images/projects/datalyon/dashboard.webp",
-        label: "Dashboard",
-        alt: "An AI-generated Sales Performance dashboard with KPI cards, charts and See AI Insight links",
-      },
-      {
-        src: "/images/projects/datalyon/data-profile.webp",
-        label: "Data profile",
-        alt: "Data Profile: a warning that 2 of 12 columns need attention, quality metrics and a column table",
-      },
-    ],
-  },
-  {
     id: "1ev",
-    number: "04",
+    number: "03",
     title: "1EV",
     subtitle: "EV Charging Platform",
     tag: "EV Mobility Platform · End-to-End UX",
@@ -153,6 +119,40 @@ export const projects = [
         src: "/images/projects/1ev/charging-session.webp",
         label: "Charging session",
         alt: "A live 1EV charging session at 68%, between a charging-interrupted screen with Try Again and the completed session details",
+      },
+    ],
+  },
+  {
+    id: "datalyon",
+    number: "04",
+    title: "Datalyon",
+    subtitle: "AI-Powered Data Analytics",
+    tag: "0→1 AI Analytics Product · Product Design",
+    description:
+      "Designing an AI-powered analytics experience that takes people from raw data to real insights.",
+    href: "/work/datalyon",
+    cta: "View case study",
+    // Datalyon Figma purples: Primary/500 glow top-right, Primary/700, and
+    // the brand charcoal (Primary 09) under the text.
+    background: "#5D356E",
+    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(155 113 176 / 0.5), transparent 60%), linear-gradient(235deg, #844C9D 0%, #5D356E 50%, #41363F 100%)",
+    foreground: "#ffffff",
+    accent: "#ffffff",
+    visuals: [
+      {
+        src: "/images/projects/datalyon/assistant.webp",
+        label: "AI Assistant",
+        alt: "Datalyon on a desktop monitor in a lilac room: the AI Assistant beside a Sales Performance dashboard, answering why sales dropped last week",
+      },
+      {
+        src: "/images/projects/datalyon/dashboard.webp",
+        label: "Dashboard",
+        alt: "An AI-generated Sales Performance dashboard with KPI cards, charts and See AI Insight links",
+      },
+      {
+        src: "/images/projects/datalyon/data-profile.webp",
+        label: "Data profile",
+        alt: "Data Profile: a warning that 2 of 12 columns need attention, quality metrics and a column table",
       },
     ],
   },
