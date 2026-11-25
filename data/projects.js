@@ -51,40 +51,36 @@ export const projects = [
     ],
   },
   {
-    id: "ui-snip",
+    id: "datalyon",
     number: "02",
-    title: "UI Snip",
-    // One line on the Selected Work card ("UI" alone would look orphaned).
-    titleLines: ["UI Snip"],
-    subtitle: "Chrome Extension · AI Developer Tool",
-    tag: "0→1 AI Chrome Extension · Design & Build",
+    title: "Datalyon",
+    subtitle: "AI-Powered Data Analytics",
+    tag: "0→1 AI Analytics Product · Product Design",
     description:
-      "Turning a design, motion or animation on any website into a prompt for AI coding tools, designed and built end to end.",
-    href: "/work/ui-snip",
+      "Designing an AI-powered analytics experience that takes people from raw data to real insights.",
+    href: "/work/datalyon",
     cta: "View case study",
-    // UI Snip's panel colours (src/panel/theme.css in the extension): a violet
-    // glow top-right over the tab bar's purple, deepening to Night under the
-    // text.
-    background: "#1A0F2B",
-    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(165 101 250 / 0.45), transparent 60%), linear-gradient(235deg, #4C0E88 0%, #2A1B40 50%, #1A0F2B 100%)",
-    foreground: "#FFFBFE",
+    // Datalyon Figma purples: Primary/500 glow top-right, Primary/700, and
+    // the brand charcoal (Primary 09) under the text.
+    background: "#5D356E",
+    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(155 113 176 / 0.5), transparent 60%), linear-gradient(235deg, #844C9D 0%, #5D356E 50%, #41363F 100%)",
+    foreground: "#ffffff",
     accent: "#ffffff",
-    // Compositions of the real panel screenshots on UI Snip's own background.
     visuals: [
       {
-        src: "/images/projects/ui-snip/workflows.webp",
-        label: "Three workflows",
-        alt: "UI Snip's side panel three times on its violet background: the Select Design, Capture Motion and Inspect Animation tabs, each asking “What do you want to capture?”",
+        src: "/images/projects/datalyon/assistant.webp",
+        label: "AI Assistant",
+        alt: "Datalyon on a desktop monitor in a lilac room: the AI Assistant beside a Sales Performance dashboard, answering why sales dropped last week",
       },
       {
-        src: "/images/projects/ui-snip/capture-motion.webp",
-        label: "Capture Motion",
-        alt: "Capture Motion: a timeline of 20 captured frames from a product hero, with a note on what's sent to Google's Gemini, beside the AI-written React prompt ready to copy",
+        src: "/images/projects/datalyon/dashboard.webp",
+        label: "Dashboard",
+        alt: "An AI-generated Sales Performance dashboard with KPI cards, charts and See AI Insight links",
       },
       {
-        src: "/images/projects/ui-snip/design-and-inspect.webp",
-        label: "Select Design & Inspect Animation",
-        alt: "Select Design's chosen element with its Observed screenshot and design facts, beside Inspect Animation's measured motion with an Estimated click trigger",
+        src: "/images/projects/datalyon/data-profile.webp",
+        label: "Data profile",
+        alt: "Data Profile: a warning that 2 of 12 columns need attention, quality metrics and a column table",
       },
     ],
   },
@@ -123,36 +119,40 @@ export const projects = [
     ],
   },
   {
-    id: "datalyon",
+    id: "ui-snip",
     number: "04",
-    title: "Datalyon",
-    subtitle: "AI-Powered Data Analytics",
-    tag: "0→1 AI Analytics Product · Product Design",
+    title: "UI Snip",
+    // One line on the Selected Work card ("UI" alone would look orphaned).
+    titleLines: ["UI Snip"],
+    subtitle: "Chrome Extension · AI Developer Tool",
+    tag: "0→1 AI Chrome Extension · Design & Build",
     description:
-      "Designing an AI-powered analytics experience that takes people from raw data to real insights.",
-    href: "/work/datalyon",
+      "Turning a design, motion or animation on any website into a prompt for AI coding tools, designed and built end to end.",
+    href: "/work/ui-snip",
     cta: "View case study",
-    // Datalyon Figma purples: Primary/500 glow top-right, Primary/700, and
-    // the brand charcoal (Primary 09) under the text.
-    background: "#5D356E",
-    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(155 113 176 / 0.5), transparent 60%), linear-gradient(235deg, #844C9D 0%, #5D356E 50%, #41363F 100%)",
-    foreground: "#ffffff",
+    // UI Snip's panel colours (src/panel/theme.css in the extension): a violet
+    // glow top-right over the tab bar's purple, deepening to Night under the
+    // text.
+    background: "#1A0F2B",
+    gradient: "radial-gradient(90% 110% at 85% 10%, rgb(165 101 250 / 0.45), transparent 60%), linear-gradient(235deg, #4C0E88 0%, #2A1B40 50%, #1A0F2B 100%)",
+    foreground: "#FFFBFE",
     accent: "#ffffff",
+    // Compositions of the real panel screenshots on UI Snip's own background.
     visuals: [
       {
-        src: "/images/projects/datalyon/assistant.webp",
-        label: "AI Assistant",
-        alt: "Datalyon on a desktop monitor in a lilac room: the AI Assistant beside a Sales Performance dashboard, answering why sales dropped last week",
+        src: "/images/projects/ui-snip/workflows.webp",
+        label: "Three workflows",
+        alt: "UI Snip's side panel three times on its violet background: the Select Design, Capture Motion and Inspect Animation tabs, each asking “What do you want to capture?”",
       },
       {
-        src: "/images/projects/datalyon/dashboard.webp",
-        label: "Dashboard",
-        alt: "An AI-generated Sales Performance dashboard with KPI cards, charts and See AI Insight links",
+        src: "/images/projects/ui-snip/capture-motion.webp",
+        label: "Capture Motion",
+        alt: "Capture Motion: a timeline of 20 captured frames from a product hero, with a note on what's sent to Google's Gemini, beside the AI-written React prompt ready to copy",
       },
       {
-        src: "/images/projects/datalyon/data-profile.webp",
-        label: "Data profile",
-        alt: "Data Profile: a warning that 2 of 12 columns need attention, quality metrics and a column table",
+        src: "/images/projects/ui-snip/design-and-inspect.webp",
+        label: "Select Design & Inspect Animation",
+        alt: "Select Design's chosen element with its Observed screenshot and design facts, beside Inspect Animation's measured motion with an Estimated click trigger",
       },
     ],
   },
