@@ -77,7 +77,7 @@ export default function Hero() {
                 {/* lg: a smaller floor so it stays on one line in the narrower
                     side column (from 1024px wide). */}
                 <p className="font-display text-[clamp(1.5rem,2.1vw,2rem)] font-medium leading-[1.05] tracking-[-0.02em] lg:text-[clamp(1.25rem,2.1vw,2rem)]">
-                  <MaskLine>{profile.headline}</MaskLine>
+                  <MaskLine>{profile.role}</MaskLine>
                 </p>
                 <p className={`mt-2.5 ${meta}`}>
                   <MaskLine>

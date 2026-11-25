@@ -1,16 +1,14 @@
 // Professional positioning: who Manoj is, in one place. The hero, Journey
 // intro and page metadata read from here.
 //
-// The headline is the title under the name in the homepage hero; the role is
-// the positioning elsewhere (the home link-preview image). The current title
-// and company come from the newest entry in data/experience.js, so the two
-// can't drift apart.
+// The role is the title under the name in the homepage hero and on the home
+// link-preview image. The current title and company come from the newest
+// entry in data/experience.js, so the two can't drift apart.
 import { experience } from "@/data/experience";
 
 const [current] = experience;
 
 export const profile = {
-  headline: "AI Product Design Engineer",
   role: "AI Product Designer",
   statement:
     "I design 0→1 products and build design systems in Figma. I use ChatGPT to explore user flows and edge cases, then prototype interactions with Claude Code and Figma MCP.",
